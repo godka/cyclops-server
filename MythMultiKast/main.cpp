@@ -1,0 +1,42 @@
+#include <iostream>
+#include "MythConfig.hh"
+#include "mythStreamMapServer.hh"
+#define mythcmp(A) strcmp(input,A) == 0
+#define streamserverport 5834
+
+int main(int args,char** argv)
+{
+	SDL_Init(SDL_INIT_TIMER);
+#ifdef AUTOSTART
+	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,true);
+#else
+	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,false);
+#endif
+	streammapserver->StartServer();
+	
+	char input[256];
+	for(;;){
+		printf(">");
+		gets(input);
+		if (mythcmp("exit")){
+			break;
+		}
+		else if (mythcmp("show")){
+			streammapserver->showAllClients();
+		}
+		else if (mythcmp("stop")){
+			streammapserver->StopServer();
+			cout << "stop servers OK" << endl;
+		}
+		else if (mythcmp("startall")){
+			streammapserver->startAll();
+		}
+		else{
+			system(input);
+		}
+	}
+	streammapserver->StopServer();
+	delete streammapserver;
+	SDL_Quit();
+	return 0;
+}
