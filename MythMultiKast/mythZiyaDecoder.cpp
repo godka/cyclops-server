@@ -52,10 +52,9 @@ int mythZiyaDecoder::decodethread(){
 			SDL_PollEvent(NULL);
 			SDL_Delay(1);
 		}
-		delete[] buf; 
 		msocket->socket_CloseSocket();
 	}
-	
+	delete [] buf;
 	this->free();
 	delete msocket;
 	msocket = NULL;

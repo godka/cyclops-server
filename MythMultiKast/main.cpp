@@ -1,8 +1,6 @@
 #include <iostream>
 #include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
-#define mythcmp(A) strcmp(input,A) == 0
-#define streamserverport 5834
 
 int main(int args,char** argv)
 {

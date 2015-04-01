@@ -45,7 +45,7 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 {
 	map<int,mythStreamServer*>::iterator Iter;
 	int cameraid = -1;
-	sscanf(data,"GET /CameraID=%d&Type=zyh264 HTTP/1.0",&cameraid);
+	sscanf(data,"GET /CameraID=%d",&cameraid);
 	if(cameraid != -1){
 		mythStreamServer* server = NULL;
 		Iter = servermap.find(cameraid);
