@@ -1,4 +1,6 @@
 #pragma once
+//
+//add libcurl to take place of socket_receivedataln2
 #include "MythConfig.hh"
 #ifdef _WIN32
 	#include <WinSock2.h>

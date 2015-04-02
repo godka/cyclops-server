@@ -14,5 +14,7 @@ public:
 	IPaddress peer;
 	void* addtionaldata;
 	void* data;
+private:
+	int maxlength;
 };
 

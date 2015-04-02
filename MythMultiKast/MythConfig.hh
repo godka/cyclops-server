@@ -5,3 +5,7 @@
 
 #define mythcmp(A) strcmp(input,A) == 0
 #define streamserverport 80
+
+
+//#define MYTH_CONFIG_SENDMESSAGE_SLOW
+#define MYTH_CONFIG_SENDMESSAGE_FAST
