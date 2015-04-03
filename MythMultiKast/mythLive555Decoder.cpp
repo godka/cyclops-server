@@ -1,5 +1,5 @@
 #include "mythLive555Decoder.hh"
-
+#include "curl/curl.h"
 
 mythLive555Decoder::mythLive555Decoder(char* rtsplink,char* username,char* password)
 	:mythVirtualDecoder()
@@ -25,6 +25,7 @@ void mythLive555Decoder::callbackdata(unsigned char* data,unsigned int length)
 }
 int mythLive555Decoder::decodethread()
 {
+
 	UsageEnvironment *env = initalAllcommons();
 	//RTSPClient * rtspClient =  openURL(*env, "rtsp://192.168.245.71/h264/ch1/main/av_stream","admin","12345");
 	rtspClient = openURL(*env,

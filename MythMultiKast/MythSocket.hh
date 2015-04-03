@@ -11,12 +11,14 @@
 	#include <arpa/inet.h>
 	#include <netinet/in.h>
 #endif
+#include "curl/curl.h"
 class MythSocket
 {
 public:
 	MythSocket();
 	MythSocket(const char* ip,u_short port);
 	~MythSocket(void);
+	//int curl_receivedata()
 	int socket_InitalSocket();
 	int socket_BindAddressPort(const char* ip,u_short port);
 	int socket_SendStr(const char* str,int length);
