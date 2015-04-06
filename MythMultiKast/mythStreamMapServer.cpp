@@ -23,7 +23,7 @@ int mythStreamMapServer::startAll(void){
 			mythStreamServer* server = mythStreamServer::CreateNew(cameraid);
 			servermap[cameraid] = server;
 			server->start();
-			SDL_Delay(100);
+			//SDL_Delay(100);
 			cout << sum++ << "  cameraid:" << cameraidstr << " started." << endl;
 		}
 	}

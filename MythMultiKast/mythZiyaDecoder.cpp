@@ -8,13 +8,17 @@ mythZiyaDecoder::mythZiyaDecoder(char* ip,int port,int CameraID)
 	m_port = port;
 	m_cameraid = CameraID;
 	startthread = NULL;
+#ifdef USINGCURL
 	curl = NULL;
+#endif
 	msocket = NULL;
 }
+#ifdef USINGCURL
 size_t mythZiyaDecoder::myth_curlcallback_static(void *buffer, size_t size, size_t nmemb, void *stream){
 	mythZiyaDecoder* m_decoder = (mythZiyaDecoder*) stream;
 	return m_decoder->myth_curlcallback(buffer, size, nmemb);
 }
+#endif
 mythZiyaDecoder* mythZiyaDecoder::CreateNew(char* ip,int CameraID){
 	return new mythZiyaDecoder(ip, streamserverport, CameraID);
 }
@@ -36,8 +40,9 @@ int mythZiyaDecoder::decodethreadstatic(void* data){
 	return m_decoder->decodethread();
 }
 int mythZiyaDecoder::decodethread(){
+#ifdef USINGCURL
 	return start_with_curl();
-	/*
+#else
 #define BUFF_COUNT 1024*1024	
 	char* buf = new char[BUFF_COUNT];
 	msocket = MythSocket::CreatedNew(m_ip,m_port);
@@ -67,7 +72,8 @@ int mythZiyaDecoder::decodethread(){
 	msocket = NULL;
 	//printf("ziya decoder delete! : %d\n", m_cameraid);
 	return 0;
-	*/
+	//*/
+#endif
 }
 mythZiyaDecoder::~mythZiyaDecoder(void)
 {
@@ -75,7 +81,7 @@ mythZiyaDecoder::~mythZiyaDecoder(void)
 		delete msocket;
 	}
 }
-
+#ifdef USINGCURL
 int mythZiyaDecoder::start_with_curl()
 {
 	char tmpurl[256] = { 0 };
@@ -127,3 +133,4 @@ size_t mythZiyaDecoder::myth_curlcallback(void *buffer, size_t size, size_t nmem
 	put((unsigned char*) buffer, sizes);
 	return sizes;
 }
+#endif

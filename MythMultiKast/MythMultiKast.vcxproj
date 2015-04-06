@@ -122,7 +122,6 @@
     <ClInclude Include="tinyxml.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="libcurl.lib" />
     <Library Include="SDL2.lib" />
     <Library Include="SDL2main.lib" />
     <Library Include="SDL2_net.lib" />
