@@ -1,4 +1,5 @@
 #include "myrtspClient.h"
+#include "H264VideoStreamSink.hh"
 char eventLoopWatchVariable = 0;
 UsageEnvironment* initalAllcommons()
 {

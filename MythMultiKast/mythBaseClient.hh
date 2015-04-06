@@ -6,8 +6,8 @@ extern "C"{
 #include <string.h>
 #ifdef WIN32
 	#include <Windows.h>
-	#include <time.h>
 #endif
+#include <time.h>
 };
 #include "PEOPLE.hh"
 class mythBaseClient

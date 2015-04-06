@@ -53,7 +53,7 @@ int mythBaseClient::DataCallBack(void* data, int len)
 		mythSendMessage(firstrequest);
 		isfirst = false;
 	}
-#ifdef linux
+#ifndef WIN32
 	time_t rawtime;
 	struct tm * timeinfo;
 	time(&rawtime);
