@@ -11,7 +11,7 @@ int main(int args,char** argv)
 	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,false);
 #endif
 	streammapserver->StartServer();
-	
+#ifndef MYTH_RUN_IN_SERVER
 	char input[256];
 	for(;;){
 		printf(">");
@@ -33,6 +33,7 @@ int main(int args,char** argv)
 			system(input);
 		}
 	}
+#endif
 	streammapserver->StopServer();
 	delete streammapserver;
 	SDL_Quit();
