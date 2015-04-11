@@ -1,6 +1,7 @@
 #include <iostream>
 #include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
+#include "mythVirtualSqlite.hh"
 
 int main(int args,char** argv)
 {
@@ -11,7 +12,11 @@ int main(int args,char** argv)
 	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,false);
 #endif
 	streammapserver->StartServer();
-#ifndef MYTH_RUN_IN_SERVER
+
+	if (args > 1){
+		mythVirtualSqlite::GetInstance()->SetSQLIP(argv[1]);
+	}
+#ifdef MYTH_RUN_IN_SERVER
 	char input[256];
 	for(;;){
 		printf(">");
@@ -28,6 +33,10 @@ int main(int args,char** argv)
 		}
 		else if (mythcmp("startall")){
 			streammapserver->startAll();
+		}
+		else if (mythcmp("setSQL")){
+			//mythVirtualSqlite::GetInstance()->SetSQLIP()
+			//streammapserver->startAll();
 		}
 		else{
 			system(input);

@@ -68,6 +68,7 @@ done:
 }
 mythVirtualSqlite::mythVirtualSqlite()
 {
+	m_ip = "127.0.0.1";
 	this->mutex = SDL_CreateMutex();
 	this->mVirtualSqllite = this;
 	//result = (SQLresult*)malloc(sizeof(SQLresult));
@@ -151,7 +152,11 @@ mythVirtualSqlite::~mythVirtualSqlite(void)
 	//this->close();
 }
 
-
+int mythVirtualSqlite::SetSQLIP(string ip){
+	m_ip = ip;
+	cout << "SQL IP set success:" << m_ip << endl; 
+	return 0;
+}
 mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 {
 	mythStreamSQLresult* retresult = NULL;
@@ -166,7 +171,7 @@ mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 	ret += replace(str, " ", "%20");
 	ret += "</Content></XML>  HTTP/1.0 \r\n\r\n";
 
-	MythSocket* socket = MythSocket::CreatedNew("127.0.0.1", 5830);
+	MythSocket* socket = MythSocket::CreatedNew(m_ip.c_str(), 5830);
 	if (socket->socket_SendStr(ret.c_str()) == 0){
 		SDL_Delay(10);
 		char tmp[65535] = { 0 };

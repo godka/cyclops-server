@@ -27,6 +27,7 @@ public:
 	int convert(const char *from, const char *to, char* save, int savelen, char *src, int srclen);
 	char* parseSQL(const char* keywords);
 	~mythVirtualSqlite(void);
+	int SetSQLIP(string ip);
 protected:
 	mythVirtualSqlite();
 	string CreateXMLline(string element,string tag);
@@ -37,6 +38,7 @@ private:
 	//sqlite3* pDB;
 	char* m_filename;
 	SDL_mutex* mutex;
+	string m_ip;
 	//mythSQLresult* result;
 };
 
