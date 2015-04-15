@@ -1,6 +1,6 @@
 CXX=g++
 CC=gcc
-CPPFLAGS=-I. -I/usr/include/SDL2 -I/usr/local/include/groupsock -I/usr/local/include/UsageEnvironment -I/usr/local/include/BasicUsageEnvironment -I/usr/local/include/liveMedia -O3 -std=c++0x -fpermissive -Wdeprecated-declarations
+CPPFLAGS=-I. -I/usr/include/SDL2 -I/usr/local/include/groupsock -I/usr/local/include/UsageEnvironment -I/usr/local/include/BasicUsageEnvironment -I/usr/local/include/liveMedia -std=c++0x -fpermissive -Wdeprecated-declarations -w
 #CFLAGS=-I. -I/usr/include/SDL2  -O3
 CPPSOURCES=$(wildcard *.cpp)
 #CPPSOURCES=main.cpp mythRedis.cpp mythRedisKey.cpp mythBaseServer.cpp mythLua.cpp mythReader.cpp mythVirtualServer.cpp mythWriter.cpp PEOPLE.cpp
