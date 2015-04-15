@@ -52,10 +52,13 @@ int mythZiyaDecoder::decodethread(){
 		msocket->socket_SendStr(tmpsendstr);
 		SDL_Delay(100);
 		while (flag == 0){
+
+			printf("ready to receive buff\n");
 			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
 			if (rc > 0) {
 				put((unsigned char*) buf, rc);
 			}else{
+				printf("start to reconnect\n");
 				//msocket->Reconnect(m_ip,m_port);
 				SDL_Delay(1000);
 				msocket->socket_SendStr(tmpsendstr);
