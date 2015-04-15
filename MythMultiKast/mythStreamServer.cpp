@@ -118,7 +118,6 @@ int mythStreamServer::mainthread()
 		SDL_PollEvent(NULL);
 		if (decoder){
 			if (baselist.size() <= 0){
-
 				printf("size <= 0\n");
 				SDL_Delay(100);
 			}
@@ -128,14 +127,14 @@ int mythStreamServer::mainthread()
 					//add omp version
 //#pragma omp parallel for
 
-					printf("get packet\n");
+					//printf("get packet\n");
 					for (int i = 0; i < baselist.size(); i++){
 						mythBaseClient* tmpclient = baselist.at(i);
 						if (tmpclient != NULL){
 							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
 						}
 					}
-					SDL_Delay(1);
+					SDL_Delay(1000);
 					//baselist.push_back(this);
 				}
 				//else{
