@@ -165,7 +165,7 @@ int mythVirtualServer::initalsocket(int port){
         SDL_Quit();
         exit(1);
     }
-#pragma omp parallel for
+//#pragma omp parallel for
     /* Initialize the channels */
     for ( i=0; i<CHAT_MAXPEOPLE; ++i ) {
 		people[i] = PEOPLE::CreateNew();

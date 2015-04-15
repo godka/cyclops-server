@@ -113,6 +113,7 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf,int recvLength,char* lnstr){
 	int length = 60;
 	fd_set readset;
 	while(1){
+		SDL_Delay(1);
 #define FAST_SOCKET
 #ifdef FAST_SOCKET
 		FD_ZERO(&readset);

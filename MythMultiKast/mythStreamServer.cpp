@@ -118,7 +118,7 @@ int mythStreamServer::mainthread()
 		SDL_PollEvent(NULL);
 		if (decoder){
 			if (baselist.size() <= 0){
-				printf("size <= 0\n");
+				//printf("size <= 0\n");
 				SDL_Delay(100);
 			}
 			else{
@@ -134,7 +134,7 @@ int mythStreamServer::mainthread()
 							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
 						}
 					}
-					SDL_Delay(1000);
+					SDL_Delay(1);
 					//baselist.push_back(this);
 				}
 				//else{
