@@ -3,6 +3,8 @@
 
 mythStreamSQLresult::mythStreamSQLresult(const char* str)
 {
+	tablecontent = NULL;
+	element = NULL;
 	this->xmlstring = str;
 	init();
 }
@@ -12,7 +14,9 @@ void mythStreamSQLresult::init(){
 	if (doc){
 		doc->Parse(xmlstring);
 		TiXmlElement* rootElement = doc->RootElement();  //<xml>
-		this->tablecontent = rootElement->FirstChildElement("TableContent");
+		if (rootElement){
+			this->tablecontent = rootElement->FirstChildElement("TableContent");
+		}
 	}
 	isfirst = true;
 }
@@ -26,7 +30,9 @@ mythStreamSQLresult::~mythStreamSQLresult()
 bool mythStreamSQLresult::MoveNext()
 {
 	if (isfirst){
-		this->element = tablecontent->FirstChildElement("line");
+		if (tablecontent){
+			this->element = tablecontent->FirstChildElement("line");
+		}
 		isfirst = false;
 	}
 	else{
