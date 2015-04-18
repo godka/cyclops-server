@@ -58,14 +58,14 @@ void mythStreamServer::connect()
 #endif
 				default:
 					//live555decoder
-					char url[256] = { 0 };
-					sprintf(url, RTSPLINK, ip.c_str(), httpport.c_str(), FullSize.c_str());
-					string strRecordUrl = url;
+					//char url[256] = { 0 };
+					//sprintf(url, RTSPLINK, ip.c_str(), httpport.c_str(), FullSize.c_str());
+					string strRecordUrl = "rtsp://" + ip+":" + httpport + FullSize;
 					int iFind = strRecordUrl.find("$camera");
 					if (iFind >= 0)
 						strRecordUrl.replace(iFind, iFind + strlen("$camera"), realcameraid);
-					strcpy(url, strRecordUrl.c_str());
-					this->decoder = mythLive555Decoder::CreateNew(url, (char*) username.c_str(), (char*) password.c_str());
+					//strcpy(url, strRecordUrl.c_str());
+					this->decoder = mythLive555Decoder::CreateNew((char*)strRecordUrl.c_str(), (char*) username.c_str(), (char*) password.c_str());
 					break;
 				}
 				//SDL_LockMutex(decodemutex);
@@ -125,9 +125,7 @@ int mythStreamServer::mainthread()
 				tmp = decoder->get();
 				if (tmp != NULL){
 					//add omp version
-//#pragma omp parallel for
-
-					//printf("get packet\n");
+#pragma omp parallel for
 					for (int i = 0; i < baselist.size(); i++){
 						mythBaseClient* tmpclient = baselist.at(i);
 						if (tmpclient != NULL){
@@ -151,11 +149,16 @@ int mythStreamServer::mainthread()
 	return 0;
 }
 
-int mythStreamServer::start()
+int mythStreamServer::start(bool canthread)
 {
-	isrunning = 0;
-	if (!streamserverthread)
-		streamserverthread = SDL_CreateThread(mainthreadstatic,"static",this);
+	if (!canthread){
+		mainthreadstatic(this);
+	}
+	else{
+		isrunning = 0;
+		if (!streamserverthread)
+			streamserverthread = SDL_CreateThread(mainthreadstatic, "static", this);
+	}
 	return 0;
 }
 

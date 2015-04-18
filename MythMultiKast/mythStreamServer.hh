@@ -32,7 +32,7 @@ public:
 	int GetClientNumber();
 	void ClearAllClients();
 	*/
-	int start();
+	int start(bool canthread = true);
 	int stop();
 	int m_cameraid;
 private:

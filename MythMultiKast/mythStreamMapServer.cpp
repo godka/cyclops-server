@@ -1,7 +1,9 @@
 #include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"
 //#define AUTOSTART
-
+#ifndef WIN32
+#include <unistd.h>  
+#endif
 mythStreamMapServer::mythStreamMapServer(int port, bool start)
 :mythVirtualServer(port)//, mythVirtualSqlite()
 {
@@ -20,6 +22,7 @@ int mythStreamMapServer::startAll(void){
 		string cameraidstr = result->prase("CameraID");
 		int cameraid = atoi(cameraidstr.c_str());
 		if (servermap[cameraid] == NULL){
+			//if I using fork?
 			mythStreamServer* server = mythStreamServer::CreateNew(cameraid);
 			servermap[cameraid] = server;
 			server->start();
@@ -53,7 +56,18 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 		//if (servermap[cameraid] != NULL){
 			server = mythStreamServer::CreateNew(cameraid);
 			servermap[cameraid] = server;
+#ifdef WIN32
 			server->start();
+#else
+			pid_t fpid = fork();
+			if (fpid == 0){
+				server->start(false);
+			}
+			else{
+				cout << "error in fork" << endl;
+			}
+
+#endif
 		}else{
 			server = Iter->second;
 		}

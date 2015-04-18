@@ -1,5 +1,5 @@
 #include "mythLive555Decoder.hh"
-#include "curl/curl.h"
+//#include "curl/curl.h"
 
 mythLive555Decoder::mythLive555Decoder(char* rtsplink,char* username,char* password)
 	:mythVirtualDecoder()
