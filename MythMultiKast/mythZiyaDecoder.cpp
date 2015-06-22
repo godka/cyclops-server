@@ -63,7 +63,7 @@ int mythZiyaDecoder::decodethread(){
 				msocket->socket_SendStr(tmpsendstr);
 				printf("reconnecting\n");
 			}
-			SDL_PollEvent(NULL);
+			//SDL_PollEvent(NULL);
 			SDL_Delay(1);
 		}
 		msocket->socket_CloseSocket();

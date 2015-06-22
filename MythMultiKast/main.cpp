@@ -5,18 +5,19 @@
 
 int main(int args,char** argv)
 {
+
 	SDL_Init(SDL_INIT_TIMER);
 #ifdef AUTOSTART
 	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,true);
 #else
 	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,false);
 #endif
-	streammapserver->StartServer();
-
 	if (args > 1){
 		mythVirtualSqlite::GetInstance()->SetSQLIP(argv[1]);
+		printf("sqlip is now changed to %s\n", argv[1]);
 	}
-#ifdef MYTH_RUN_IN_SERVER
+	streammapserver->StartServer();
+#ifdef _WIN32
 	char input[256];
 	for(;;){
 		printf(">");

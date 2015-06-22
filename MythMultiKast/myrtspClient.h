@@ -3,6 +3,9 @@
 #include "liveMedia.hh"
 #include "BasicUsageEnvironment.hh"
 #include "OurRTSPClient.hh"
+#ifdef _WIN32
+	#pragma comment(lib,"ws2_32")
+#endif
 // Forward function definitions:
 void continueAfterDESCRIBE(RTSPClient* rtspClient, int resultCode, char* resultString);
 void continueAfterSETUP(RTSPClient* rtspClient, int resultCode, char* resultString);

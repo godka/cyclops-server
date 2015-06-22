@@ -7,7 +7,7 @@ CPPSOURCES=$(wildcard *.cpp)
 CPPOBJECTS=$(CPPSOURCES:.cpp=.o)
 #CSOURCES=$(wildcard *.c)
 COBJECTS=$(CSOURCES:.c=.o)
-TARGET=godserver
+TARGET=mythmultikast
 
 .PHONY: all clean
 
@@ -20,7 +20,7 @@ all: .dcpp .dc $(CPPSOURCES) $(CSOURCES) $(TARGET)
 -include .dcpp
 -include .dc
 $(TARGET): $(CPPOBJECTS) $(COBJECTS)
-	$(CXX) $(CPPOBJECTS) $(COBJECTS) -o $@ -L/usr/lib -lSDL2 -lSDL2_net -L/usr/local/lib/ -lliveMedia -lBasicUsageEnvironment -lgroupsock -lUsageEnvironment
+	$(CXX) $(CPPOBJECTS) $(COBJECTS) -o $@ -L/usr/lib -lSDL2 -lSDL2_net -lcurl -L/usr/local/lib/ -lliveMedia -lBasicUsageEnvironment -lgroupsock -lUsageEnvironment
 
 clean:
 	rm $(CPPOBJECTS) $(COBJECTS) .dcpp .dc
