@@ -180,7 +180,7 @@ int mythBaseClient::mythSendMessage( void* data,int length )
 		length = strlen((char*)data);
 		//if(SDLNet_SocketReady(mpeople->sock))
 	if (mpeople){
-		tmplength = mpeople->peopleSendMessage((char*) data, length);
+		tmplength = mpeople->socket_SendStr((char*) data, length);
 		if (tmplength < length){
 			//printf("error occoured! %d:%d\n",tmplength,length);
 			//stop();				//may be occoured some errors.

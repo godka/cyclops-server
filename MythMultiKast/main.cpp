@@ -2,10 +2,9 @@
 #include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"
-
+#define MAX_ADDRESSES 10
 int main(int args,char** argv)
 {
-
 	SDL_Init(SDL_INIT_TIMER);
 #ifdef AUTOSTART
 	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,true);
@@ -14,13 +13,13 @@ int main(int args,char** argv)
 #endif
 	if (args > 1){
 		mythVirtualSqlite::GetInstance()->SetSQLIP(argv[1]);
-		printf("sqlip is now changed to %s\n", argv[1]);
+		SDL_Log("sqlip is now changed to %s\n", argv[1]);
 	}
 	streammapserver->StartServer();
 #ifdef _WIN32
 	char input[256];
 	for(;;){
-		printf(">");
+		SDL_Log(">");
 		gets(input);
 		if (mythcmp("exit")){
 			break;

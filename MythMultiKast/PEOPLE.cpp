@@ -6,7 +6,19 @@ PEOPLE::PEOPLE()
 	maxlength = 512;
 }
 
-int PEOPLE::peopleSendMessage(char* data, int length){
+PEOPLE::PEOPLE(const char* ip, int port)
+{
+	IPaddress serverIP;
+	SDLNet_Init();
+	socketset = SDLNet_AllocSocketSet(2);
+	SDLNet_ResolveHost(&serverIP, ip, port);
+	sock = SDLNet_TCP_Open(&serverIP);
+	SDLNet_TCP_AddSocket(socketset, sock);
+	downbuffer = new char[4097];
+	downlength = 0;
+}
+
+int PEOPLE::socket_SendStr(const char* data, int length){
 #ifdef MYTH_CONFIG_SENDMESSAGE_SLOW
 	int tlen = length;
 	if (sock){
@@ -27,4 +39,75 @@ int PEOPLE::peopleSendMessage(char* data, int length){
 
 PEOPLE::~PEOPLE()
 {
+}
+
+int PEOPLE::socket_ReceiveData(char* recvBuf, int recvLength)
+{
+
+	SDLNet_CheckSockets(socketset, 1000);
+	if (SDLNet_SocketReady(sock)){
+		return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
+	}
+	else{
+		return 0;
+	}
+
+}
+
+int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
+{
+	int tmplength = strlen(lnstr);
+	int i;
+	int len;
+	int buffptr = 0;
+	int rlength = 4096;
+	char recv[4097];// = (char*)malloc(rlength);
+	int contentlength;
+	int length = 60;
+	while (1){
+		SDL_PollEvent(NULL);
+		SDL_Delay(1);
+		len = socket_ReceiveData(recv, rlength);
+		if (len > 0){
+			for (i = 0; i < len - tmplength; i++){
+				if (socket_strcmp(&recv[i], lnstr, tmplength) == 0){
+					sscanf(&recv[i], "Content_Length: %06d", &contentlength);
+					if (contentlength > 0){
+						int tmpptr = 0;
+						int returnvalue = contentlength;
+						int tmplen = len - i - length > contentlength ? contentlength : len - i - length;
+						if (tmplen < 0)tmplen = 0;
+						SDL_memcpy(recvBuf, &recv[i + length], tmplen);
+						tmpptr += tmplen;
+						contentlength -= tmplen;
+						while (contentlength > 0){
+							len = socket_ReceiveData(recvBuf + tmpptr, contentlength);
+							tmpptr += len;
+							contentlength -= len;
+						}
+						return returnvalue;
+					}
+				}
+			}
+		}
+		else{
+			return 0;
+		}
+	}
+}
+
+int PEOPLE::socket_strcmp(char* buff, char*str, int length)
+{
+
+	for (int i = 0; i < length; i++)
+		if (buff[i] != str[i])
+			return 1;
+	return 0;
+}
+
+int PEOPLE::socket_CloseSocket()
+{
+	delete [] downbuffer;
+	SDLNet_TCP_Close(sock);
+	return 0;
 }

@@ -1,9 +1,9 @@
 #include "mythVirtualSqlite.hh"
 #include <cctype>
 #include <algorithm>
-#include "MythSocket.hh"
 #include "tinyxml.h"
 #include "mythStreamSQLresult.hh"
+#include "PEOPLE.hh"
 
 mythVirtualSqlite*  mythVirtualSqlite::mVirtualSqllite;
 mythVirtualSqlite* mythVirtualSqlite::GetInstance(){
@@ -171,7 +171,7 @@ mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 	ret += replace(str, " ", "%20");
 	ret += "</Content></XML>  HTTP/1.0 \r\n\r\n";
 
-	MythSocket* socket = MythSocket::CreatedNew("127.0.0.1", 5830);
+	PEOPLE* socket = PEOPLE::CreateNew("127.0.0.1", 5830);
 	if (socket->socket_SendStr(ret.c_str()) == 0){
 		SDL_Delay(10);
 		char tmp[65535] = { 0 };
