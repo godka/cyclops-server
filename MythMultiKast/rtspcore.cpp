@@ -132,7 +132,7 @@ void continueAfterSETUP(RTSPClient* rtspClient, int resultCode, char* resultStri
     scs.subsession->sink->startPlaying(*(scs.subsession->readSource()),
 				       subsessionAfterPlaying, scs.subsession);
     if (scs.subsession->rtcpInstance() != NULL) {
-		scs.subsession->rtcpInstance()->setByeHandler(subsessionByeHandler, scs.myresponse,scs.phwnd);
+		scs.subsession->rtcpInstance()->setByeHandler(subsessionByeHandler, scs.myresponse);
     }
   } while (0);
   delete[] resultString;
@@ -264,7 +264,8 @@ void shutdownStream(RTSPClient* rtspClient, int exitCode) {
 		// The final stream has ended, so exit the application now.
 		// (Of course, if you're embedding this code into your own application, you might want to comment this out,
 		// and replace it with "eventLoopWatchVariable = 1;", so that we leave the LIVE555 event loop, and continue running "main()".)
-		exit(exitCode);
+		eventLoopWatchVariable = exitCode;
+		//exit(exitCode);
 	}
 }
 

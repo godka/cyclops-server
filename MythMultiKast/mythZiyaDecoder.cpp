@@ -57,7 +57,7 @@ int mythZiyaDecoder::decodethread(){
 	msocket = PEOPLE::CreateNew(m_ip,m_port);
 	if (msocket != NULL){
 		char tmpsendstr[100];
-		SDL_snprintf(tmpsendstr, 100, "GET /CameraID=%d", m_cameraid);
+		SDL_snprintf(tmpsendstr, 100, "GET /CameraID=%d&Type=zyh264 HTTP/1.0\r\n\r\n", m_cameraid);
 		msocket->socket_SendStr(tmpsendstr);
 		SDL_Delay(100);
 		while (flag == 0){

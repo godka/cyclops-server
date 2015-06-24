@@ -29,11 +29,14 @@ PEOPLE::PEOPLE()
 
 PEOPLE::PEOPLE(const char* ip, int port)
 {
-	IPaddress serverIP;
+	IPaddress serverIP = {0};
+	SDL_Init(NULL);
 	SDLNet_Init();
 	socketset = SDLNet_AllocSocketSet(2);
-	SDLNet_ResolveHost(&serverIP, ip, port);
-	sock = SDLNet_TCP_Open(&serverIP);
+	SDLNet_ResolveHost(&serverIP, ip, (Uint16)port);
+	if (!(sock = SDLNet_TCP_Open(&serverIP))){
+		printf("fuck,not open!\n");
+	}
 	SDLNet_TCP_AddSocket(socketset, sock);
 	downbuffer = new char[4097];
 	downlength = 0;
@@ -50,10 +53,19 @@ int PEOPLE::socket_SendStr(const char* data, int length){
 	}
 	return 0;
 #else
-	if (sock)
-		return SDLNet_TCP_Send(this->sock, data, length);
+	if (length == -2){
+		length = strlen(data);
+	}
+	if (sock){
+		if (SDLNet_TCP_Send(this->sock, data, length) < length){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
 	else
-		return 0;
+		return 1;
 #endif
 //	return 0;
 }
@@ -65,7 +77,7 @@ PEOPLE::~PEOPLE()
 int PEOPLE::socket_ReceiveData(char* recvBuf, int recvLength)
 {
 
-	SDLNet_CheckSockets(socketset, 1000);
+	SDLNet_CheckSockets(socketset, 100);
 	if (SDLNet_SocketReady(sock)){
 		return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
 	}
@@ -110,9 +122,6 @@ int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 				}
 			}
 		}
-		else{
-			return 0;
-		}
 	}
 }
 
@@ -129,5 +138,6 @@ int PEOPLE::socket_CloseSocket()
 {
 	delete [] downbuffer;
 	SDLNet_TCP_Close(sock);
+	SDLNet_TCP_DelSocket(socketset, sock);
 	return 0;
 }

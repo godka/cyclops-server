@@ -39,7 +39,7 @@ int main(int args,char** argv)
 #ifdef _WIN32
 	char input[256];
 	for(;;){
-		SDL_Log(">");
+		printf(">");
 		gets(input);
 		if (mythcmp("exit")){
 			break;

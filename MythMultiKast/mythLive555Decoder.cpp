@@ -65,8 +65,7 @@ void mythLive555Decoder::stop()
 {
 	flag = 1;
 	SDL_WaitThread(startthread, NULL); 
-	shutdownStream(this->rtspClient);
-	rtspClient->close(NULL);
+	//shutdownStream(this->rtspClient);
 	//delete rtspClient;
 	//rtspClient = NULL;
 }

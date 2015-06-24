@@ -24,15 +24,7 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
 #ifndef _MEDIA_SINK_HH
 #include "MediaSink.hh"
 #endif
-#ifndef __LIST_H
-#include "list.h"
-#endif
-struct ListFrame
-{
-    unsigned startlength;
-    unsigned endlength;
-    struct list_head list;
-};
+
 class StreamSink: public MediaSink {
 public:
   typedef void (live555responseHandler)(void *myth,unsigned char* data, unsigned int length);
