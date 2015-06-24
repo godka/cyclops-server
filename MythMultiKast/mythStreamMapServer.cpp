@@ -76,18 +76,7 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 		//if (servermap[cameraid] != NULL){
 			server = mythStreamServer::CreateNew(cameraid);
 			servermap[cameraid] = server;
-#ifdef WIN32
 			server->start();
-#else
-			pid_t fpid = fork();
-			if (fpid == 0){
-				server->start(false);
-			}
-			else{
-				cout << "error in fork" << endl;
-			}
-
-#endif
 		}else{
 			server = Iter->second;
 		}
