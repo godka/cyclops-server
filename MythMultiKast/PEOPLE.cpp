@@ -122,12 +122,13 @@ int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 				}
 			}
 		}
+		else
+			return 0;
 	}
 }
 
 int PEOPLE::socket_strcmp(char* buff, char*str, int length)
 {
-
 	for (int i = 0; i < length; i++)
 		if (buff[i] != str[i])
 			return 1;
