@@ -18,7 +18,8 @@ Http://code.google.com/mythkast
 最新版本请留意：Http://code.google.com/mythkast
 B
 MythKAst(asdic182@sina.com), in 2013 June.
-*********************************************************************/#include "mythStreamMapServer.hh"
+*********************************************************************/
+#include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"
 //#define AUTOSTART
 #ifndef WIN32

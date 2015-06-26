@@ -21,6 +21,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "mythStreamServer.hh"
 #include <string>
+#include <omp.h>
 #include "mythVirtualSqlite.hh"
 //#include <omp.h>
 mythStreamServer* mythStreamServer::CreateNew(int cameraid){
@@ -78,9 +79,6 @@ void mythStreamServer::connect()
 					break;
 #endif
 				default:
-					//live555decoder
-					//char url[256] = { 0 };
-					//sprintf(url, RTSPLINK, ip.c_str(), httpport.c_str(), FullSize.c_str());
 					string strRecordUrl = "rtsp://" + ip+":" + httpport + FullSize;
 					int iFind = strRecordUrl.find("$camera");
 					if (iFind >= 0)
@@ -166,7 +164,6 @@ int mythStreamServer::mainthread()
 	if (decoder)
 		decoder->stop();
 	delete decoder;
-	//printf("stream server delete success! - %d\n",this->m_cameraid);
 	return 0;
 }
 
@@ -189,7 +186,6 @@ int mythStreamServer::stop()
 	if (streamserverthread)
 		SDL_WaitThread(this->streamserverthread,NULL);
 	streamserverthread = NULL;
-	//printf("server stop finished\n");
 	return 0;
 }
 
@@ -200,9 +196,6 @@ int mythStreamServer::getClientNumber()
 
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
-	//if (FindClient(baselist.begin(), baselist.end(), client)){
-	//	baselist.erase(client);
-	//}
 	for (vector<mythBaseClient*>::iterator iter = baselist.begin(); iter != baselist.end();iter++)
 	{
 		if (*iter == client){
@@ -212,60 +205,3 @@ int mythStreamServer::DropClient(mythBaseClient* client)
 	}
 	return 0;
 }
-
-/*
-char* mythStreamServer::getTop( int* length )
-{
-	if (decoder){
-		*length = toplength;
-		return this->topchar;
-	}else
-		return NULL;
-}
-int mythStreamServer::getClientNumber()
-{
-
-	if (decoder){
-		int ret = 0;
-		SDL_LockMutex(numbermutex);
-		ret = ClientNumber;
-		SDL_UnlockMutex(numbermutex);
-		return ret;
-	}else
-		return 1;
-}
-
-int mythStreamServer::setClientNumber( int num )
-{
-
-	if (decoder){
-		int ret = 0;
-		SDL_LockMutex(numbermutex);
-		ClientNumber = num;
-		SDL_UnlockMutex(numbermutex);
-		return ret;
-	}
-	else
-	{
-		return 1;
-	}
-}
-
-int mythStreamServer::addClientNumber()
-{
-
-	SDL_LockMutex(numbermutex);
-	ClientNumber++;
-	SDL_UnlockMutex(numbermutex);
-	return 0;
-}
-
-int mythStreamServer::minClientNumber()
-{
-
-	SDL_LockMutex(numbermutex);
-	ClientNumber--;
-	SDL_UnlockMutex(numbermutex);
-	return 0;
-}
-*/

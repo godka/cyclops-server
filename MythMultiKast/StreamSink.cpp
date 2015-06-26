@@ -9,9 +9,6 @@
 #include "GroupsockHelper.hh"  
 unsigned timestamp;
 FILE *file;
-//#include "OutputFile.hh"
-#define printtime(name) \
-	int tmp = GetTickCount();printf(name);printf("time = %dms\n",tmp-timestamp);timestamp = tmp;
 
 ////////// FileSink //////////
 //unsigned char fBuffer[BUFFERSIZE];

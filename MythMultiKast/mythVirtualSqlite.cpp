@@ -194,7 +194,6 @@ mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 
 	PEOPLE* socket = PEOPLE::CreateNew("127.0.0.1", 5830);
 	if (socket->socket_SendStr(ret.c_str()) == 0){
-		SDL_Delay(10);
 		char tmp[65535] = { 0 };
 		int socketret = socket->socket_ReceiveData(tmp, 65535);
 		if (socketret > 0){

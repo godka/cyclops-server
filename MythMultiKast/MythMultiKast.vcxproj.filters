@@ -125,7 +125,4 @@
     <Library Include="SDL2_net.lib" />
     <Library Include="SDL2main.lib" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
 </Project>

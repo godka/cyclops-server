@@ -18,11 +18,12 @@ Http://code.google.com/mythkast
 最新版本请留意：Http://code.google.com/mythkast
 B
 MythKAst(asdic182@sina.com), in 2013 June.
-*********************************************************************/#include <iostream>
+*********************************************************************/
+#include <iostream>
 #include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"
-#define MAX_ADDRESSES 10
+
 int main(int args,char** argv)
 {
 	SDL_Init(SDL_INIT_TIMER);
@@ -54,8 +55,11 @@ int main(int args,char** argv)
 		else if (mythcmp("startall")){
 			streammapserver->startAll();
 		}
-		else if (mythcmp("setSQL")){
-			//mythVirtualSqlite::GetInstance()->SetSQLIP()
+		else if (mythcmp("setsql")){
+			printf("<SETSQL>Input IP:");
+			gets(input);
+			string str = input;
+			mythVirtualSqlite::GetInstance()->SetSQLIP(str);
 			//streammapserver->startAll();
 		}
 		else{

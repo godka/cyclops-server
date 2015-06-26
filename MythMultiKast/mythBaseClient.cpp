@@ -18,7 +18,8 @@ Http://code.google.com/mythkast
 最新版本请留意：Http://code.google.com/mythkast
 B
 MythKAst(asdic182@sina.com), in 2013 June.
-*********************************************************************/#include "mythBaseClient.hh"
+*********************************************************************/
+#include "mythBaseClient.hh"
 #define firstrequest "HTTP/1.1 200 OK\r\nServer: WWeb/2.0\r\nConnection: Close\r\nContent-Type: multipart/x-mixed-replace;boundary=--myboundary\r\n\r\n \n\n--myboundary\n"
 //#define requestend " \n\n\-\-myboundary\"
 /*
