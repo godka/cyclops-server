@@ -4,9 +4,9 @@ extern "C"{
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef WIN32
-	#include <Windows.h>
-#endif
+//#ifdef WIN32
+//	#include <Windows.h>
+//#endif
 #include <time.h>
 };
 #include "PEOPLE.hh"

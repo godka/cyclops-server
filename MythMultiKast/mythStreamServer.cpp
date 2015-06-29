@@ -21,7 +21,6 @@ MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "mythStreamServer.hh"
 #include <string>
-#include <omp.h>
 #include "mythVirtualSqlite.hh"
 //#include <omp.h>
 mythStreamServer* mythStreamServer::CreateNew(int cameraid){
@@ -144,7 +143,6 @@ int mythStreamServer::mainthread()
 				tmp = decoder->get();
 				if (tmp != NULL){
 					//add omp version
-#pragma omp parallel for
 					for (int i = 0; i < baselist.size(); i++){
 						mythBaseClient* tmpclient = baselist.at(i);
 						if (tmpclient != NULL){

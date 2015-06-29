@@ -74,7 +74,7 @@ int mythBaseClient::DataCallBack(void* data, int len)
 		mythSendMessage(firstrequest);
 		isfirst = false;
 	}
-#ifndef WIN32
+#if 1
 	time_t rawtime;
 	struct tm * timeinfo;
 	time(&rawtime);

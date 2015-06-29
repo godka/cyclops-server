@@ -122,8 +122,6 @@ int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 				}
 			}
 		}
-		else
-			return 0;
 	}
 }
 
