@@ -201,6 +201,9 @@ mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 		}
 		socket->socket_CloseSocket();
 	}
+	else{
+		printf("error:Cannot connect to database!\n");
+	}
 	delete socket;
 	return retresult;
 	//toupper()

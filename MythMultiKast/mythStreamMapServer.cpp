@@ -36,22 +36,34 @@ mythStreamMapServer::mythStreamMapServer(int port, bool start)
 int mythStreamMapServer::startAll(void){
 	//if (start){
 		//this->open("myth.db");
+
+	SDL_RemoveTimer(timerid);
 	int sum = 0;
 	char sqlstr[256] = "select c.cameraid from videoserver as a,vstype as b,camera as c where a.vstypeid = b.vstypeid and a.videoserverid = c.videoserverid";
 	mythStreamSQLresult* result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqlstr);
-	while (result->MoveNext()){
-		string cameraidstr = result->prase("CameraID");
-		int cameraid = atoi(cameraidstr.c_str());
-		if (servermap[cameraid] == NULL){
-			//if I using fork?
-			mythStreamServer* server = mythStreamServer::CreateNew(cameraid);
-			servermap[cameraid] = server;
-			server->start();
-			//SDL_Delay(100);
-			cout << sum++ << "  cameraid:" << cameraidstr << " started." << endl;
+	if (result){
+		int ksum = 0;
+		while (result->MoveNext()){
+			string cameraidstr = result->prase("CameraID");
+			int cameraid = atoi(cameraidstr.c_str());
+			if (servermap[cameraid] == NULL){
+				//if I using fork?
+				mythStreamServer* server = mythStreamServer::CreateNew(cameraid);
+				servermap[cameraid] = server;
+				//server->start();
+				ksum++;
+			}
 		}
+		//cout << "sum client:" << ksum << endl;
+		//delete result;
+		//for (map<int, mythStreamServer*>::iterator Iter = servermap.begin(); Iter != servermap.end(); Iter++){
+		//	if (Iter->second){
+		//		Iter->second->start();
+		//		cout << sum++ << "  cameraid:" << Iter->first << " started." << endl;
+		//		SDL_Delay(1000);
+		//	}
+		//}
 	}
-	delete result;
 	return 0;
 	//}
 }

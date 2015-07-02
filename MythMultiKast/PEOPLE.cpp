@@ -35,7 +35,7 @@ PEOPLE::PEOPLE(const char* ip, int port)
 	socketset = SDLNet_AllocSocketSet(2);
 	SDLNet_ResolveHost(&serverIP, ip, (Uint16)port);
 	if (!(sock = SDLNet_TCP_Open(&serverIP))){
-		printf("fuck,not open!\n");
+		//printf("fuck,not open!\n");
 	}
 	SDLNet_TCP_AddSocket(socketset, sock);
 	downbuffer = new char[4097];
