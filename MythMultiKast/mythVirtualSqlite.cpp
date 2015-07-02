@@ -25,7 +25,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "tinyxml.h"
 #include "mythStreamSQLresult.hh"
 #include "PEOPLE.hh"
-
+#include "IniFile.h"
 mythVirtualSqlite*  mythVirtualSqlite::mVirtualSqllite;
 mythVirtualSqlite* mythVirtualSqlite::GetInstance(){
 	return mVirtualSqllite;
@@ -89,9 +89,12 @@ done:
 }
 mythVirtualSqlite::mythVirtualSqlite()
 {
-	m_ip = "127.0.0.1";
+	//m_ip = "127.0.0.1";
 	this->mutex = SDL_CreateMutex();
 	this->mVirtualSqllite = this;
+	char tmpip[20] = { 0 };
+	read_profile_string("config", "ip", tmpip, 20, "127.0.0.1", MYTH_INFORMATIONINI_FILE);
+	m_ip = tmpip;
 	//result = (SQLresult*)malloc(sizeof(SQLresult));
 }
 
