@@ -19,7 +19,6 @@ Http://code.google.com/mythkast
 B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
-#include <iostream>
 #include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"

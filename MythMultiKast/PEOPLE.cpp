@@ -77,14 +77,14 @@ PEOPLE::~PEOPLE()
 int PEOPLE::socket_ReceiveData(char* recvBuf, int recvLength)
 {
 
-	SDLNet_CheckSockets(socketset, 100);
+	SDLNet_CheckSockets(socketset, 20);
+	
 	if (SDLNet_SocketReady(sock)){
-		return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
+			return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
 	}
 	else{
-		return 0;
+		return -1;
 	}
-
 }
 
 int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
