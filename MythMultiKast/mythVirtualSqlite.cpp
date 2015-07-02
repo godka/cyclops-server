@@ -195,7 +195,7 @@ mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 	ret += replace(str, " ", "%20");
 	ret += "</Content></XML>  HTTP/1.0 \r\n\r\n";
 
-	PEOPLE* socket = PEOPLE::CreateNew("127.0.0.1", 5830);
+	PEOPLE* socket = PEOPLE::CreateNew(m_ip.c_str(), 5830);
 	if (socket->socket_SendStr(ret.c_str()) == 0){
 		char tmp[65535] = { 0 };
 		int socketret = socket->socket_ReceiveData(tmp, 65535);
