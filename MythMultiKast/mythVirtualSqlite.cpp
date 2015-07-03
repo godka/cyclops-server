@@ -186,7 +186,7 @@ mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 	mythStreamSQLresult* retresult = NULL;
 	string ret = "GET /scripts/dbnet.dll?param=";
 	ret += "<XML><function>";
-	
+
 	myth_toupper((char*)str);
 	string header = GetHeader(str);
 	ret += "SQL_" + header;
@@ -205,7 +205,7 @@ mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 		socket->socket_CloseSocket();
 	}
 	else{
-		printf("error:Cannot connect to database!\n");
+		printf("error:Cannot connect to database! remoteip: %s\n",m_ip.c_str());
 	}
 	delete socket;
 	return retresult;

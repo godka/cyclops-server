@@ -26,6 +26,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 int main(int args,char** argv)
 {
 	SDL_Init(SDL_INIT_TIMER);
+	mythVirtualSqlite* sqlreader = mythVirtualSqlite::CreateNew(NULL);
 #ifdef AUTOSTART
 	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,true);
 #else

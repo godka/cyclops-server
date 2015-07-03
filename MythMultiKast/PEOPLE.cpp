@@ -77,14 +77,14 @@ PEOPLE::~PEOPLE()
 int PEOPLE::socket_ReceiveData(char* recvBuf, int recvLength)
 {
 
-	SDLNet_CheckSockets(socketset, 20);
+	//SDLNet_CheckSockets(socketset, 20);
 	
-	if (SDLNet_SocketReady(sock)){
+	//if (SDLNet_SocketReady(sock)){
 			return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
-	}
-	else{
-		return -1;
-	}
+	//}
+	//else{
+	//	return -1;
+	//}
 }
 
 int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
@@ -99,25 +99,28 @@ int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 	int length = 60;
 	while (1){
 		SDL_Delay(1);
-		len = socket_ReceiveData(recv, rlength);
-		if (len > 0){
-			for (i = 0; i < len - tmplength; i++){
-				if (socket_strcmp(&recv[i], lnstr, tmplength) == 0){
-					sscanf(&recv[i], "Content_Length: %06d", &contentlength);
-					if (contentlength > 0){
-						int tmpptr = 0;
-						int returnvalue = contentlength;
-						int tmplen = len - i - length > contentlength ? contentlength : len - i - length;
-						if (tmplen < 0)tmplen = 0;
-						SDL_memcpy(recvBuf, &recv[i + length], tmplen);
-						tmpptr += tmplen;
-						contentlength -= tmplen;
-						while (contentlength > 0){
-							len = socket_ReceiveData(recvBuf + tmpptr, contentlength);
-							tmpptr += len;
-							contentlength -= len;
+		SDLNet_CheckSockets(socketset, 100);
+		if (SDLNet_SocketReady(sock)){
+			len = socket_ReceiveData(recv, rlength);
+			if (len > 0){
+				for (i = 0; i < len - tmplength; i++){
+					if (socket_strcmp(&recv[i], lnstr, tmplength) == 0){
+						sscanf(&recv[i], "Content_Length: %06d", &contentlength);
+						if (contentlength > 0){
+							int tmpptr = 0;
+							int returnvalue = contentlength;
+							int tmplen = len - i - length > contentlength ? contentlength : len - i - length;
+							if (tmplen < 0)tmplen = 0;
+							SDL_memcpy(recvBuf, &recv[i + length], tmplen);
+							tmpptr += tmplen;
+							contentlength -= tmplen;
+							while (contentlength > 0){
+								len = socket_ReceiveData(recvBuf + tmpptr, contentlength);
+								tmpptr += len;
+								contentlength -= len;
+							}
+							return returnvalue;
 						}
-						return returnvalue;
 					}
 				}
 			}
