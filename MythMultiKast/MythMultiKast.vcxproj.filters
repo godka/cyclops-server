@@ -78,6 +78,9 @@
     <ClCompile Include="IniFile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mythUdp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -123,6 +126,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IniFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythUdp.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

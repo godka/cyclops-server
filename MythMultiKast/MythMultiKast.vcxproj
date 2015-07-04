@@ -95,6 +95,7 @@
     <ClCompile Include="mythStreamMapServer.cpp" />
     <ClCompile Include="mythStreamServer.cpp" />
     <ClCompile Include="mythStreamSQLresult.cpp" />
+    <ClCompile Include="mythUdp.cpp" />
     <ClCompile Include="mythVirtualDecoder.cpp" />
     <ClCompile Include="mythVirtualServer.cpp" />
     <ClCompile Include="mythVirtualSqlite.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="mythStreamMapServer.hh" />
     <ClInclude Include="mythStreamServer.hh" />
     <ClInclude Include="mythStreamSQLresult.hh" />
+    <ClInclude Include="mythUdp.hh" />
     <ClInclude Include="mythVirtualDecoder.hh" />
     <ClInclude Include="mythVirtualServer.hh" />
     <ClInclude Include="mythVirtualSqlite.hh" />

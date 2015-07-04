@@ -22,9 +22,15 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"
-
+#include "mythUdp.hh"
 int main(int args,char** argv)
 {
+	mythUdp* udp = new mythUdp(8087, 8080);
+	for (;;){
+
+		udp->SendData("helloworld", 5);
+		SDL_Delay(1000);
+	}
 	SDL_Init(SDL_INIT_TIMER);
 	mythVirtualSqlite* sqlreader = mythVirtualSqlite::CreateNew(NULL);
 #ifdef AUTOSTART
