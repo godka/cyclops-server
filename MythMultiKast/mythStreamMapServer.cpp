@@ -25,6 +25,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #ifndef WIN32
 #include <unistd.h>  
 #endif
+#include "mythUdp.hh"
 mythStreamMapServer::mythStreamMapServer(int port, bool start)
 :mythVirtualServer(port)//, mythVirtualSqlite()
 {
@@ -144,9 +145,13 @@ Uint32 mythStreamMapServer::TimerCallbackStatic(Uint32 interval, void *param)
 
 Uint32 mythStreamMapServer::TimerCallback(Uint32 interval)
 {
+	char tmp[256] = { 0 };
 	for (map<int, mythStreamServer*>::iterator Iter = servermap.begin(); Iter != servermap.end(); Iter++){
 		if (Iter->second){
 			int tmpnum = Iter->second->getClientNumber();
+			int speed = Iter->second->GetDecoder()->GetTimeCount();
+			sprintf(tmp, "status:%d:%d:%d\n", (int) Iter->first, tmpnum,speed);
+			mythUdp::GetInstance()->SendData(tmp);
 			if (tmpnum == 0){
 				servercount[tmpnum]++;
 				if (servercount[tmpnum] >= 5){
@@ -154,6 +159,8 @@ Uint32 mythStreamMapServer::TimerCallback(Uint32 interval)
 					//printf("delete server = %d\n", Iter->first);
 					delete servermap[Iter->first];
 					//Iter->first
+					sprintf(tmp, "clear:%d\n", (int) Iter->first);
+					mythUdp::GetInstance()->SendData(tmp);
 					servermap[Iter->first] = NULL;
 				}
 			}

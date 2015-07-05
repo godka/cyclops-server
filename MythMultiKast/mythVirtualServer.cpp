@@ -20,15 +20,13 @@ B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "mythVirtualServer.hh"
-mythVirtualServer::mythVirtualServer(int port)
-{
+mythVirtualServer::mythVirtualServer(int port){
 	m_stop = false;
 	m_port = port;
 	//this->StartServer();
 }
 
-void mythVirtualServer::HandleServer(void)
-{
+void mythVirtualServer::HandleServer(void){
     TCPsocket newsock;
     int which;
 
@@ -121,8 +119,7 @@ void mythVirtualServer::acceptthread(){
     cleanup(0);
 }
 
-void mythVirtualServer::HandleClient(int which)
-{
+void mythVirtualServer::HandleClient(int which){
 	int closesocket;
 	char data[4096] = {0};
 	//char tmpdata[512] = {0};
@@ -221,8 +218,7 @@ int mythVirtualServer::initalsocket(int port){
 mythVirtualServer* mythVirtualServer::CreateNew(int port){
 	return new mythVirtualServer(port);
 }
-void mythVirtualServer::cleanup(int exitcode)
-{
+void mythVirtualServer::cleanup(int exitcode){
 	int i;
     if ( servsock != NULL ) {
         SDLNet_TCP_Close(servsock);

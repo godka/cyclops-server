@@ -26,6 +26,9 @@ public:
 	int mainthread();
 	static mythStreamServer* CreateNew(int cameraid);
 	~mythStreamServer(void);
+	mythVirtualDecoder* GetDecoder(){
+		return decoder;
+	}
 	/*
 	void AddClient(PEOPLE* people);
 	void DelClient(PEOPLE* people);

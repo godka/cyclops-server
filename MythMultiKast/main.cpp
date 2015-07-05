@@ -25,13 +25,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "mythUdp.hh"
 int main(int args,char** argv)
 {
-	mythUdp* udp = new mythUdp(8087, 8080);
-	for (;;){
-
-		udp->SendData("helloworld", 5);
-		SDL_Delay(1000);
-	}
-	SDL_Init(SDL_INIT_TIMER);
+	mythUdp* udp = mythUdp::CreateNew(8088,8087);
 	mythVirtualSqlite* sqlreader = mythVirtualSqlite::CreateNew(NULL);
 #ifdef AUTOSTART
 	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,true);

@@ -12,7 +12,9 @@ public:
 	void start();
 	void stop();
 	~mythZiyaDecoder(void);
+	static Uint32 TimerCallbackStatic(Uint32 interval, void *param);
 protected:
+	Uint32 TimerCallback(Uint32 interval);
 	int decodethread();
 	static int decodethreadstatic(void* data);
 	mythZiyaDecoder(char* ip,int port,int CameraID);

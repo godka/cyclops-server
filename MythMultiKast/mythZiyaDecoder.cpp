@@ -22,8 +22,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "mythZiyaDecoder.hh"
 
 mythZiyaDecoder::mythZiyaDecoder(char* ip,int port,int CameraID)
-	:mythVirtualDecoder()
-{
+	:mythVirtualDecoder(){
 	flag = 0;
 	m_ip = ip;
 	m_port = port;
@@ -64,6 +63,7 @@ int mythZiyaDecoder::decodethread(){
 			//printf("ready to receive buff\n");
 			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
 			if (rc > 0) {
+				m_count += rc;
 				put((unsigned char*) buf, rc);
 			}else{
 				printf("start to reconnect\n");
@@ -84,9 +84,9 @@ int mythZiyaDecoder::decodethread(){
 	//printf("ziya decoder delete! : %d\n", m_cameraid);
 	return 0;
 }
-mythZiyaDecoder::~mythZiyaDecoder(void)
-{
+mythZiyaDecoder::~mythZiyaDecoder(void){
 	if (msocket){
 		delete msocket;
 	}
 }
+

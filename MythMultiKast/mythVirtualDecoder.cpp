@@ -23,19 +23,36 @@ MythKAst(asdic182@sina.com), in 2013 June.
 
 
 mythVirtualDecoder::mythVirtualDecoder(void)
-	:mythAvlist()
-{
+	:mythAvlist(){
 	flag = 0;
+	m_count = 0;
+	ori_count = 0;
+	ret_count = 0;
+	m_timeid = SDL_AddTimer(1000, TimerCallbackStatic, this);
 }
-void mythVirtualDecoder::start()
-{
-}
-void mythVirtualDecoder::stop()
-{
-}
+
+void mythVirtualDecoder::start(){}
+void mythVirtualDecoder::stop(){}
+
 mythVirtualDecoder* mythVirtualDecoder::CreateNew(void){
 	return new mythVirtualDecoder();
 }
-mythVirtualDecoder::~mythVirtualDecoder(void)
-{
+mythVirtualDecoder::~mythVirtualDecoder(void){
+}
+
+Uint32 mythVirtualDecoder::TimerCallbackStatic(Uint32 interval, void *param){
+	mythVirtualDecoder* decoder = (mythVirtualDecoder*) param;
+	return decoder->TimerCallback(interval);
+}
+
+Uint32 mythVirtualDecoder::TimerCallback(Uint32 interval){
+	int tmp = m_count - ori_count;
+	ret_count = tmp / interval;
+	ori_count = m_count;
+	//printf("%d k/s\n", ret_count);
+	return interval;
+}
+
+unsigned int mythVirtualDecoder::GetTimeCount(){
+	return ret_count;
 }
