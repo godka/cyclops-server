@@ -6,7 +6,7 @@
 //#include "OutputFile.hh"
 #include "H264VideoRTPSource.hh"
 #ifndef TOTALSIZE
-    #define TOTALSIZE  1024*1024;
+    #define TOTALSIZE  5*1024*1024;
 #endif
 
 ////////// H264VideoFileSink //////////

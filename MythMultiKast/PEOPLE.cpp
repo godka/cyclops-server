@@ -20,7 +20,7 @@ B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "PEOPLE.hh"
-
+#include "mythAvlist.hh"
 
 PEOPLE::PEOPLE()
 {
@@ -28,8 +28,10 @@ PEOPLE::PEOPLE()
 }
 
 PEOPLE::PEOPLE(const char* ip, int port)
+	:mythAvlist(2)
 {
 	IPaddress serverIP = {0};
+	isrunning = false;
 	SDL_Init(NULL);
 	SDLNet_Init();
 	socketset = SDLNet_AllocSocketSet(2);
@@ -42,6 +44,24 @@ PEOPLE::PEOPLE(const char* ip, int port)
 	downlength = 0;
 }
 
+int PEOPLE::SendThreadStatic(void* data){
+	if (data){
+		PEOPLE* people = (PEOPLE*) data;
+		return people->SendThread();
+	}
+	return 0;
+}
+
+int PEOPLE::SendThread(){
+	while (isrunning == true){
+		SDL_Delay(1);
+		PacketQueue* pkt = get();
+		if (pkt){
+			SDLNet_TCP_Send(sock, pkt->h264Packet, pkt->h264PacketLength);
+		}
+	}
+	return 0;
+}
 int PEOPLE::socket_SendStr(const char* data, int length){
 #ifdef MYTH_CONFIG_SENDMESSAGE_SLOW
 	int tlen = length;
@@ -56,6 +76,12 @@ int PEOPLE::socket_SendStr(const char* data, int length){
 	if (length == -2){
 		length = strlen(data);
 	}
+	if (isrunning = false){
+		SDL_CreateThread(SendThreadStatic, "2", this);
+		isrunning = true;
+	}
+	put((unsigned char*)data, (unsigned int)length);
+	/*
 	if (sock){
 		if (SDLNet_TCP_Send(this->sock, data, length) < length){
 			return 1;
@@ -66,6 +92,8 @@ int PEOPLE::socket_SendStr(const char* data, int length){
 	}
 	else
 		return 1;
+		*/
+	return 0;
 #endif
 //	return 0;
 }

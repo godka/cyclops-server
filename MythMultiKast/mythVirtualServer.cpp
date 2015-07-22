@@ -173,7 +173,8 @@ int mythVirtualServer::initalsocket(int port){
         /* Initialize SDL */
     if ( SDL_Init(0) < 0 ) {
 		fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
-        exit(1);
+        return 1;
+//        exit(1);
     }
 
     /* Initialize the network */
@@ -181,7 +182,8 @@ int mythVirtualServer::initalsocket(int port){
         fprintf(stderr, "Couldn't initialize net: %s\n",
                         SDLNet_GetError());
         SDL_Quit();
-        exit(1);
+        return 1;
+ //       exit(1);
     }
 //#pragma omp parallel for
     /* Initialize the channels */
@@ -233,7 +235,8 @@ void mythVirtualServer::cleanup(int exitcode){
 	}
     SDLNet_Quit();
     SDL_Quit();
-    exit(exitcode);
+    return;
+  //  exit(exitcode);
 }
 void mythVirtualServer::ServerDecodeCallBack(PEOPLE *people,char* data,int datalength){
 	

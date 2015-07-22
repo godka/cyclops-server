@@ -123,9 +123,11 @@ bool mythStreamServer::FindClient(vector <mythBaseClient*>::iterator beg,
 		return false;
 }
 int mythStreamServer::AppendClient(mythBaseClient* client){
+	SDL_LockMutex(streamservermutex);
 	if (!FindClient(baselist.begin(), baselist.end(), client)){
 		baselist.push_back(client);
 	}
+	SDL_UnlockMutex(streamservermutex);
 	return 0;
 }
 int mythStreamServer::mainthread()
@@ -194,6 +196,7 @@ int mythStreamServer::getClientNumber()
 
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
+	SDL_LockMutex(streamservermutex);
 	for (vector<mythBaseClient*>::iterator iter = baselist.begin(); iter != baselist.end();iter++)
 	{
 		if (*iter == client){
@@ -201,5 +204,6 @@ int mythStreamServer::DropClient(mythBaseClient* client)
 			break;
 		}
 	}
+	SDL_UnlockMutex(streamservermutex);
 	return 0;
 }

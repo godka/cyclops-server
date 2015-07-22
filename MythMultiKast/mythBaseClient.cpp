@@ -71,7 +71,7 @@ int mythBaseClient::DataCallBack(void* data, int len)
 	char tempbuf[256] = { 0 };
 
 	if (isfirst == true){
-		mythSendMessage(firstrequest);
+		mythSendMessage((void*)firstrequest);
 		isfirst = false;
 	}
 #if 1
@@ -98,7 +98,7 @@ int mythBaseClient::DataCallBack(void* data, int len)
 	mythSendMessage(tempbuf);
 	iFrameCount++;
 	mythSendMessage(data, len);
-	mythSendMessage(" \n\n--myboundary\n");
+	mythSendMessage((void*)" \n\n--myboundary\n");
 	//mypacketlength = tmppacketlength;
 	//SDL_UnlockMutex(mymutex);
 	return 0;

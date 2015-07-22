@@ -20,7 +20,7 @@ typedef struct {
 class mythVirtualServer
 {
 public:
-	string mythVirtualServer::GetLocalAddress();
+	string GetLocalAddress();
 	static int acceptthreadstatic(void* data);
 	void acceptthread();
 	static mythVirtualServer* CreateNew(int port);
