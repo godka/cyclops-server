@@ -86,12 +86,14 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="H264or5VideoStreamSink.cpp" />
     <ClCompile Include="H264VideoStreamSink.cpp" />
     <ClCompile Include="IniFile.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mythAvlist.cpp" />
     <ClCompile Include="mythBaseClient.cpp" />
     <ClCompile Include="mythLive555Decoder.cpp" />
+    <ClCompile Include="mythRTSP.cpp" />
     <ClCompile Include="mythStreamMapServer.cpp" />
     <ClCompile Include="mythStreamServer.cpp" />
     <ClCompile Include="mythStreamSQLresult.cpp" />
@@ -100,8 +102,9 @@
     <ClCompile Include="mythVirtualServer.cpp" />
     <ClCompile Include="mythVirtualSqlite.cpp" />
     <ClCompile Include="mythZiyaDecoder.cpp" />
+    <ClCompile Include="OurRTSPClient.cpp" />
     <ClCompile Include="PEOPLE.cpp" />
-    <ClCompile Include="rtspcore.cpp" />
+    <ClCompile Include="StreamClientState.cpp" />
     <ClCompile Include="StreamSink.cpp" />
     <ClCompile Include="tinystr.cpp" />
     <ClCompile Include="tinyxml.cpp" />
@@ -109,11 +112,13 @@
     <ClCompile Include="tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="H264or5VideoStreamSink.hh" />
     <ClInclude Include="H264VideoStreamSink.hh" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="mythAvlist.hh" />
     <ClInclude Include="mythBaseClient.hh" />
     <ClInclude Include="MythConfig.hh" />
+    <ClInclude Include="mythRTSP.hh" />
     <ClInclude Include="mythStreamMapServer.hh" />
     <ClInclude Include="mythStreamServer.hh" />
     <ClInclude Include="mythStreamSQLresult.hh" />
@@ -122,11 +127,14 @@
     <ClInclude Include="mythVirtualServer.hh" />
     <ClInclude Include="mythVirtualSqlite.hh" />
     <ClInclude Include="mythZiyaDecoder.hh" />
+    <ClInclude Include="OurRTSPClient.hh" />
     <ClInclude Include="PEOPLE.hh" />
+    <ClInclude Include="StreamClientState.hh" />
     <ClInclude Include="tinystr.h" />
     <ClInclude Include="tinyxml.h" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="D:\docs\Visual Studio 2013\Projects\ConsoleApplication3\ConsoleApplication3\live555-multikast.lib" />
     <Library Include="SDL2.lib" />
     <Library Include="SDL2main.lib" />
     <Library Include="SDL2_net.lib" />

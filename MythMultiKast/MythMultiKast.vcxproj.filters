@@ -48,9 +48,6 @@
     <ClCompile Include="PEOPLE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rtspcore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StreamSink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -79,6 +76,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mythUdp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="H264or5VideoStreamSink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamClientState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mythRTSP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OurRTSPClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,10 +140,23 @@
     <ClInclude Include="mythUdp.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="H264or5VideoStreamSink.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamClientState.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythRTSP.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OurRTSPClient.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2.lib" />
     <Library Include="SDL2_net.lib" />
     <Library Include="SDL2main.lib" />
+    <Library Include="D:\docs\Visual Studio 2013\Projects\ConsoleApplication3\ConsoleApplication3\live555-multikast.lib" />
   </ItemGroup>
 </Project>

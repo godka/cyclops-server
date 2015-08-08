@@ -1,7 +1,7 @@
 #pragma once
 #include "MythConfig.hh"
 #include "mythVirtualDecoder.hh"
-#include "myrtspClient.h"
+#include "mythRTSP.hh"
 #include <string>
 using namespace std;
 
@@ -19,10 +19,10 @@ public:
 	void stop();
 protected:
 	mythLive555Decoder(char* rtsplink,char* username,char* password);
-	UsageEnvironment *env;
 	string m_rtsplink,m_username,m_password;
-	RTSPClient *rtspClient;
 	SDL_Thread* startthread;
+	mythRTSP* rtsp;
+	RTSPClient* client;
 	char flag;
 };
 

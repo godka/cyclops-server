@@ -46,13 +46,12 @@ void mythLive555Decoder::callbackdata(unsigned char* data,unsigned int length)
 	put(data,length);
 }
 int mythLive555Decoder::decodethread(){
-	UsageEnvironment *env = initalAllcommons();
+	rtsp = mythRTSP::CreateNew();
 	//RTSPClient * rtspClient =  openURL(*env, "rtsp://192.168.245.71/h264/ch1/main/av_stream","admin","12345");
-	rtspClient = openURL(*env,
-		this->m_rtsplink.c_str(),this->m_username.c_str(),this->m_password.c_str(),
-		mythLive555Decoder::callbackdatastatic,(void*)this);
-	beginDescrible(rtspClient);
-	startLoop(env,&flag);
+	client = rtsp->openURL(this->m_rtsplink.c_str(), this->m_username.c_str(), this->m_password.c_str(), mythLive555Decoder::callbackdatastatic, (void*)this);
+	if (client){
+		rtsp->Start(client);
+	}
 	return 0;
 }
 int mythLive555Decoder::decodethreadstatic(void* data){
@@ -60,10 +59,12 @@ int mythLive555Decoder::decodethreadstatic(void* data){
 	return live555decoder->decodethread();
 }
 void mythLive555Decoder::stop(){
-	flag = 1;
+	if (rtsp && client)
+		rtsp->Stop(client);
 	if (startthread)
 		SDL_WaitThread(startthread, NULL); 
 	startthread = NULL;
+	delete rtsp;
 	//shutdownStream(this->rtspClient);
 	//delete rtspClient;
 	//rtspClient = NULL;
