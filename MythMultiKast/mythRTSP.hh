@@ -6,6 +6,11 @@
 #include "OurRTSPClient.hh"
 #ifdef _WIN32
 	#pragma comment(lib,"ws2_32")
+	#ifdef _DEBUG
+		#pragma comment(lib,"live555-multikast-debug.lib")
+	#else
+		#pragma comment(lib,"live555-multikast-release.lib")
+	#endif
 #endif
 class mythRTSP
 {

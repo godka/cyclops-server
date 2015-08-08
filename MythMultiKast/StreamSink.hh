@@ -2,7 +2,6 @@
 #ifndef _MEDIA_SINK_HH
 #include "MediaSink.hh"
 #endif
-#include "mythAvlist.hh"
 class StreamSink : public MediaSink {
 public:
 	typedef void (live555responseHandler)(void *myth, unsigned char* data, unsigned int length);

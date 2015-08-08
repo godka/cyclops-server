@@ -83,9 +83,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="H264or5VideoStreamSink.cpp" />
     <ClCompile Include="H264VideoStreamSink.cpp" />
     <ClCompile Include="IniFile.c" />
@@ -130,11 +127,11 @@
     <ClInclude Include="OurRTSPClient.hh" />
     <ClInclude Include="PEOPLE.hh" />
     <ClInclude Include="StreamClientState.hh" />
+    <ClInclude Include="StreamSink.hh" />
     <ClInclude Include="tinystr.h" />
     <ClInclude Include="tinyxml.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="D:\docs\Visual Studio 2013\Projects\ConsoleApplication3\ConsoleApplication3\live555-multikast.lib" />
     <Library Include="SDL2.lib" />
     <Library Include="SDL2main.lib" />
     <Library Include="SDL2_net.lib" />

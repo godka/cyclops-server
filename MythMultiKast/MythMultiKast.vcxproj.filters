@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -152,11 +149,13 @@
     <ClInclude Include="OurRTSPClient.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StreamSink.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2.lib" />
     <Library Include="SDL2_net.lib" />
     <Library Include="SDL2main.lib" />
-    <Library Include="D:\docs\Visual Studio 2013\Projects\ConsoleApplication3\ConsoleApplication3\live555-multikast.lib" />
   </ItemGroup>
 </Project>
