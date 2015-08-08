@@ -78,8 +78,12 @@ void mythVirtualServer::HandleServer(void){
 }
 int mythVirtualServer::StartServer(){
 	this->initalsocket(m_port);
-	acceptthreadHandle = SDL_CreateThread(acceptthreadstatic,"accept",this);
+#ifdef _WIN32
+	acceptthreadHandle = SDL_CreateThread(acceptthreadstatic, "accept", this);
 	return 0;
+#else
+	return acceptthreadstatic(this);
+#endif // _WIN32
 }
 
 int mythVirtualServer::StopServer(){

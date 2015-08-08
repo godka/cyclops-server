@@ -49,7 +49,7 @@ int mythLive555Decoder::decodethread(){
 	UsageEnvironment *env = initalAllcommons();
 	//RTSPClient * rtspClient =  openURL(*env, "rtsp://192.168.245.71/h264/ch1/main/av_stream","admin","12345");
 	rtspClient = openURL(*env,
-		this->m_rtsplink,(const char*)this->m_username,(const char*)this->m_password,
+		this->m_rtsplink.c_str(),this->m_username.c_str(),this->m_password.c_str(),
 		mythLive555Decoder::callbackdatastatic,(void*)this);
 	beginDescrible(rtspClient);
 	startLoop(env,&flag);

@@ -2,6 +2,9 @@
 #include "MythConfig.hh"
 #include "mythVirtualDecoder.hh"
 #include "myrtspClient.h"
+#include <string>
+using namespace std;
+
 class mythLive555Decoder :
 	public mythVirtualDecoder
 {
@@ -17,7 +20,7 @@ public:
 protected:
 	mythLive555Decoder(char* rtsplink,char* username,char* password);
 	UsageEnvironment *env;
-	char *m_rtsplink,*m_username,*m_password;
+	string m_rtsplink,m_username,m_password;
 	RTSPClient *rtspClient;
 	SDL_Thread* startthread;
 	char flag;

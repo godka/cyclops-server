@@ -23,5 +23,7 @@ protected:
 
 	SDL_TimerID timerid;
 	mythStreamMapServer(int port, bool autostart = false);
+private:
+	SDL_mutex* mapmutex;
 };
 

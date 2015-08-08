@@ -20,15 +20,12 @@ B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "PEOPLE.hh"
-#include "mythAvlist.hh"
-
 PEOPLE::PEOPLE()
 {
 	maxlength = 512;
 }
 
 PEOPLE::PEOPLE(const char* ip, int port)
-	:mythAvlist(2)
 {
 	IPaddress serverIP = {0};
 	isrunning = false;
@@ -44,44 +41,10 @@ PEOPLE::PEOPLE(const char* ip, int port)
 	downlength = 0;
 }
 
-int PEOPLE::SendThreadStatic(void* data){
-	if (data){
-		PEOPLE* people = (PEOPLE*) data;
-		return people->SendThread();
-	}
-	return 0;
-}
-
-int PEOPLE::SendThread(){
-	while (isrunning == true){
-		SDL_Delay(1);
-		PacketQueue* pkt = get();
-		if (pkt){
-			SDLNet_TCP_Send(sock, pkt->h264Packet, pkt->h264PacketLength);
-		}
-	}
-	return 0;
-}
 int PEOPLE::socket_SendStr(const char* data, int length){
-#ifdef MYTH_CONFIG_SENDMESSAGE_SLOW
-	int tlen = length;
-	if (sock){
-		while (tlen > 0){
-			int len = SDLNet_TCP_Send(this->sock, data, maxlength);
-			tlen -= len;
-		}
-	}
-	return 0;
-#else
 	if (length == -2){
 		length = strlen(data);
 	}
-	if (isrunning = false){
-		SDL_CreateThread(SendThreadStatic, "2", this);
-		isrunning = true;
-	}
-	put((unsigned char*)data, (unsigned int)length);
-	/*
 	if (sock){
 		if (SDLNet_TCP_Send(this->sock, data, length) < length){
 			return 1;
@@ -92,9 +55,8 @@ int PEOPLE::socket_SendStr(const char* data, int length){
 	}
 	else
 		return 1;
-		*/
+		
 	return 0;
-#endif
 //	return 0;
 }
 
@@ -102,17 +64,17 @@ PEOPLE::~PEOPLE()
 {
 }
 
-int PEOPLE::socket_ReceiveData(char* recvBuf, int recvLength)
+int PEOPLE::socket_ReceiveData(char* recvBuf, int recvLength,int timeout)
 {
 
-	//SDLNet_CheckSockets(socketset, 20);
+	SDLNet_CheckSockets(socketset, timeout);
 	
-	//if (SDLNet_SocketReady(sock)){
+	if (SDLNet_SocketReady(sock)){
 			return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
-	//}
-	//else{
-	//	return -1;
-	//}
+	}
+	else{
+		return -1;
+	}
 }
 
 int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
@@ -127,28 +89,25 @@ int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 	int length = 60;
 	while (1){
 		SDL_Delay(1);
-		SDLNet_CheckSockets(socketset, 100);
-		if (SDLNet_SocketReady(sock)){
-			len = socket_ReceiveData(recv, rlength);
-			if (len > 0){
-				for (i = 0; i < len - tmplength; i++){
-					if (socket_strcmp(&recv[i], lnstr, tmplength) == 0){
-						sscanf(&recv[i], "Content_Length: %06d", &contentlength);
-						if (contentlength > 0){
-							int tmpptr = 0;
-							int returnvalue = contentlength;
-							int tmplen = len - i - length > contentlength ? contentlength : len - i - length;
-							if (tmplen < 0)tmplen = 0;
-							SDL_memcpy(recvBuf, &recv[i + length], tmplen);
-							tmpptr += tmplen;
-							contentlength -= tmplen;
-							while (contentlength > 0){
-								len = socket_ReceiveData(recvBuf + tmpptr, contentlength);
-								tmpptr += len;
-								contentlength -= len;
-							}
-							return returnvalue;
+		len = socket_ReceiveData(recv, rlength, 100);
+		if (len > 0){
+			for (i = 0; i < len - tmplength; i++){
+				if (socket_strcmp(&recv[i], lnstr, tmplength) == 0){
+					sscanf(&recv[i], "Content_Length: %06d", &contentlength);
+					if (contentlength > 0){
+						int tmpptr = 0;
+						int returnvalue = contentlength;
+						int tmplen = len - i - length > contentlength ? contentlength : len - i - length;
+						if (tmplen < 0)tmplen = 0;
+						SDL_memcpy(recvBuf, &recv[i + length], tmplen);
+						tmpptr += tmplen;
+						contentlength -= tmplen;
+						while (contentlength > 0){
+							len = socket_ReceiveData(recvBuf + tmpptr, contentlength,100);
+							tmpptr += len;
+							contentlength -= len;
 						}
+						return returnvalue;
 					}
 				}
 			}

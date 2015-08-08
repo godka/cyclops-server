@@ -54,5 +54,5 @@ Uint32 mythVirtualDecoder::TimerCallback(Uint32 interval){
 }
 
 unsigned int mythVirtualDecoder::GetTimeCount(){
-	return ret_count;
+	return 0;
 }

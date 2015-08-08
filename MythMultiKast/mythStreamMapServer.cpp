@@ -32,6 +32,7 @@ mythStreamMapServer::mythStreamMapServer(int port, bool start)
 	if (start){
 		startAll();
 	}
+	mapmutex = SDL_CreateMutex();
 	this->timerid = SDL_AddTimer(1000, TimerCallbackStatic, this);
 }
 int mythStreamMapServer::startAll(void){
@@ -88,21 +89,25 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 		Iter = servermap.find(cameraid);
 		if(Iter == servermap.end() || Iter->second == NULL){
 		//if (servermap[cameraid] != NULL){
+			SDL_LockMutex(mapmutex);
 			server = mythStreamServer::CreateNew(cameraid);
 			servermap[cameraid] = server;
+			SDL_UnlockMutex(mapmutex);
 			server->start();
-		}else{
+		}
+		else{
+			SDL_LockMutex(mapmutex);
 			server = Iter->second;
+			SDL_UnlockMutex(mapmutex);
 		}
 		mythBaseClient* client = NULL;
-		if(people->addtionaldata){
-			client = (mythBaseClient*)people->addtionaldata;
-			//client->changeStreamServer(server);
-		}else{
+		if(!people->addtionaldata){
+			SDL_LockMutex(mapmutex);
 			client = mythBaseClient::CreateNew(people);
 			people->data = server;
 			people->addtionaldata = client;
 			server->AppendClient(client);
+			SDL_UnlockMutex(mapmutex);
 		}
 		//if(client)
 		//	client->start();
@@ -126,13 +131,15 @@ void mythStreamMapServer::showAllClients(){
 
 void mythStreamMapServer::ServerCloseCallBack( PEOPLE* people )
 {
-	if(people->addtionaldata){
+	if (people->addtionaldata){
+		SDL_LockMutex(mapmutex);
 		mythBaseClient* client = (mythBaseClient*)people->addtionaldata;
 		mythStreamServer* server = (mythStreamServer*) people->data;
 		//people->sock = NULL;
 		server->DropClient(client);
 		delete client;
 		client = NULL;
+		SDL_UnlockMutex(mapmutex);
 	}
 	return;
 }
@@ -153,15 +160,18 @@ Uint32 mythStreamMapServer::TimerCallback(Uint32 interval)
 			sprintf(tmp, "status:%d:%d:%d\n", (int) Iter->first, tmpnum,speed);
 			mythUdp::GetInstance()->SendData(tmp);
 			if (tmpnum == 0){
+			//lock
 				servercount[tmpnum]++;
 				if (servercount[tmpnum] >= 5){
+					SDL_LockMutex(mapmutex);
 					Iter->second->stop();
 					//printf("delete server = %d\n", Iter->first);
 					delete servermap[Iter->first];
+					servermap[Iter->first] = NULL;
+					SDL_UnlockMutex(mapmutex);
 					//Iter->first
 					sprintf(tmp, "clear:%d\n", (int) Iter->first);
 					mythUdp::GetInstance()->SendData(tmp);
-					servermap[Iter->first] = NULL;
 				}
 			}
 			else{

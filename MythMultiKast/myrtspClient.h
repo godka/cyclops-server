@@ -5,6 +5,11 @@
 #include "OurRTSPClient.hh"
 #ifdef _WIN32
 	#pragma comment(lib,"ws2_32")
+	#ifdef _DEBUG
+		#pragma comment(lib,"live555-debug.lib")
+	#else
+		#pragma comment(lib,"live555-release.lib")
+	#endif
 #endif
 // Forward function definitions:
 void continueAfterDESCRIBE(RTSPClient* rtspClient, int resultCode, char* resultString);
