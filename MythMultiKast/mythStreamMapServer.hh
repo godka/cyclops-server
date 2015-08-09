@@ -16,12 +16,16 @@ public:
 	void showAllClients();
 	int startAll(void);
 
+#ifdef MYTH_STREAM_CLOSE
 	static Uint32 TimerCallbackStatic(Uint32 interval, void *param);
 	Uint32 TimerCallback(Uint32 interval);
+#endif
 	~mythStreamMapServer(void);
 protected:
 
+#ifdef MYTH_STREAM_CLOSE
 	SDL_TimerID timerid;
+#endif
 	mythStreamMapServer(int port, bool autostart = false);
 private:
 	SDL_mutex* mapmutex;

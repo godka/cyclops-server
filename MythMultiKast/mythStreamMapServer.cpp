@@ -25,7 +25,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #ifndef WIN32
 #include <unistd.h>  
 #endif
-#include "mythUdp.hh"
+//#include "mythUdp.hh"
 mythStreamMapServer::mythStreamMapServer(int port, bool start)
 :mythVirtualServer(port)//, mythVirtualSqlite()
 {
@@ -33,13 +33,17 @@ mythStreamMapServer::mythStreamMapServer(int port, bool start)
 		startAll();
 	}
 	mapmutex = SDL_CreateMutex();
+#ifdef MYTH_STREAM_CLOSE
 	this->timerid = SDL_AddTimer(1000, TimerCallbackStatic, this);
+#endif
 }
 int mythStreamMapServer::startAll(void){
 	//if (start){
 		//this->open("myth.db");
 
+#ifdef MYTH_STREAM_CLOSE
 	SDL_RemoveTimer(timerid);
+#endif
 	int sum = 0;
 	char sqlstr[256] = "select c.cameraid from videoserver as a,vstype as b,camera as c where a.vstypeid = b.vstypeid and a.videoserverid = c.videoserverid";
 	mythStreamSQLresult* result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqlstr);
@@ -71,7 +75,9 @@ int mythStreamMapServer::startAll(void){
 }
 mythStreamMapServer::~mythStreamMapServer(void)
 {
+#ifdef MYTH_STREAM_CLOSE
 	SDL_RemoveTimer(timerid);
+#endif
 }
 
 mythStreamMapServer* mythStreamMapServer::CreateNew(int port,bool autostart)
@@ -144,6 +150,7 @@ void mythStreamMapServer::ServerCloseCallBack( PEOPLE* people )
 	return;
 }
 
+#ifdef MYTH_STREAM_CLOSE
 Uint32 mythStreamMapServer::TimerCallbackStatic(Uint32 interval, void *param)
 {
 	mythStreamMapServer* mapserver = (mythStreamMapServer*) param;
@@ -166,7 +173,7 @@ Uint32 mythStreamMapServer::TimerCallback(Uint32 interval)
 					SDL_LockMutex(mapmutex);
 					Iter->second->stop();
 					//printf("delete server = %d\n", Iter->first);
-					delete servermap[Iter->first];
+					delete Iter->second;
 					servermap[Iter->first] = NULL;
 					SDL_UnlockMutex(mapmutex);
 					//Iter->first
@@ -181,3 +188,4 @@ Uint32 mythStreamMapServer::TimerCallback(Uint32 interval)
 	}
 	return interval;
 }
+#endif

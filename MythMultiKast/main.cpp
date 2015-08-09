@@ -22,7 +22,6 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"
-#include "mythUdp.hh"
 int main(int args,char** argv)
 {
 	mythUdp* udp = mythUdp::CreateNew(8088,8087);
