@@ -38,22 +38,33 @@ mythBaseClient::mythBaseClient(mythStreamServer* server , PEOPLE* people)
 	mymutex = SDL_CreateMutex();
 }
 */
-mythBaseClient::mythBaseClient(PEOPLE* people)
+mythBaseClient::mythBaseClient(PEOPLE* people,bool usethread)
 {
 	//mserver = server;
 	//mypacketdata = NULL;
 	//tmppacketdata = NULL;
 	//mypacketlength = 0;
 	//tmppacketlength = 0;
+	musethread = usethread;
 	mpeople = people;
 	mainthreadhandle = NULL;
 	isrunning = 0;
 	isfirst = true;
 	iFrameCount = 4096;
 	mymutex = SDL_CreateMutex();
+	misrunning = true;
+	if (musethread)
+		mthread = SDL_CreateThread(SendThreadStatic, "sendthread", this);
 }
 mythBaseClient::~mythBaseClient(void)
 {
+	SDL_DestroyMutex(mymutex);
+	if (musethread){
+		misrunning = false;
+		if (mthread)
+			SDL_WaitThread(mthread, 0);
+		mthread = NULL;
+	}
 }
 
 //int mythBaseClient::mainthreadstatic( void* data )
@@ -184,11 +195,13 @@ mythBaseClient* mythBaseClient::CreateNew(mythStreamServer* server , PEOPLE* peo
 }
 */
 
-mythBaseClient* mythBaseClient::CreateNew(PEOPLE* people)
+mythBaseClient* mythBaseClient::CreateNew(PEOPLE* people, bool usethread /*= false*/)
 {
-	return new mythBaseClient(people);
+	return new mythBaseClient(people,usethread);
+
 }
-int mythBaseClient::generate( char* data,int length )
+
+int mythBaseClient::generate(char* data, int length)
 {
 
 	return 0;
@@ -196,20 +209,43 @@ int mythBaseClient::generate( char* data,int length )
 
 int mythBaseClient::mythSendMessage( void* data,int length )
 {
-	int tmplength = 0;
-	if(length == -1)
-		length = strlen((char*)data);
-		//if(SDLNet_SocketReady(mpeople->sock))
-	if (mpeople){
-		tmplength = mpeople->socket_SendStr((char*) data, length);
-		if (tmplength < length){
-			//printf("error occoured! %d:%d\n",tmplength,length);
-			//stop();				//may be occoured some errors.
-		}
-
+	if (length == -1)
+		length = strlen((char*) data);
+	if (musethread){
+		put((unsigned char*) data, (unsigned int) length);				//use avlist
+		return 0;
 	}
-	return tmplength;
+	else{
+		int tmplength = 0;
+		//if(SDLNet_SocketReady(mpeople->sock))
+		if (mpeople){
+			tmplength = mpeople->socket_SendStr((char*) data, length);
+			if (tmplength < length){
+				//printf("error occoured! %d:%d\n",tmplength,length);
+				//stop();				//may be occoured some errors.
+			}
+
+		}
+		return tmplength;
+	}
 }
+
+int mythBaseClient::SendThread()
+{
+	while (misrunning){
+		SDL_PollEvent(NULL);
+		PacketQueue* pkt = get();
+		if (pkt){
+			if (mpeople)
+				mpeople->socket_SendStr((char*) pkt->h264Packet, pkt->h264PacketLength);
+		}
+		else{
+			SDL_Delay(1);
+		}
+	}
+	return 0;
+}
+
 /*
 int mythBaseClient::SetTop( char* data,int length )
 {

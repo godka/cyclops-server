@@ -20,7 +20,6 @@ B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "mythLive555Decoder.hh"
-//#include "curl/curl.h"
 
 mythLive555Decoder::mythLive555Decoder(char* rtsplink,char* username,char* password)
 	:mythVirtualDecoder()
@@ -47,10 +46,11 @@ void mythLive555Decoder::callbackdata(unsigned char* data,unsigned int length)
 }
 int mythLive555Decoder::decodethread(){
 	rtsp = mythRTSP::CreateNew();
-	//RTSPClient * rtspClient =  openURL(*env, "rtsp://192.168.245.71/h264/ch1/main/av_stream","admin","12345");
-	client = rtsp->openURL(this->m_rtsplink.c_str(), this->m_username.c_str(), this->m_password.c_str(), mythLive555Decoder::callbackdatastatic, (void*)this);
-	if (client){
-		rtsp->Start(client);
+	if (rtsp){
+		client = rtsp->openURL(this->m_rtsplink.c_str(), this->m_username.c_str(), this->m_password.c_str(), mythLive555Decoder::callbackdatastatic, (void*)this);
+		if (client){
+			rtsp->Start(client);
+		}
 	}
 	return 0;
 }
@@ -65,11 +65,7 @@ void mythLive555Decoder::stop(){
 		SDL_WaitThread(startthread, NULL); 
 	startthread = NULL;
 	delete rtsp;
-	//shutdownStream(this->rtspClient);
-	//delete rtspClient;
-	//rtspClient = NULL;
 }
 mythLive555Decoder::~mythLive555Decoder(void)
 {
-	//shutdownStream(rtspClient);
 }

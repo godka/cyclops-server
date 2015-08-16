@@ -96,20 +96,20 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 		if(Iter == servermap.end() || Iter->second == NULL){
 		//if (servermap[cameraid] != NULL){
 			SDL_LockMutex(mapmutex);
-			server = mythStreamServer::CreateNew(cameraid);
+			server = mythStreamServer::CreateNew(cameraid);			//add a new server into map list,not found ,so create 
 			servermap[cameraid] = server;
 			SDL_UnlockMutex(mapmutex);
 			server->start();
 		}
 		else{
 			SDL_LockMutex(mapmutex);
-			server = Iter->second;
+			server = Iter->second;									//find an existing server from map list,then add client into server list
 			SDL_UnlockMutex(mapmutex);
 		}
 		mythBaseClient* client = NULL;
 		if(!people->addtionaldata){
 			SDL_LockMutex(mapmutex);
-			client = mythBaseClient::CreateNew(people);
+			client = mythBaseClient::CreateNew(people,true);
 			people->data = server;
 			people->addtionaldata = client;
 			server->AppendClient(client);
@@ -149,7 +149,7 @@ void mythStreamMapServer::ServerCloseCallBack( PEOPLE* people )
 	}
 	return;
 }
-
+//this will make a fatal error if using stream close,unknow bug
 #ifdef MYTH_STREAM_CLOSE
 Uint32 mythStreamMapServer::TimerCallbackStatic(Uint32 interval, void *param)
 {
