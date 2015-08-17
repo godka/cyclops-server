@@ -1,6 +1,6 @@
 CXX=g++
 CC=gcc
-CPPFLAGS=-I. -I/usr/include/SDL2 -I/usr/local/include/groupsock -I/usr/local/include/UsageEnvironment -I/usr/local/include/BasicUsageEnvironment -I/usr/local/include/liveMedia -std=c++0x -fpermissive -Wdeprecated-declarations -w -O3
+CPPFLAGS=-I. -I/usr/include/SDL2 -I/usr/local/include/groupsock -I/usr/local/include/UsageEnvironment -I/usr/local/include/BasicUsageEnvironment -I/usr/local/include/liveMedia -fpermissive -Wdeprecated-declarations -w -O3
 CPPSOURCES=$(wildcard *.cpp)
 CPPOBJECTS=$(CPPSOURCES:.cpp=.o)
 CSOURCES=$(wildcard *.c)
@@ -22,3 +22,5 @@ $(TARGET): $(CPPOBJECTS) $(COBJECTS)
 
 clean:
 	rm $(CPPOBJECTS) $(COBJECTS) .dcpp .dc
+install:
+	cp $(TARGET) /usr/local/bin
