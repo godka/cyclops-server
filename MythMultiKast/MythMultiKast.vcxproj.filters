@@ -13,73 +13,55 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\live555">
-      <UniqueIdentifier>{6811bf3b-6bd8-4435-b3c9-f12dd9414fd7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\tinyxml">
       <UniqueIdentifier>{5016caed-85de-405c-831f-770b200c243b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\ini">
       <UniqueIdentifier>{820ba1b3-197b-4716-b7d7-546f6c7a9e2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\kernel">
+      <UniqueIdentifier>{995419e5-55df-4815-a6d0-42556b6cf0a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\server">
+      <UniqueIdentifier>{0e4b6c88-cccc-4cdb-a9f0-bb0180e2c498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decoder">
+      <UniqueIdentifier>{7e858d2e-114f-41f1-a746-4268094ce88c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decoder\live555">
+      <UniqueIdentifier>{6811bf3b-6bd8-4435-b3c9-f12dd9414fd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\decoder\stream">
+      <UniqueIdentifier>{c343a895-7716-4252-b3db-da056478ab6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\client">
+      <UniqueIdentifier>{5e963fbe-bdc6-47af-b9e6-826f633471df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sql">
+      <UniqueIdentifier>{c20dfe77-6a47-4c77-aac0-f9acc31a187d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mythAvlist.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythBaseClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythStreamMapServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythStreamServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythStreamSQLresult.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythVirtualDecoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythVirtualServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythZiyaDecoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PEOPLE.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StreamSink.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythVirtualSqlite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythUdp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="H264or5VideoStreamSink.cpp">
-      <Filter>Source Files\live555</Filter>
+      <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
     <ClCompile Include="H264VideoStreamSink.cpp">
-      <Filter>Source Files\live555</Filter>
+      <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
     <ClCompile Include="mythLive555Decoder.cpp">
-      <Filter>Source Files\live555</Filter>
+      <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
     <ClCompile Include="mythRTSP.cpp">
-      <Filter>Source Files\live555</Filter>
+      <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
     <ClCompile Include="OurRTSPClient.cpp">
-      <Filter>Source Files\live555</Filter>
+      <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
     <ClCompile Include="StreamClientState.cpp">
-      <Filter>Source Files\live555</Filter>
+      <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
     <ClCompile Include="tinystr.cpp">
       <Filter>Source Files\tinyxml</Filter>
@@ -95,6 +77,42 @@
     </ClCompile>
     <ClCompile Include="IniFile.c">
       <Filter>Source Files\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="mythAvlist.cpp">
+      <Filter>Source Files\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="PEOPLE.cpp">
+      <Filter>Source Files\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="mythStreamMapServer.cpp">
+      <Filter>Source Files\server</Filter>
+    </ClCompile>
+    <ClCompile Include="mythStreamServer.cpp">
+      <Filter>Source Files\server</Filter>
+    </ClCompile>
+    <ClCompile Include="mythVirtualServer.cpp">
+      <Filter>Source Files\server</Filter>
+    </ClCompile>
+    <ClCompile Include="mythZiyaDecoder.cpp">
+      <Filter>Source Files\decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="mythVirtualDecoder.cpp">
+      <Filter>Source Files\decoder\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="mythBaseClient.cpp">
+      <Filter>Source Files\client</Filter>
+    </ClCompile>
+    <ClCompile Include="mythStreamSQLresult.cpp">
+      <Filter>Source Files\sql</Filter>
+    </ClCompile>
+    <ClCompile Include="mythVirtualSqlite.cpp">
+      <Filter>Source Files\sql</Filter>
+    </ClCompile>
+    <ClCompile Include="mythUdp.cpp">
+      <Filter>Source Files\client</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamSink.cpp">
+      <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

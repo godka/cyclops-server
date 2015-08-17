@@ -20,7 +20,6 @@ B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "mythVirtualSqlite.hh"
-#include <cctype>
 #include "tinyxml.h"
 #include "mythStreamSQLresult.hh"
 #include "PEOPLE.hh"
