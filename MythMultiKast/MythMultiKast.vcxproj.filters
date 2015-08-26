@@ -180,9 +180,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="SDL2.lib" />
-    <Library Include="SDL2_net.lib" />
-    <Library Include="SDL2main.lib" />
-  </ItemGroup>
 </Project>

@@ -1,8 +1,11 @@
-#! /bin/sh
-mkdir linux-build
-cp *.cpp ./linux-build/
-cp *.hh ./linux-build/
-cp *.c ./linux-build/
-cp *.h ./linux-build/
-cp Makefile ./linux-build/
-echo "All done"
+0000000: 2321 202f 6269 6e2f 7368 0a 6d6b 6469  #! /bin/sh..mkdi
+0000010: 7220 6c69 6e75 782d 6275 696c 64 0a63  r linux-build..c
+0000020: 7020 2a2e 6370 7020 2e2f 6c69 6e75 782d  p *.cpp ./linux-
+0000030: 6275 696c 642f 0a 6370 202a 2e68 6820  build/..cp *.hh 
+0000040: 2e2f 6c69 6e75 782d 6275 696c 642f 0a  ./linux-build/..
+0000050: 6370 202a 2e63 202e 2f6c 696e 7578 2d62  cp *.c ./linux-b
+0000060: 7569 6c64 2f 0a63 7020 2a2e 6820 2e2f  uild/..cp *.h ./
+0000070: 6c69 6e75 782d 6275 696c 642f 0a 6370  linux-build/..cp
+0000080: 204d 616b 6566 696c 6520 2e2f 6c69 6e75   Makefile ./linu
+0000090: 782d 6275 696c 642f 0a 6563 686f 2022  x-build/..echo "
+00000a0: 416c 6c20 646f 6e65 22 0a              All done"..

@@ -36,7 +36,7 @@ int main(int args,char** argv)
 		SDL_Log("sqlip is now changed to %s\n", argv[1]);
 	}
 	streammapserver->StartServer();
-#ifdef _WIN32
+#ifdef _DEBUG
 	char input[256];
 	for(;;){
 		printf(">");

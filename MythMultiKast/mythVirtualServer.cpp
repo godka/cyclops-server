@@ -51,7 +51,7 @@ void mythVirtualServer::HandleServer(void){
                 SDLNet_TCP_DelSocket(socketset,
 					people[which]->sock);
 				SDLNet_TCP_Close(people[which]->sock);
-#ifdef DEBUG
+#ifdef _DEBUG
     fprintf(stderr, "Killed inactive socket %d\n", which);
 #endif
                 break;
@@ -63,7 +63,7 @@ void mythVirtualServer::HandleServer(void){
         //data = CHAT_BYE;
         //SDLNet_TCP_Send(newsock, &data, 1);
         SDLNet_TCP_Close(newsock);
-#ifdef DEBUG
+#ifdef _DEBUG
     fprintf(stderr, "Connection refused -- chat room full\n");
 #endif
     } else {
@@ -71,24 +71,27 @@ void mythVirtualServer::HandleServer(void){
 		people[which]->sock = newsock;
 		people[which]->peer = *SDLNet_TCP_GetPeerAddress(newsock);
 		SDLNet_TCP_AddSocket(socketset, people[which]->sock);
-#ifdef DEBUG
+#ifdef _DEBUG
     fprintf(stderr, "New inactive socket %d\n", which);
 #endif
     }
 }
 int mythVirtualServer::StartServer(){
 	this->initalsocket(m_port);
-#ifdef _WIN32
+#ifdef _DEBUG
 	acceptthreadHandle = SDL_CreateThread(acceptthreadstatic, "accept", this);
 	return 0;
 #else
+	puts("MythMultiKast: stable version.");
 	return acceptthreadstatic(this);
 #endif // _WIN32
 }
 
 int mythVirtualServer::StopServer(){
 	this->m_stop = true;
-	SDL_WaitThread(this->acceptthreadHandle,0);
+#ifdef _DEBUG
+	SDL_WaitThread(this->acceptthreadHandle, 0);
+#endif // _WIN32
 	return 0;
 }
 int mythVirtualServer::acceptthreadstatic(void* data){
@@ -124,7 +127,6 @@ void mythVirtualServer::acceptthread(){
 }
 
 void mythVirtualServer::HandleClient(int which){
-	int closesocket;
 	char data[4096] = {0};
 	//char tmpdata[512] = {0};
 	int datalength;

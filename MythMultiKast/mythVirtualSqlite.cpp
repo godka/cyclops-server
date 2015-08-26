@@ -23,7 +23,6 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "tinyxml.h"
 #include "mythStreamSQLresult.hh"
 #include "PEOPLE.hh"
-#include "IniFile.h"
 mythVirtualSqlite*  mythVirtualSqlite::mVirtualSqllite;
 mythVirtualSqlite* mythVirtualSqlite::GetInstance(){
 	return mVirtualSqllite;

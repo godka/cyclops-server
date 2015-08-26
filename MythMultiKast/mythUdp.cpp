@@ -17,10 +17,12 @@ mythUdp::~mythUdp()
 
 void mythUdp::init()
 {
+	char tmpip[256] = { 0 };
 	IPaddress ip;
 	SDL_Init(NULL);
 	SDLNet_Init();
-	SDLNet_ResolveHost(&ip, "127.0.0.1", m_remoteport);
+	read_profile_string("config", "debugip", tmpip, 20, "127.0.0.1", MYTH_INFORMATIONINI_FILE);
+	SDLNet_ResolveHost(&ip, tmpip, m_remoteport);
 	m_client = SDLNet_UDP_Open(m_localport + 1);
 	int ret = SDLNet_UDP_Bind(m_client, 1, &ip);
 	packet = SDLNet_AllocPacket(1024 * 10);
