@@ -299,13 +299,13 @@ void mythRTSP::shutdownStream(RTSPClient* rtspClient, int exitCode) {
 	}
 
 	env << *rtspClient << "Closing the stream.\n";
-	Medium::close(rtspClient);
 	// Note that this will also cause this stream's "StreamClientState" structure to get reclaimed.
-
+	
 	mythRTSP* tmp = (mythRTSP*) scs.handle;
 	if (--tmp->rtspClientCount == 0) {
 		tmp->Stop(rtspClient);
 	}
+	Medium::close(rtspClient);
 }
 
 int mythRTSP::Start(RTSPClient* rtspClient)

@@ -59,13 +59,13 @@ void mythStreamServer::connect()
 	if (result){
 		while (result->MoveNext()){
 			if (!decoder){
-				username = result->prase("username");
-				password = result->prase("password");
-				httpport = result->prase("SubName");
-				FullSize = result->prase("FullSize");
-				vstypeid = result->prase("vstypeid");
-				ip = result->prase("ip");
-				realcameraid = result->prase("Port");
+				username = result->TryPrase("username");
+				password = result->TryPrase("password");
+				httpport = result->TryPrase("SubName");
+				FullSize = result->TryPrase("FullSize");
+				vstypeid = result->TryPrase("vstypeid");
+				ip = result->TryPrase("ip");
+				realcameraid = result->TryPrase("Port");
 				switch (atoi(vstypeid.c_str()))
 				{
 				case 88:
@@ -145,7 +145,7 @@ int mythStreamServer::mainthread()
 				tmp = decoder->get();
 				if (tmp != NULL){
 					//add omp version
-					for (int i = 0; i < baselist.size(); i++){
+					for (unsigned int i = 0; i < baselist.size(); i++){
 						mythBaseClient* tmpclient = baselist.at(i);
 						if (tmpclient != NULL){
 							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);

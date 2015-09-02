@@ -56,7 +56,9 @@ int mythStreamMapServer::startAll(void){
 				//if I using fork?
 				mythStreamServer* server = mythStreamServer::CreateNew(cameraid);
 				servermap[cameraid] = server;
-				//server->start();
+				cout << ksum << "  cameraid:" << cameraid << " started." << endl;
+				//SDL_Delay(500);
+				server->start();
 				ksum++;
 			}
 		}
@@ -89,7 +91,7 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 {
 	map<int,mythStreamServer*>::iterator Iter;
 	int cameraid = -1;
-	sscanf(data,"GET /CameraID=%d",&cameraid);
+	SDL_sscanf(data,"GET /CameraID=%d",&cameraid);
 	if(cameraid != -1){
 		mythStreamServer* server = NULL;
 		Iter = servermap.find(cameraid);

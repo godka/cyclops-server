@@ -93,7 +93,7 @@ int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 		if (len > 0){
 			for (i = 0; i < len - tmplength; i++){
 				if (socket_strcmp(&recv[i], lnstr, tmplength) == 0){
-					sscanf(&recv[i], "Content_Length: %06d", &contentlength);
+					SDL_sscanf(&recv[i], "Content_Length: %06d", &contentlength);
 					if (contentlength > 0){
 						int tmpptr = 0;
 						int returnvalue = contentlength;

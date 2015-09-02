@@ -239,9 +239,7 @@ int mythBaseClient::SendThread()
 			if (mpeople)
 				mpeople->socket_SendStr((char*) pkt->h264Packet, pkt->h264PacketLength);
 		}
-		else{
-			SDL_Delay(1);
-		}
+		SDL_Delay(1);
 	}
 	return 0;
 }

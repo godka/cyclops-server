@@ -14,6 +14,7 @@ public:
 	mythStreamSQLresult(const char* str);
 	~mythStreamSQLresult();
 	void init();
+	string TryPrase(const char* keywords);
 private:
 	const char* xmlstring;
 	TiXmlDocument* doc;
