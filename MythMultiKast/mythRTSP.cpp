@@ -5,7 +5,7 @@
 mythRTSP::mythRTSP()
 {
 	scheduler = BasicTaskScheduler::createNew();
-	env = BasicUsageEnvironment::createNew(*scheduler);
+	env = mythUseageEnvironment::createNew(*scheduler);
 	rtspClientCount = 0;
 	eventLoopWatchVariable = 0;
 }

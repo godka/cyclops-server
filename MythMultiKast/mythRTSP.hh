@@ -1,6 +1,6 @@
 #pragma once
 #include "liveMedia.hh"
-#include "BasicUsageEnvironment.hh"
+#include "mythUseageEnvironment.hh"
 #include "DummySink.hh"
 #include "StreamClientState.hh"
 #include "OurRTSPClient.hh"

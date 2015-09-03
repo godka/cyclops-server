@@ -10,8 +10,8 @@ class mythStreamMapServer :
 public:
 	map<int,mythStreamServer*> servermap;
 	map<int, int> servercount;
-	static mythStreamMapServer* CreateNew(int port,bool autostart = false);
-	void ServerDecodeCallBack(PEOPLE* people,char* data,int datalength);
+	static mythStreamMapServer* CreateNew(int port);
+	void ServerDecodeCallBack(PEOPLE* people, char* data, int datalength);
 	void ServerCloseCallBack(PEOPLE* people);
 	void showAllClients();
 	int startAll(void);
@@ -26,7 +26,7 @@ protected:
 #ifdef MYTH_STREAM_CLOSE
 	SDL_TimerID timerid;
 #endif
-	mythStreamMapServer(int port, bool autostart = false);
+	mythStreamMapServer(int port);
 private:
 	SDL_mutex* mapmutex;
 };

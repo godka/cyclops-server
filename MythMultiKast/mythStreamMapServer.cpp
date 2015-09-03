@@ -26,10 +26,12 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include <unistd.h>  
 #endif
 //#include "mythUdp.hh"
-mythStreamMapServer::mythStreamMapServer(int port, bool start)
+mythStreamMapServer::mythStreamMapServer(int port)
 :mythVirtualServer(port)//, mythVirtualSqlite()
 {
-	if (start){
+	char tmpip[256] = { 0 };
+	int start = read_profile_int("config", "autostart", 0 , MYTH_INFORMATIONINI_FILE);
+	if (start || MYTH_FORCE_AUTOSTART){
 		startAll();
 	}
 	mapmutex = SDL_CreateMutex();
@@ -49,6 +51,7 @@ int mythStreamMapServer::startAll(void){
 	mythStreamSQLresult* result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqlstr);
 	if (result){
 		int ksum = 0;
+		//read result from baseserver one by one
 		while (result->MoveNext()){
 			string cameraidstr = result->prase("CameraID");
 			int cameraid = atoi(cameraidstr.c_str());
@@ -82,9 +85,9 @@ mythStreamMapServer::~mythStreamMapServer(void)
 #endif
 }
 
-mythStreamMapServer* mythStreamMapServer::CreateNew(int port,bool autostart)
+mythStreamMapServer* mythStreamMapServer::CreateNew(int port)
 {
-	return new mythStreamMapServer(port,autostart);
+	return new mythStreamMapServer(port);
 }
 
 void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int datalength )
@@ -94,6 +97,7 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 	SDL_sscanf(data,"GET /CameraID=%d",&cameraid);
 	if(cameraid != -1){
 		mythStreamServer* server = NULL;
+		//find cameraid from map
 		Iter = servermap.find(cameraid);
 		if(Iter == servermap.end() || Iter->second == NULL){
 		//if (servermap[cameraid] != NULL){

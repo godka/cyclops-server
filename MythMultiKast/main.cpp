@@ -22,19 +22,30 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"
+int checkArgs(int args, char** argv){
+	for (int i = 1; i < args; i++){
+		if (SDL_strcmp(argv[i], "--autostart") == 0){
+			if (i < args - 1){
+				
+			}
+		}
+		else{
+			mythVirtualSqlite::GetInstance()->SetSQLIP(argv[1]);
+			SDL_Log("sqlip is now changed to %s\n", argv[1]);
+		}
+	}
+	return 0;
+}
 int main(int args,char** argv)
 {
 	mythUdp* udp = mythUdp::CreateNew(8088,8087);
 	mythVirtualSqlite* sqlreader = mythVirtualSqlite::CreateNew(NULL);
-#ifdef AUTOSTART
-	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,true);
-#else
-	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport,false);
-#endif
-	if (args > 1){
-		mythVirtualSqlite::GetInstance()->SetSQLIP(argv[1]);
-		SDL_Log("sqlip is now changed to %s\n", argv[1]);
-	}
+	mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport);
+	checkArgs(args, argv);
+	//if (args > 1){
+	//	mythVirtualSqlite::GetInstance()->SetSQLIP(argv[1]);
+	//	SDL_Log("sqlip is now changed to %s\n", argv[1]);
+	//}
 	streammapserver->StartServer();
 #ifdef _DEBUG
 	char input[256];

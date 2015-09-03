@@ -93,12 +93,6 @@
     <ClCompile Include="mythVirtualServer.cpp">
       <Filter>Source Files\server</Filter>
     </ClCompile>
-    <ClCompile Include="mythZiyaDecoder.cpp">
-      <Filter>Source Files\decoder</Filter>
-    </ClCompile>
-    <ClCompile Include="mythVirtualDecoder.cpp">
-      <Filter>Source Files\decoder\stream</Filter>
-    </ClCompile>
     <ClCompile Include="mythBaseClient.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
@@ -113,6 +107,15 @@
     </ClCompile>
     <ClCompile Include="StreamSink.cpp">
       <Filter>Source Files\decoder\live555</Filter>
+    </ClCompile>
+    <ClCompile Include="mythZiyaDecoder.cpp">
+      <Filter>Source Files\decoder\stream</Filter>
+    </ClCompile>
+    <ClCompile Include="mythVirtualDecoder.cpp">
+      <Filter>Source Files\decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="mythUseageEnvironment.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +180,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StreamSink.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythUseageEnvironment.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
