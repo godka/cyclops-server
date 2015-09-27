@@ -24,5 +24,6 @@ private:
 	char* m_ip;
 	int m_port;
 	int m_cameraid;
+	int SendBufferBlock(const char* socket_SendStr);
 };
 

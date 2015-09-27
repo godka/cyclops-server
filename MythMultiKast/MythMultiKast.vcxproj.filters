@@ -115,7 +115,7 @@
       <Filter>Source Files\decoder</Filter>
     </ClCompile>
     <ClCompile Include="mythUseageEnvironment.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

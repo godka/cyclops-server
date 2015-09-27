@@ -115,7 +115,11 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 		mythBaseClient* client = NULL;
 		if(!people->addtionaldata){
 			SDL_LockMutex(mapmutex);
-			client = mythBaseClient::CreateNew(people,true);
+			int usingthread = read_profile_int("config", "usethread", 0, MYTH_INFORMATIONINI_FILE);
+			if (usingthread == 1)
+				client = mythBaseClient::CreateNew(people,true);
+			else
+				client = mythBaseClient::CreateNew(people, false);
 			people->data = server;
 			people->addtionaldata = client;
 			server->AppendClient(client);

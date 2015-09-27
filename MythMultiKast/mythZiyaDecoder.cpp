@@ -50,6 +50,24 @@ int mythZiyaDecoder::decodethreadstatic(void* data){
 	mythZiyaDecoder* m_decoder = (mythZiyaDecoder*)data;
 	return m_decoder->decodethread();
 }
+int mythZiyaDecoder::SendBufferBlock(const char* tmpsendstr){
+	while (flag == 0){
+		if (msocket){
+			if (msocket->socket_SendStr(tmpsendstr) == 0){
+				return 0;
+				break;
+			}
+			else{
+				printf("start to reconnect\n");
+				SDL_Delay(1000);
+				msocket->socket_CloseSocket();
+				delete msocket;
+				msocket = PEOPLE::CreateNew(m_ip, m_port);
+			}
+		}
+	}
+	return 1;
+}
 int mythZiyaDecoder::decodethread(){
 #define BUFF_COUNT 1024*1024	
 	char* buf = new char[BUFF_COUNT];
@@ -57,8 +75,7 @@ int mythZiyaDecoder::decodethread(){
 	if (msocket != NULL){
 		char tmpsendstr[100];
 		SDL_snprintf(tmpsendstr, 100, "GET /CameraID=%d&Type=zyh264 HTTP/1.0\r\n\r\n", m_cameraid);
-		msocket->socket_SendStr(tmpsendstr);
-		SDL_Delay(100);
+		SendBufferBlock(tmpsendstr);
 		while (flag == 0){
 			//printf("ready to receive buff\n");
 			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
@@ -69,7 +86,11 @@ int mythZiyaDecoder::decodethread(){
 				printf("start to reconnect\n");
 				//msocket->Reconnect(m_ip,m_port);
 				SDL_Delay(1000);
-				msocket->socket_SendStr(tmpsendstr);
+				msocket->socket_CloseSocket();
+				delete msocket;
+				msocket = PEOPLE::CreateNew(m_ip, m_port);
+				SendBufferBlock(tmpsendstr);
+				//msocket->socket_SendStr(tmpsendstr);
 				printf("reconnecting\n");
 			}
 			//SDL_PollEvent(NULL);
