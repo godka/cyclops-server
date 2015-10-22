@@ -32,5 +32,5 @@
 //#define MYTH_CONFIG_SENDMESSAGE_SLOW
 #define MYTH_CONFIG_SENDMESSAGE_FAST
 #define MYTH_INFORMATIONINI_FILE "mythconfig.ini"
-#define MYTH_FORCE_AUTOSTART 1			//force start all the camera
+#define MYTH_FORCE_AUTOSTART 0			//force start all the camera
 //#define MYTH_STREAM_CLOSE
