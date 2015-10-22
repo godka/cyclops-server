@@ -93,7 +93,7 @@ int mythZiyaDecoder::decodethread(){
 				//msocket->socket_SendStr(tmpsendstr);
 				printf("reconnecting\n");
 			}
-			//SDL_PollEvent(NULL);
+			SDL_PollEvent(NULL);
 			SDL_Delay(1);
 		}
 		msocket->socket_CloseSocket();
@@ -102,7 +102,6 @@ int mythZiyaDecoder::decodethread(){
 	this->free();
 	delete msocket;
 	msocket = NULL;
-	//printf("ziya decoder delete! : %d\n", m_cameraid);
 	return 0;
 }
 mythZiyaDecoder::~mythZiyaDecoder(void){
