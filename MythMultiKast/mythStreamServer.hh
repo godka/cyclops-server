@@ -2,6 +2,7 @@
 #include "MythConfig.hh"
 #include "mythVirtualDecoder.hh"
 #include "mythLive555Decoder.hh"
+#include "mythProxyDecoder.hh"
 #include "mythVirtualServer.hh"
 #include "mythZiyaDecoder.hh"
 #include "mythBaseClient.hh"
@@ -24,7 +25,8 @@ public:
 	//char* getTop( int* length );
 	static int mainthreadstatic(void* data);
 	int mainthread();
-	static mythStreamServer* CreateNew(int cameraid);
+	static mythStreamServer* CreateNew(int cameraid,void* args = NULL);
+	//mythStreamServer* CreateNew(int cameraid, void* args);
 	~mythStreamServer(void);
 	mythVirtualDecoder* GetDecoder(){
 		return decoder;
@@ -54,7 +56,7 @@ protected:
 	//vector<mythBaseClient*> mpeople;
 	//PeopleMap mpeople;
 	int PeopleAdd;
-	mythStreamServer(int cameraid);
+	mythStreamServer(int cameraid, void* args = NULL);
 	bool FindClient(vector <mythBaseClient*>::iterator beg, vector <mythBaseClient*>::iterator end, mythBaseClient* ival);
 	SDL_mutex* numbermutex;
 	SDL_mutex* streamservermutex;
@@ -63,5 +65,6 @@ protected:
 	int isrunning;
 	char* topchar;
 	int toplength;
+	void* additionalargs;
 };
 

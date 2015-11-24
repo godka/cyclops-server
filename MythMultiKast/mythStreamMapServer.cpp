@@ -125,8 +125,43 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 			server->AppendClient(client);
 			SDL_UnlockMutex(mapmutex);
 		}
-		//if(client)
-		//	client->start();
+	}
+	else{
+		SDL_sscanf(data, "PUT /CameraID=%d", &cameraid);
+		if (cameraid != -1){
+			mythStreamServer* server = NULL;
+			//find cameraid from map
+			Iter = servermap.find(cameraid);
+			if (Iter == servermap.end() || Iter->second == NULL){
+				//if (servermap[cameraid] != NULL){
+				SDL_LockMutex(mapmutex);
+				server = mythStreamServer::CreateNew(cameraid,people);			//add a new server into map list,not found ,so create 
+				servermap[cameraid] = server;
+				SDL_UnlockMutex(mapmutex);
+				server->start();
+			}
+			else{
+				SDL_LockMutex(mapmutex);
+				server = Iter->second;									//find an existing server from map list,then add client into server list
+				if (server){
+					((mythProxyDecoder*) server->GetDecoder())->refreshSocket(people);	//probiem
+				}
+				SDL_UnlockMutex(mapmutex);
+			}
+			/*mythBaseClient* client = NULL;
+			if (!people->addtionaldata){
+			SDL_LockMutex(mapmutex);
+			int usingthread = read_profile_int("config", "usethread", 0, MYTH_INFORMATIONINI_FILE);
+			if (usingthread == 1)
+			client = mythBaseClient::CreateNew(people, true);
+			else
+			client = mythBaseClient::CreateNew(people, false);
+			people->data = server;
+			people->addtionaldata = client;
+			server->AppendClient(client);
+			SDL_UnlockMutex(mapmutex);
+			}*/
+		}
 	}
 	return;
 }

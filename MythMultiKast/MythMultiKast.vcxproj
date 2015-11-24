@@ -104,6 +104,7 @@
     <ClCompile Include="mythAvlist.cpp" />
     <ClCompile Include="mythBaseClient.cpp" />
     <ClCompile Include="mythLive555Decoder.cpp" />
+    <ClCompile Include="mythProxyDecoder.cpp" />
     <ClCompile Include="mythRTSP.cpp" />
     <ClCompile Include="mythStreamMapServer.cpp" />
     <ClCompile Include="mythStreamServer.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="mythAvlist.hh" />
     <ClInclude Include="mythBaseClient.hh" />
     <ClInclude Include="MythConfig.hh" />
+    <ClInclude Include="mythProxyDecoder.hh" />
     <ClInclude Include="mythRTSP.hh" />
     <ClInclude Include="mythStreamMapServer.hh" />
     <ClInclude Include="mythStreamServer.hh" />

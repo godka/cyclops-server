@@ -40,6 +40,9 @@
     <Filter Include="Source Files\sql">
       <UniqueIdentifier>{c20dfe77-6a47-4c77-aac0-f9acc31a187d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\decoder\proxy">
+      <UniqueIdentifier>{1815b751-c014-4d10-afb1-323d24037f4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -117,6 +120,9 @@
     <ClCompile Include="mythUseageEnvironment.cpp">
       <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
+    <ClCompile Include="mythProxyDecoder.cpp">
+      <Filter>Source Files\decoder\proxy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -183,6 +189,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythUseageEnvironment.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythProxyDecoder.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
