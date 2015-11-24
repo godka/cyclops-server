@@ -129,6 +129,7 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 	else{
 		SDL_sscanf(data, "PUT /CameraID=%d", &cameraid);
 		if (cameraid != -1){
+			people->isPush = 1;
 			mythStreamServer* server = NULL;
 			//find cameraid from map
 			Iter = servermap.find(cameraid);

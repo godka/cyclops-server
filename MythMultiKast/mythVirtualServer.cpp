@@ -59,16 +59,13 @@ void mythVirtualServer::HandleServer(void){
         }
     }
     if ( which == CHAT_MAXPEOPLE ) {
-        /* No more room... */
-        //data = CHAT_BYE;
-        //SDLNet_TCP_Send(newsock, &data, 1);
         SDLNet_TCP_Close(newsock);
 #ifdef _DEBUG
     fprintf(stderr, "Connection refused -- chat room full\n");
 #endif
     } else {
-        /* Add socket as an inactive person */
-		people[which]->sock = newsock;
+		//people[which]->sock = newsock;
+		people[which]->generateSock(newsock);
 		people[which]->peer = *SDLNet_TCP_GetPeerAddress(newsock);
 		SDLNet_TCP_AddSocket(socketset, people[which]->sock);
 #ifdef _DEBUG
@@ -115,10 +112,12 @@ void mythVirtualServer::acceptthread(){
         /* Check for events on existing clients */
 //#pragma omp parallel for
         for (int i=0; i< CHAT_MAXPEOPLE; ++i ) {
-			if (SDLNet_SocketReady(people[i]->sock)) {
-				//ServerDecodeCallBack(&people[i]);
-                HandleClient(i);
-            }
+			if (!people[i]->isPush){
+				if (SDLNet_SocketReady(people[i]->sock)) {
+					//ServerDecodeCallBack(&people[i]);
+					HandleClient(i);
+				}
+			}
         }
 		//SDL_Delay(10);
 		SDL_PollEvent(NULL);
@@ -127,15 +126,19 @@ void mythVirtualServer::acceptthread(){
 }
 
 void mythVirtualServer::HandleClient(int which){
-	char data[4096] = {0};
+
+	if (which > CHAT_MAXPEOPLE || which < 0)
+		return;
+	char data[40960] = {0};
 	//char tmpdata[512] = {0};
 	int datalength;
 	int length;
+	int maxlen = 512;
 	datalength = 0;
 	for(;;){
-		length = SDLNet_TCP_Recv(people[which]->sock, data + datalength, 512);
+		length = SDLNet_TCP_Recv(people[which]->sock, data + datalength, maxlen);
 		datalength += length;
-		if(length < 512)
+		if (length < maxlen)
 			break;
 	}
     /* Has the connection been closed? */
@@ -151,13 +154,12 @@ void mythVirtualServer::HandleClient(int which){
     }
 }
 int mythVirtualServer::closePeople(PEOPLE* people){
-	if ( people->active ) {
-		people->active = 0;
-	}
+	people->active = 0;
 	ServerCloseCallBack(people);
 	SDLNet_TCP_DelSocket(socketset, people->sock);
 	SDLNet_TCP_Close(people->sock);
 	people->sock = NULL;
+	people->isPush = NULL;
 	people->addtionaldata = NULL;
 	return 0;
 }
@@ -198,6 +200,7 @@ int mythVirtualServer::initalsocket(int port){
 		people[i]->addtionaldata = NULL;
 		people[i]->active = 0;
 		people[i]->sock = NULL;
+		people[i]->isPush = 0;
     }
 
     /* Allocate the socket set */

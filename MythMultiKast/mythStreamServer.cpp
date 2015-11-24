@@ -24,7 +24,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "mythVirtualSqlite.hh"
 //#include <omp.h>
 mythStreamServer* mythStreamServer::CreateNew(int cameraid,void* args){
-	return new mythStreamServer(cameraid);
+	return new mythStreamServer(cameraid,args);
 }
 
 mythStreamServer::mythStreamServer(int cameraid, void* args)

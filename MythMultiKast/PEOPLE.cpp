@@ -20,9 +20,27 @@ B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "PEOPLE.hh"
+
+
+void PEOPLE::generateSock(TCPsocket msock)
+{
+	if (msock){
+		sock = msock;
+		SDLNet_TCP_AddSocket(socketset, sock);
+	}
+}
+
 PEOPLE::PEOPLE()
 {
+	isrunning = false;
+	SDL_Init(NULL);
+	SDLNet_Init();
+	socketset = SDLNet_AllocSocketSet(2);
+	//SDLNet_TCP_AddSocket(socketset, sock);
 	maxlength = 512;
+	isPush = 0;
+	downbuffer = new char[4097];
+	downlength = 0;
 }
 
 PEOPLE::PEOPLE(const char* ip, int port)
@@ -39,6 +57,7 @@ PEOPLE::PEOPLE(const char* ip, int port)
 	SDLNet_TCP_AddSocket(socketset, sock);
 	downbuffer = new char[4097];
 	downlength = 0;
+	isPush = 0;
 }
 
 int PEOPLE::socket_SendStr(const char* data, int length){

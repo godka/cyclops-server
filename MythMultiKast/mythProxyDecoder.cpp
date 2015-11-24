@@ -10,6 +10,7 @@ int mythProxyDecoder::decode_thread()
 		if (msocket){
 			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
 			if (rc > 0) {
+				printf("%d\n", rc);
 				m_count += rc;
 				put((unsigned char*) buf, rc);
 			}

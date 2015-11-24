@@ -14,10 +14,12 @@ public:
 	static PEOPLE* CreateNew(){
 		return new PEOPLE();
 	}
+	void generateSock(TCPsocket msock);
 	PEOPLE(const char* ip, int port);
 	PEOPLE();
 	~PEOPLE();
 	int active;
+	int isPush;
 	TCPsocket sock;
 	IPaddress peer;
 	void* addtionaldata;
