@@ -86,14 +86,16 @@ PEOPLE::~PEOPLE()
 int PEOPLE::socket_ReceiveData(char* recvBuf, int recvLength,int timeout)
 {
 
-	SDLNet_CheckSockets(socketset, timeout);
-	
-	if (SDLNet_SocketReady(sock)){
+	if (SDLNet_CheckSockets(socketset, timeout) > 0){
+		if (SDLNet_SocketReady(sock)){
 			return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
+		}
+		else{
+			return -1;
+		}
 	}
-	else{
+	else
 		return -1;
-	}
 }
 
 int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
@@ -123,13 +125,21 @@ int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 						contentlength -= tmplen;
 						while (contentlength > 0){
 							len = socket_ReceiveData(recvBuf + tmpptr, contentlength,100);
-							tmpptr += len;
-							contentlength -= len;
+							if (len > 0){
+								tmpptr += len;
+								contentlength -= len;
+							}
+							else if (len == 0){
+								return -1;
+							}
 						}
 						return returnvalue;
 					}
 				}
 			}
+		}
+		else if(len == 0){
+			return -1;
 		}
 	}
 }

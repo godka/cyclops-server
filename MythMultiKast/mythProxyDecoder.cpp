@@ -10,7 +10,7 @@ int mythProxyDecoder::decode_thread()
 		if (msocket){
 			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
 			if (rc > 0) {
-				printf("%d\n", rc);
+				//printf("%d\n", rc);
 				m_count += rc;
 				put((unsigned char*) buf, rc);
 			}
@@ -19,8 +19,8 @@ int mythProxyDecoder::decode_thread()
 			}
 		}
 		SDL_UnlockMutex(mmutex);
-		SDL_PollEvent(NULL);
 		SDL_Delay(1);
+		SDL_PollEvent(NULL);
 	}
 	if (msocket){
 		msocket->socket_CloseSocket();
