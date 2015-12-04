@@ -118,6 +118,9 @@ void mythVirtualServer::acceptthread(){
 					HandleClient(i);
 				}
 			}
+			else{
+				printf("123\n");
+			}
         }
 		//SDL_Delay(10);
 		SDL_PollEvent(NULL);
@@ -129,13 +132,15 @@ void mythVirtualServer::HandleClient(int which){
 
 	if (which > CHAT_MAXPEOPLE || which < 0)
 		return;
-	char data[40960] = {0};
+	char data[4096] = {0};
 	//char tmpdata[512] = {0};
 	int datalength;
 	int length;
 	int maxlen = 512;
 	datalength = 0;
 	for(;;){
+		if (datalength + maxlen >= 4096)
+			break;
 		length = SDLNet_TCP_Recv(people[which]->sock, data + datalength, maxlen);
 		datalength += length;
 		if (length < maxlen)

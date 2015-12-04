@@ -138,7 +138,7 @@ int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 				}
 			}
 		}
-		else if(len == 0){
+		else{
 			return -1;
 		}
 	}
@@ -157,5 +157,6 @@ int PEOPLE::socket_CloseSocket()
 	delete [] downbuffer;
 	SDLNet_TCP_Close(sock);
 	SDLNet_TCP_DelSocket(socketset, sock);
+	sock = NULL;
 	return 0;
 }
