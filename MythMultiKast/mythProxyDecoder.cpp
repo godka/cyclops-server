@@ -8,19 +8,18 @@ int mythProxyDecoder::decode_thread()
 	while (flag == 0){
 		SDL_LockMutex(mmutex);
 		if (msocket){
-			if (msocket->isPush){
-				int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
-				if (rc > 0) {
-					//printf("%d\n", rc);
-					m_count += rc;
-					put((unsigned char*) buf, rc);
-				}
-				else{
-					msocket->socket_CloseSocket();
-					msocket->active = 0;
-					msocket->isPush = 0;
-				}
+			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
+			if (rc > 0) {
+				//printf("%d\n", rc);
+				m_count += rc;
+				put((unsigned char*) buf, rc);
 			}
+			else{
+				msocket = NULL;
+			}
+		}
+		else{
+			SDL_Delay(100);
 		}
 		SDL_UnlockMutex(mmutex);
 		SDL_Delay(1);
@@ -30,6 +29,8 @@ int mythProxyDecoder::decode_thread()
 		msocket->socket_CloseSocket();
 		delete [] buf;
 		this->free();
+		delete msocket;
+		msocket = NULL;
 	}
 	return 0;
 }
@@ -51,14 +52,8 @@ mythProxyDecoder::~mythProxyDecoder()
 int mythProxyDecoder::refreshSocket(PEOPLE* people)
 {
 	SDL_LockMutex(mmutex);
-	if (msocket){
-		if (msocket->active == 1){
-			msocket->socket_CloseSocket();
-			msocket->active = 0;
-			msocket->isPush = 0;
-		}
-	}
-	msocket = people;
+	if (!msocket)
+		msocket = people;
 	SDL_UnlockMutex(mmutex);
 	return 0;
 }
