@@ -155,6 +155,7 @@ int PEOPLE::socket_strcmp(char* buff, char*str, int length)
 int PEOPLE::socket_CloseSocket()
 {
 	delete [] downbuffer;
+	this->isPush = 0;
 	SDLNet_TCP_Close(sock);
 	SDLNet_TCP_DelSocket(socketset, sock);
 	return 0;

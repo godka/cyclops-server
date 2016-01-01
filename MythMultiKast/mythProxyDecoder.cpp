@@ -15,6 +15,7 @@ int mythProxyDecoder::decode_thread()
 				put((unsigned char*) buf, rc);
 			}
 			else{
+				msocket->socket_CloseSocket();
 				msocket = NULL;
 			}
 		}
