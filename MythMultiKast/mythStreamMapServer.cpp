@@ -163,6 +163,11 @@ void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int da
 			SDL_UnlockMutex(mapmutex);
 			}*/
 		}
+		else{
+			people->socket_SendStr("404");
+			people->socket_CloseSocket();
+			//ServerCloseCallBack(people);
+		}
 	}
 	return;
 }
