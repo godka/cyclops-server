@@ -32,18 +32,18 @@
 #define LOGE printf
 #endif
 #define AVFRAMECOUNT 25
-#define AVTOTALBUFFERCOUNT 5 * 1024 * 1024//5M
 mythAvlist::mythAvlist(void)
 {
 	listcount = 0;
 	this->startread = false;
 	this->mutex = SDL_CreateMutex();
 	this->totalptr = 0;
+	mBufferSize = 5;
 	InitalList();
 }
-int mythAvlist::InitalList(void){
+int mythAvlist::InitalList(){
 	//inital list
-	totalbuffer = new unsigned char[AVTOTALBUFFERCOUNT];
+	totalbuffer = new unsigned char[mBufferSize * 1024 * 1024];
 	ListPacket = new PacketQueue[AVFRAMECOUNT];
 	for(int i = 0;i < AVFRAMECOUNT;i++){
 		//ListPacket[i].YY = NULL;
@@ -58,8 +58,10 @@ int mythAvlist::InitalList(void){
 mythAvlist::mythAvlist(int BufferSize)
 {
 	listcount = 0;
+	this->startread = false;
 	mutex = SDL_CreateMutex();
-	totalbuffer = (unsigned char*)SDL_malloc(BufferSize * 1024 * 1024);
+	mBufferSize = BufferSize;
+	//totalbuffer = (unsigned char*)SDL_malloc(BufferSize * 1024 * 1024);
 	totalptr = 0;
 	InitalList();
 }
@@ -87,8 +89,8 @@ PacketQueue *mythAvlist::get(int freePacket){
 		}else{
 			if(freePacket == 0){
 				if(listwrite - listread > 10){
-					//LOGE("skip frames");
-					//LOGE(" read = %d,write = %d,minus = %d\n",listread,listwrite,listwrite - listread);
+					LOGE("skip frames");
+					LOGE(" read = %d,write = %d,minus = %d\n",listread,listwrite,listwrite - listread);
 					listread += 9;
 				}else
 					listread++;
@@ -100,7 +102,8 @@ PacketQueue *mythAvlist::get(int freePacket){
 	return tmp;
 }
 unsigned char* mythAvlist::putcore(unsigned char* data,unsigned int datasize){
-	if(totalptr + datasize >= AVTOTALBUFFERCOUNT)totalptr = 0;
+	if(totalptr + datasize > (unsigned int)(mBufferSize * 1024 * 1024))
+		totalptr = 0;
 	SDL_memcpy(totalbuffer + totalptr, data, datasize);
 	totalptr += datasize;
 	//printf("totalptr = %d\n",totalptr);

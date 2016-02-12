@@ -1,5 +1,5 @@
 #pragma once
-#include "MythConfig.hh"
+#include "SDL2/SDL.h"
 typedef struct PacketQueue {
     unsigned char* h264Packet;
 	unsigned int h264PacketLength;
@@ -20,12 +20,15 @@ public:
 	int put(unsigned char** dataline,unsigned int *datasize,unsigned int width,unsigned int height);
 	int release(PacketQueue *pack);
 	int free();
+private:
+	int InitalList();
+	int mBufferSize;
 protected:
 	bool startread;
 	mythAvlist(void);
 	mythAvlist(int BufferSize);
-	int InitalList(void);
-    int abort_request;
+	//int InitalList(void);
+	int abort_request;
     SDL_mutex *mutex;
 	unsigned char* totalbuffer;
 	unsigned int totalptr;
