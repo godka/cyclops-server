@@ -114,7 +114,7 @@
     <ClCompile Include="mythVirtualDecoder.cpp" />
     <ClCompile Include="mythVirtualServer.cpp" />
     <ClCompile Include="mythVirtualSqlite.cpp" />
-    <ClCompile Include="mythZiyaDecoder.cpp" />
+    <ClCompile Include="mythStreamDecoder.cpp" />
     <ClCompile Include="OurRTSPClient.cpp" />
     <ClCompile Include="PEOPLE.cpp" />
     <ClCompile Include="StreamClientState.cpp" />
@@ -141,7 +141,7 @@
     <ClInclude Include="mythVirtualDecoder.hh" />
     <ClInclude Include="mythVirtualServer.hh" />
     <ClInclude Include="mythVirtualSqlite.hh" />
-    <ClInclude Include="mythZiyaDecoder.hh" />
+    <ClInclude Include="mythStreamDecoder.hh" />
     <ClInclude Include="OurRTSPClient.hh" />
     <ClInclude Include="PEOPLE.hh" />
     <ClInclude Include="StreamClientState.hh" />

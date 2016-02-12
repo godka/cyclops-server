@@ -19,9 +19,9 @@ Http://code.google.com/mythkast
 B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
-#include "mythZiyaDecoder.hh"
+#include "mythStreamDecoder.hh"
 
-mythZiyaDecoder::mythZiyaDecoder(char* ip,int port,int CameraID)
+mythStreamDecoder::mythStreamDecoder(char* ip, int port, int CameraID)
 	:mythVirtualDecoder(){
 	flag = 0;
 	m_ip = ip;
@@ -30,27 +30,27 @@ mythZiyaDecoder::mythZiyaDecoder(char* ip,int port,int CameraID)
 	startthread = NULL;
 	msocket = NULL;
 }
-mythZiyaDecoder* mythZiyaDecoder::CreateNew(char* ip,int CameraID){
-	return new mythZiyaDecoder(ip, streamserverport, CameraID);
+mythStreamDecoder* mythStreamDecoder::CreateNew(char* ip, int CameraID){
+	return new mythStreamDecoder(ip, streamserverport, CameraID);
 }
-mythZiyaDecoder* mythZiyaDecoder::CreateNew(char* ip,int port,int CameraID){
-	return new mythZiyaDecoder(ip,port,CameraID);
+mythStreamDecoder* mythStreamDecoder::CreateNew(char* ip, int port, int CameraID){
+	return new mythStreamDecoder(ip, port, CameraID);
 }
-void mythZiyaDecoder::start(){
+void mythStreamDecoder::start(){
 	startthread = SDL_CreateThread(decodethreadstatic,"decode",this);
 }
-void mythZiyaDecoder::stop(){
+void mythStreamDecoder::stop(){
 	//this->startthread = SDL_CreateThread(decodethreadstatic,"decode",this);
 	flag = 1;
 	if (startthread)
 		SDL_WaitThread(startthread,NULL);
 	return;
 }
-int mythZiyaDecoder::decodethreadstatic(void* data){
-	mythZiyaDecoder* m_decoder = (mythZiyaDecoder*)data;
+int mythStreamDecoder::decodethreadstatic(void* data){
+	mythStreamDecoder* m_decoder = (mythStreamDecoder*) data;
 	return m_decoder->decodethread();
 }
-int mythZiyaDecoder::SendBufferBlock(const char* tmpsendstr){
+int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
 	while (flag == 0){
 		if (msocket){
 			if (msocket->socket_SendStr(tmpsendstr) == 0){
@@ -68,7 +68,7 @@ int mythZiyaDecoder::SendBufferBlock(const char* tmpsendstr){
 	}
 	return 1;
 }
-int mythZiyaDecoder::decodethread(){
+int mythStreamDecoder::decodethread(){
 #define BUFF_COUNT 1024*1024	
 	char* buf = new char[BUFF_COUNT];
 	msocket = PEOPLE::CreateNew(m_ip,m_port);
@@ -104,7 +104,7 @@ int mythZiyaDecoder::decodethread(){
 	msocket = NULL;
 	return 0;
 }
-mythZiyaDecoder::~mythZiyaDecoder(void){
+mythStreamDecoder::~mythStreamDecoder(void){
 	if (msocket){
 		delete msocket;
 	}

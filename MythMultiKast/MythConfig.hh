@@ -1,5 +1,5 @@
 #pragma once
-#ifdef _WIN32
+#if (defined _WIN32) || (defined WIN32)
 #	define _CRT_SECURE_NO_WARNINGS
 #endif
 #include <stdio.h>
@@ -13,7 +13,7 @@
 #include "mythUdp.hh"
 #include "IniFile.h"
 
-#ifdef _WIN32
+#if (defined _WIN32) || (defined WIN32)
 #	
 #	pragma comment(lib,"ws2_32")
 #	ifdef _DEBUG
@@ -32,5 +32,7 @@
 //#define MYTH_CONFIG_SENDMESSAGE_SLOW
 #define MYTH_CONFIG_SENDMESSAGE_FAST
 #define MYTH_INFORMATIONINI_FILE "mythconfig.ini"
-#define MYTH_FORCE_AUTOSTART 0			//force start all the camera
+#define MYTH_FORCE_AUTOSTART 0			//force start all the camera?
+
+#define MYTH_SERV_RECV_BUFFLEN 4096		//len to recv the buffer when recving data from mythvirtualserver
 //#define MYTH_STREAM_CLOSE

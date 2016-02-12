@@ -191,7 +191,6 @@ int mythVirtualServer::initalsocket(int port){
                         SDLNet_GetError());
         SDL_Quit();
         return 1;
- //       exit(1);
     }
 //#pragma omp parallel for
     /* Initialize the channels */
@@ -205,7 +204,7 @@ int mythVirtualServer::initalsocket(int port){
 
     /* Allocate the socket set */
     socketset = SDLNet_AllocSocketSet(CHAT_MAXPEOPLE+1);
-    if ( socketset == NULL ) {
+    if (!socketset) {
         fprintf(stderr, "Couldn't create socket set: %s\n",
                         SDLNet_GetError());
         cleanup(2);
@@ -243,7 +242,6 @@ void mythVirtualServer::cleanup(int exitcode){
 		delete this->people[i];
 	}
     SDLNet_Quit();
-    SDL_Quit();
     return;
   //  exit(exitcode);
 }

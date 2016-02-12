@@ -78,7 +78,7 @@ void mythStreamServer::connect()
 					{
 					case 88:
 						//ziyadecoder
-						this->decoder = mythZiyaDecoder::CreateNew((char*) ip.c_str(), atoi(realcameraid.c_str()));
+						this->decoder = mythStreamDecoder::CreateNew((char*) ip.c_str(), atoi(realcameraid.c_str()));
 						break;
 #ifdef CAMERADECODER
 					case 15:

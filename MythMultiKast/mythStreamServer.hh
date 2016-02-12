@@ -4,7 +4,7 @@
 #include "mythLive555Decoder.hh"
 #include "mythProxyDecoder.hh"
 #include "mythVirtualServer.hh"
-#include "mythZiyaDecoder.hh"
+#include "mythStreamDecoder.hh"
 #include "mythBaseClient.hh"
 #include "mythStreamSQLresult.hh"
 #define RTSPLINK "rtsp://%s:%s%s"

@@ -111,9 +111,6 @@
     <ClCompile Include="StreamSink.cpp">
       <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
-    <ClCompile Include="mythZiyaDecoder.cpp">
-      <Filter>Source Files\decoder\stream</Filter>
-    </ClCompile>
     <ClCompile Include="mythVirtualDecoder.cpp">
       <Filter>Source Files\decoder</Filter>
     </ClCompile>
@@ -122,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="mythProxyDecoder.cpp">
       <Filter>Source Files\decoder\proxy</Filter>
+    </ClCompile>
+    <ClCompile Include="mythStreamDecoder.cpp">
+      <Filter>Source Files\decoder\stream</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,9 +147,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythVirtualServer.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mythZiyaDecoder.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PEOPLE.hh">
@@ -192,6 +189,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythProxyDecoder.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythStreamDecoder.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
