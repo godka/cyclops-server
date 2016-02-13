@@ -36,3 +36,15 @@
 
 #define MYTH_SERV_RECV_BUFFLEN 4096		//len to recv the buffer when recving data from mythvirtualserver
 //#define MYTH_STREAM_CLOSE
+//#define MYTH_USING_REDIS 1	//force use redis
+#define AVFRAMECOUNT 25
+
+#ifdef ANDROID
+#include <android/log.h>
+#define LOG_TAG "org.app.sdl"
+
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#else
+#define LOGE printf
+#endif

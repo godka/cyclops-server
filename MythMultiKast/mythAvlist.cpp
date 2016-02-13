@@ -22,17 +22,8 @@
 #include "mythAvlist.hh"
 #include <stdio.h>
 //#include <memory.h>
-#ifdef ANDROID
-#include <android/log.h>
-#define LOG_TAG "org.app.sdl"
-
-#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-#else
-#define LOGE printf
-#endif
-#define AVFRAMECOUNT 25
 mythAvlist::mythAvlist(void)
+	:mythVirtualList()
 {
 	listcount = 0;
 	this->startread = false;
@@ -66,7 +57,7 @@ mythAvlist::mythAvlist(int BufferSize)
 	InitalList();
 }
 mythAvlist *mythAvlist::CreateNew(int BufferSize){
-	if(BufferSize == -1)
+	if(BufferSize == 0)
 		return new mythAvlist();
 	else
 		return new mythAvlist(BufferSize);
