@@ -62,13 +62,13 @@ void mythStreamServer::connect()
 			decoder->start();
 	}
 	else{
-
+		mythStreamSQLresult* result = NULL;
 		int list_type = read_profile_int("config", "list_type", 0, MYTH_INFORMATIONINI_FILE);
 		switch (list_type)
 		{
 		case 0:
 			SDL_snprintf(sqltmp, 4096, FINDCAMERA, m_cameraid);
-			mythStreamSQLresult* result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqltmp);
+			result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqltmp);
 			if (result){
 				while (result->MoveNext()){
 					if (!decoder){
@@ -107,12 +107,15 @@ void mythStreamServer::connect()
 						//SDL_UnlockMutex(decodemutex);
 					}
 				}
-			}
-			if (result)
 				delete result;
+			}
+			//if (result)
 			break;
 		case 1:
-
+			decoder = mythRedisDecoder::CreateNew(m_cameraid);
+			if (decoder)
+				decoder->start();
+			break;
 		default:
 			break;
 		}

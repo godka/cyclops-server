@@ -23,9 +23,14 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "tinyxml.h"
 #include "mythStreamSQLresult.hh"
 #include "MythSocket.hh"
-mythVirtualSqlite*  mythVirtualSqlite::mVirtualSqllite;
+mythVirtualSqlite*  mythVirtualSqlite::mVirtualSqllite = NULL;
 mythVirtualSqlite* mythVirtualSqlite::GetInstance(){
-	return mVirtualSqllite;
+	if (!mVirtualSqllite){
+		return CreateNew(NULL);
+	}
+	else{
+		return mVirtualSqllite;
+	}
 }
 
 int mythVirtualSqlite::convert(const char *from, const char *to, char* save, int savelen, char *src, int srclen)

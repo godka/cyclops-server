@@ -159,6 +159,9 @@
     <ClCompile Include="mythListFactory.cpp">
       <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
+    <ClCompile Include="mythRedisDecoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -258,6 +261,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MythSocket.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythRedisDecoder.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
