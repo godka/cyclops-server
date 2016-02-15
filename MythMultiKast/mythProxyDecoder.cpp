@@ -36,7 +36,7 @@ int mythProxyDecoder::decode_thread()
 	return 0;
 }
 
-mythProxyDecoder::mythProxyDecoder(PEOPLE* people)
+mythProxyDecoder::mythProxyDecoder(MythSocket* people)
 {
 	msocket = people;
 	flag = 0;
@@ -50,7 +50,7 @@ mythProxyDecoder::~mythProxyDecoder()
 	}
 }
 
-int mythProxyDecoder::refreshSocket(PEOPLE* people)
+int mythProxyDecoder::refreshSocket(MythSocket* people)
 {
 	SDL_LockMutex(mmutex);
 	if (!msocket)

@@ -57,52 +57,65 @@ void mythStreamServer::connect()
 	char sqltmp[4096] = {0};
 	//add proxy server if cameraid > 10000
 	if (m_cameraid >= 10000){
-		this->decoder = mythProxyDecoder::CreateNew((PEOPLE*)additionalargs);
+		this->decoder = mythProxyDecoder::CreateNew((MythSocket*) additionalargs);
 		if (decoder)
 			decoder->start();
 	}
 	else{
-		SDL_snprintf(sqltmp, 4096, FINDCAMERA, m_cameraid);
-		mythStreamSQLresult* result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqltmp);
-		if (result){
-			while (result->MoveNext()){
-				if (!decoder){
-					username = result->TryPrase("username");
-					password = result->TryPrase("password");
-					httpport = result->TryPrase("SubName");
-					FullSize = result->TryPrase("FullSize");
-					vstypeid = result->TryPrase("vstypeid");
-					ip = result->TryPrase("ip");
-					realcameraid = result->TryPrase("Port");
-					switch (atoi(vstypeid.c_str()))
-					{
-					case 88:
-						//ziyadecoder
-						this->decoder = mythStreamDecoder::CreateNew((char*) ip.c_str(), atoi(realcameraid.c_str()));
-						break;
+
+		int list_type = read_profile_int("config", "list_type", 0, MYTH_INFORMATIONINI_FILE);
+		switch (list_type)
+		{
+		case 0:
+			SDL_snprintf(sqltmp, 4096, FINDCAMERA, m_cameraid);
+			mythStreamSQLresult* result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqltmp);
+			if (result){
+				while (result->MoveNext()){
+					if (!decoder){
+						username = result->TryPrase("username");
+						password = result->TryPrase("password");
+						httpport = result->TryPrase("SubName");
+						FullSize = result->TryPrase("FullSize");
+						vstypeid = result->TryPrase("vstypeid");
+						ip = result->TryPrase("ip");
+						realcameraid = result->TryPrase("Port");
+						switch (atoi(vstypeid.c_str()))
+						{
+						case 88:
+							//ziyadecoder
+							this->decoder = mythStreamDecoder::CreateNew((char*) ip.c_str(), atoi(realcameraid.c_str()));
+							break;
 #ifdef CAMERADECODER
-					case 15:
-						this->decoder = mythCameraDecoder::CreateNew();
-						break;
+						case 15:
+							this->decoder = mythCameraDecoder::CreateNew();
+							break;
 #endif
-					default:
-						string strRecordUrl = "rtsp://" + ip + ":" + httpport + FullSize;
-						int iFind = strRecordUrl.find("$camera");
-						if (iFind >= 0)
-							strRecordUrl.replace(iFind, iFind + strlen("$camera"), realcameraid);
-						//strcpy(url, strRecordUrl.c_str());
-						this->decoder = mythLive555Decoder::CreateNew((char*) strRecordUrl.c_str(), (char*) username.c_str(), (char*) password.c_str());
-						break;
+						default:
+							string strRecordUrl = "rtsp://" + ip + ":" + httpport + FullSize;
+							int iFind = strRecordUrl.find("$camera");
+							if (iFind >= 0)
+								strRecordUrl.replace(iFind, iFind + strlen("$camera"), realcameraid);
+							//strcpy(url, strRecordUrl.c_str());
+							this->decoder = mythLive555Decoder::CreateNew((char*) strRecordUrl.c_str(), (char*) username.c_str(), (char*) password.c_str());
+							break;
+						}
+						//SDL_LockMutex(decodemutex);
+						if (decoder){
+							decoder->SetMagic((void*) m_cameraid);	//set magic
+							decoder->start();
+						}
+						//SDL_UnlockMutex(decodemutex);
 					}
-					//SDL_LockMutex(decodemutex);
-					if (decoder)
-						decoder->start();
-					//SDL_UnlockMutex(decodemutex);
 				}
 			}
+			if (result)
+				delete result;
+			break;
+		case 1:
+
+		default:
+			break;
 		}
-		if (result)
-			delete result;
 	}
 }
 
@@ -159,6 +172,7 @@ int mythStreamServer::mainthread()
 							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
 						}
 					}
+					decoder->release(tmp);
 					SDL_Delay(1);
 					//baselist.push_back(this);
 				}

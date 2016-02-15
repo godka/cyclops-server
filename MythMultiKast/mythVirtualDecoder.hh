@@ -1,9 +1,9 @@
 #pragma once
 #include "MythConfig.hh"
-#include "mythAvlist.hh"
+#include "mythListFactory.hh"
 
 class mythVirtualDecoder :
-	public mythAvlist
+	public mythListFactory
 {
 public:
 	static mythVirtualDecoder* CreateNew(void);

@@ -2,7 +2,7 @@
 
 #include "MythConfig.hh"
 #include "mythVirtualDecoder.hh"
-#include "PEOPLE.hh"
+#include "MythSocket.hh"
 class mythStreamDecoder :
 	public mythVirtualDecoder
 {
@@ -18,7 +18,7 @@ protected:
 	int decodethread();
 	static int decodethreadstatic(void* data);
 	mythStreamDecoder(char* ip, int port, int CameraID);
-	PEOPLE *msocket;
+	MythSocket *msocket;
 	SDL_Thread* startthread;
 private:
 	char* m_ip;

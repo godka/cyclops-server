@@ -1,9 +1,5 @@
 #pragma once
 #include "MythConfig.hh"
-typedef struct PacketQueue {
-	unsigned char* h264Packet;
-	unsigned int h264PacketLength;
-} PacketQueue;
 class mythVirtualList
 {
 public:	
@@ -14,6 +10,7 @@ public:
 	virtual int put(unsigned char** dataline, unsigned int *datasize, unsigned int width, unsigned int height);
 	virtual int release(PacketQueue *pack);
 	virtual int free();
+	void* magic;
 protected:
 	mythVirtualList();
 };

@@ -62,7 +62,7 @@ int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
 				SDL_Delay(1000);
 				msocket->socket_CloseSocket();
 				delete msocket;
-				msocket = PEOPLE::CreateNew(m_ip, m_port);
+				msocket = MythSocket::CreateNew(m_ip, m_port);
 			}
 		}
 	}
@@ -71,7 +71,7 @@ int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
 int mythStreamDecoder::decodethread(){
 #define BUFF_COUNT 1024*1024	
 	char* buf = new char[BUFF_COUNT];
-	msocket = PEOPLE::CreateNew(m_ip,m_port);
+	msocket = MythSocket::CreateNew(m_ip, m_port);
 	if (msocket != NULL){
 		char tmpsendstr[100];
 		SDL_snprintf(tmpsendstr, 100, "GET /CameraID=%d&Type=zyh264 HTTP/1.0\r\n\r\n", m_cameraid);
@@ -88,7 +88,7 @@ int mythStreamDecoder::decodethread(){
 				SDL_Delay(1000);
 				msocket->socket_CloseSocket();
 				delete msocket;
-				msocket = PEOPLE::CreateNew(m_ip, m_port);
+				msocket = MythSocket::CreateNew(m_ip, m_port);
 				SendBufferBlock(tmpsendstr);
 				//msocket->socket_SendStr(tmpsendstr);
 				printf("reconnecting\n");

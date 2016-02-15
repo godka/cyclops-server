@@ -103,6 +103,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mythAvlist.cpp" />
     <ClCompile Include="mythBaseClient.cpp" />
+    <ClCompile Include="mythListFactory.cpp" />
     <ClCompile Include="mythLive555Decoder.cpp" />
     <ClCompile Include="mythProxyDecoder.cpp" />
     <ClCompile Include="mythRedisList.cpp" />
@@ -118,7 +119,7 @@
     <ClCompile Include="mythVirtualSqlite.cpp" />
     <ClCompile Include="mythStreamDecoder.cpp" />
     <ClCompile Include="OurRTSPClient.cpp" />
-    <ClCompile Include="PEOPLE.cpp" />
+    <ClCompile Include="MythSocket.cpp" />
     <ClCompile Include="redis\async.c" />
     <ClCompile Include="redis\dict.c" />
     <ClCompile Include="redis\hiredis.c" />
@@ -138,6 +139,7 @@
     <ClInclude Include="mythAvlist.hh" />
     <ClInclude Include="mythBaseClient.hh" />
     <ClInclude Include="MythConfig.hh" />
+    <ClInclude Include="mythListFactory.hh" />
     <ClInclude Include="mythProxyDecoder.hh" />
     <ClInclude Include="mythRedisList.hh" />
     <ClInclude Include="mythRTSP.hh" />
@@ -152,7 +154,7 @@
     <ClInclude Include="mythVirtualSqlite.hh" />
     <ClInclude Include="mythStreamDecoder.hh" />
     <ClInclude Include="OurRTSPClient.hh" />
-    <ClInclude Include="PEOPLE.hh" />
+    <ClInclude Include="MythSocket.hh" />
     <ClInclude Include="redis\async.h" />
     <ClInclude Include="redis\config.h" />
     <ClInclude Include="redis\dict.h" />

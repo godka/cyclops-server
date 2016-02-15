@@ -90,7 +90,7 @@ mythStreamMapServer* mythStreamMapServer::CreateNew(int port)
 	return new mythStreamMapServer(port);
 }
 
-void mythStreamMapServer::ServerDecodeCallBack( PEOPLE* people,char* data,int datalength )
+void mythStreamMapServer::ServerDecodeCallBack(MythSocket* people, char* data, int datalength)
 {
 	map<int,mythStreamServer*>::iterator Iter;
 	int cameraid = -1;
@@ -186,7 +186,7 @@ void mythStreamMapServer::showAllClients(){
 	cout << "server num :" << sum << ";client sum :" << clientnum << endl;
 }
 
-void mythStreamMapServer::ServerCloseCallBack( PEOPLE* people )
+void mythStreamMapServer::ServerCloseCallBack(MythSocket* people)
 {
 	if (people->addtionaldata){
 		SDL_LockMutex(mapmutex);

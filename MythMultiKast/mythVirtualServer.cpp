@@ -153,7 +153,7 @@ void mythVirtualServer::HandleClient(int which){
 		this->ServerDecodeCallBack(people[which],data,datalength);
     }
 }
-int mythVirtualServer::closePeople(PEOPLE* people){
+int mythVirtualServer::closePeople(MythSocket* people){
 	people->active = 0;
 	ServerCloseCallBack(people);
 	SDLNet_TCP_DelSocket(socketset, people->sock);
@@ -195,7 +195,7 @@ int mythVirtualServer::initalsocket(int port){
 //#pragma omp parallel for
     /* Initialize the channels */
     for ( i=0; i<CHAT_MAXPEOPLE; ++i ) {
-		people[i] = PEOPLE::CreateNew();
+		people[i] = MythSocket::CreateNew();
 		people[i]->addtionaldata = NULL;
 		people[i]->active = 0;
 		people[i]->sock = NULL;
@@ -245,7 +245,7 @@ void mythVirtualServer::cleanup(int exitcode){
     return;
   //  exit(exitcode);
 }
-void mythVirtualServer::ServerDecodeCallBack(PEOPLE *people,char* data,int datalength){
+void mythVirtualServer::ServerDecodeCallBack(MythSocket *people, char* data, int datalength){
 	
 }
 
@@ -254,7 +254,7 @@ mythVirtualServer::~mythVirtualServer(void)
 	//this->cleanup(0);
 }
 
-int mythVirtualServer::ContainPeople( PEOPLE* mpeople )
+int mythVirtualServer::ContainPeople(MythSocket* mpeople)
 {
 //#pragma omp parallel for
 	for (int i=0; i< CHAT_MAXPEOPLE; ++i ) {
@@ -265,7 +265,7 @@ int mythVirtualServer::ContainPeople( PEOPLE* mpeople )
 	return 0;
 }
 
-void mythVirtualServer::ServerCloseCallBack( PEOPLE* people )
+void mythVirtualServer::ServerCloseCallBack(MythSocket* people)
 {
 
 }

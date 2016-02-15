@@ -9,7 +9,7 @@ extern "C"{
 //#endif
 #include <time.h>
 };
-#include "PEOPLE.hh"
+#include "MythSocket.hh"
 #include "mythAvlist.hh"
 class mythBaseClient:
 	public mythAvlist
@@ -24,7 +24,7 @@ public:
 			return 0;
 	}
 	int SendThread();
-	static mythBaseClient* CreateNew(PEOPLE* people,bool usethread = false);
+	static mythBaseClient* CreateNew(MythSocket* people, bool usethread = false);
 	//static int mainthreadstatic(void* data);
 	//mythStreamServer* getServer();	//removed
 	//int changeStreamServer(mythStreamServer* server);
@@ -39,7 +39,7 @@ public:
 private:
 	bool musethread;		//use thread or not
 	bool isfirst;
-	PEOPLE* mpeople;
+	MythSocket* mpeople;
 	int isrunning;
 	SDL_Thread* mainthreadhandle;
 	//int mypacketlength;
@@ -53,7 +53,7 @@ private:
 protected:
 	//mythStreamServer* mserver;
 	//mythBaseClient(mythStreamServer* server , PEOPLE* people);
-	mythBaseClient(PEOPLE* people, bool usethread);
+	mythBaseClient(MythSocket* people, bool usethread);
 	SDL_Thread* mthread;
 	bool misrunning;
 };

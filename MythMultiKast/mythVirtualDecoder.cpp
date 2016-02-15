@@ -23,7 +23,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 
 
 mythVirtualDecoder::mythVirtualDecoder(void)
-	:mythAvlist(){
+	:mythListFactory(){
 	flag = 0;
 	m_count = 0;
 	ori_count = 0;

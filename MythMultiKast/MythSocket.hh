@@ -1,23 +1,21 @@
 #pragma once
 #include "MythConfig.hh"
 #include <string.h>
-class PEOPLE
+class MythSocket
 {
 public:
 	int socket_SendStr(const char* str, int length = -2);
 	int socket_ReceiveData(char* recvBuf, int recvLength, int timeout = 500);
 	int socket_CloseSocket();
 	int socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr);
-	static PEOPLE* CreateNew(const char* ip, int port){
-		return new PEOPLE(ip, port);
+	static MythSocket* CreateNew(const char* ip, int port){
+		return new MythSocket(ip, port);
 	}
-	static PEOPLE* CreateNew(){
-		return new PEOPLE();
+	static MythSocket* CreateNew(){
+		return new MythSocket();
 	}
 	void generateSock(TCPsocket msock);
-	PEOPLE(const char* ip, int port);
-	PEOPLE();
-	~PEOPLE();
+	~MythSocket();
 	int active;
 	int isPush;
 	TCPsocket sock;
@@ -31,5 +29,8 @@ private:
 	int maxlength;
 	SDLNet_SocketSet socketset;
 	int socket_strcmp(char* buff, char*str, int length);
+protected:
+	MythSocket(const char* ip, int port);
+	MythSocket();
 };
 

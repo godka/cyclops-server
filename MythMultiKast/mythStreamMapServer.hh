@@ -11,8 +11,8 @@ public:
 	map<int,mythStreamServer*> servermap;
 	map<int, int> servercount;
 	static mythStreamMapServer* CreateNew(int port);
-	void ServerDecodeCallBack(PEOPLE* people, char* data, int datalength);
-	void ServerCloseCallBack(PEOPLE* people);
+	void ServerDecodeCallBack(MythSocket* people, char* data, int datalength);
+	void ServerCloseCallBack(MythSocket* people);
 	void showAllClients();
 	int startAll(void);
 

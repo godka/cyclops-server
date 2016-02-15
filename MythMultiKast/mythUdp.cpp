@@ -17,7 +17,7 @@ mythUdp::~mythUdp()
 
 void mythUdp::init()
 {
-	char tmpip[256] = { 0 };
+	char tmpip[20] = { 0 };
 	IPaddress ip;
 	SDL_Init(NULL);
 	SDLNet_Init();

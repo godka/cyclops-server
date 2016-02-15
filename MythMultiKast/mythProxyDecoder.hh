@@ -1,11 +1,11 @@
 #pragma once
 #include "mythVirtualDecoder.hh"
-#include "PEOPLE.hh"
+#include "MythSocket.hh"
 class mythProxyDecoder :
 	public mythVirtualDecoder
 {
 public:
-	static mythProxyDecoder* CreateNew(PEOPLE* people){
+	static mythProxyDecoder* CreateNew(MythSocket* people){
 		return new mythProxyDecoder(people);
 	}
 	~mythProxyDecoder();
@@ -16,13 +16,13 @@ public:
 		}
 		return 0;
 	}
-	int refreshSocket(PEOPLE* people);//refresh socket if connect timeout
+	int refreshSocket(MythSocket* people);//refresh socket if connect timeout
 	void start();
 	void stop();
 protected:
 	int decode_thread();
-	mythProxyDecoder(PEOPLE* people);
-	PEOPLE* msocket;
+	mythProxyDecoder(MythSocket* people);
+	MythSocket* msocket;
 	SDL_Thread* mthread;
 	SDL_mutex* mmutex;
 };

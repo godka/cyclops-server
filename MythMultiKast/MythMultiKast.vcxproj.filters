@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\tinyxml">
-      <UniqueIdentifier>{5016caed-85de-405c-831f-770b200c243b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\kernel">
       <UniqueIdentifier>{995419e5-55df-4815-a6d0-42556b6cf0a8}</UniqueIdentifier>
     </Filter>
@@ -34,9 +31,6 @@
     <Filter Include="Source Files\client">
       <UniqueIdentifier>{5e963fbe-bdc6-47af-b9e6-826f633471df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\sql">
-      <UniqueIdentifier>{c20dfe77-6a47-4c77-aac0-f9acc31a187d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\decoder\proxy">
       <UniqueIdentifier>{1815b751-c014-4d10-afb1-323d24037f4f}</UniqueIdentifier>
     </Filter>
@@ -51,6 +45,15 @@
     </Filter>
     <Filter Include="Source Files\kernel\redis">
       <UniqueIdentifier>{c702efdd-a62c-4b98-9d19-4aec2ae6e6ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\tinyxml">
+      <UniqueIdentifier>{5016caed-85de-405c-831f-770b200c243b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\sql">
+      <UniqueIdentifier>{c20dfe77-6a47-4c77-aac0-f9acc31a187d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\list">
+      <UniqueIdentifier>{18e4aa57-2a0a-4ab9-b7d6-eac7e75f68a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -76,25 +79,19 @@
       <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
     <ClCompile Include="tinystr.cpp">
-      <Filter>Source Files\tinyxml</Filter>
+      <Filter>Source Files\kernel\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="tinyxmlparser.cpp">
-      <Filter>Source Files\tinyxml</Filter>
+      <Filter>Source Files\kernel\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="tinyxmlerror.cpp">
-      <Filter>Source Files\tinyxml</Filter>
+      <Filter>Source Files\kernel\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml.cpp">
-      <Filter>Source Files\tinyxml</Filter>
+      <Filter>Source Files\kernel\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="IniFile.c">
       <Filter>Source Files\kernel\ini</Filter>
-    </ClCompile>
-    <ClCompile Include="mythAvlist.cpp">
-      <Filter>Source Files\kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="PEOPLE.cpp">
-      <Filter>Source Files\kernel</Filter>
     </ClCompile>
     <ClCompile Include="mythStreamMapServer.cpp">
       <Filter>Source Files\server</Filter>
@@ -109,10 +106,10 @@
       <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="mythStreamSQLresult.cpp">
-      <Filter>Source Files\sql</Filter>
+      <Filter>Source Files\kernel\sql</Filter>
     </ClCompile>
     <ClCompile Include="mythVirtualSqlite.cpp">
-      <Filter>Source Files\sql</Filter>
+      <Filter>Source Files\kernel\sql</Filter>
     </ClCompile>
     <ClCompile Include="mythUdp.cpp">
       <Filter>Source Files\client</Filter>
@@ -132,9 +129,6 @@
     <ClCompile Include="mythStreamDecoder.cpp">
       <Filter>Source Files\decoder\stream</Filter>
     </ClCompile>
-    <ClCompile Include="mythVirtualList.cpp">
-      <Filter>Source Files\kernel</Filter>
-    </ClCompile>
     <ClCompile Include="redis\async.c">
       <Filter>Source Files\kernel\redis</Filter>
     </ClCompile>
@@ -150,8 +144,20 @@
     <ClCompile Include="redis\sds.c">
       <Filter>Source Files\kernel\redis</Filter>
     </ClCompile>
+    <ClCompile Include="mythAvlist.cpp">
+      <Filter>Source Files\kernel\list</Filter>
+    </ClCompile>
     <ClCompile Include="mythRedisList.cpp">
-      <Filter>Source Files\kernel</Filter>
+      <Filter>Source Files\kernel\list</Filter>
+    </ClCompile>
+    <ClCompile Include="mythVirtualList.cpp">
+      <Filter>Source Files\kernel\list</Filter>
+    </ClCompile>
+    <ClCompile Include="MythSocket.cpp">
+      <Filter>Source Files\client</Filter>
+    </ClCompile>
+    <ClCompile Include="mythListFactory.cpp">
+      <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,9 +183,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythVirtualServer.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PEOPLE.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml.h">
@@ -250,6 +253,12 @@
     </ClInclude>
     <ClInclude Include="redis\sds.h">
       <Filter>Header Files\redis</Filter>
+    </ClInclude>
+    <ClInclude Include="mythListFactory.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MythSocket.hh">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

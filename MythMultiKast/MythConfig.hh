@@ -48,3 +48,8 @@
 #else
 #define LOGE printf
 #endif
+
+typedef struct PacketQueue {
+	unsigned char* h264Packet;
+	unsigned int h264PacketLength;
+} PacketQueue;

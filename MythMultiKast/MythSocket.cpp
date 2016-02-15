@@ -19,10 +19,10 @@ Http://code.google.com/mythkast
 B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
-#include "PEOPLE.hh"
+#include "MythSocket.hh"
 
 
-void PEOPLE::generateSock(TCPsocket msock)
+void MythSocket::generateSock(TCPsocket msock)
 {
 	if (msock){
 		sock = msock;
@@ -30,7 +30,7 @@ void PEOPLE::generateSock(TCPsocket msock)
 	}
 }
 
-PEOPLE::PEOPLE()
+MythSocket::MythSocket()
 {
 	isrunning = false;
 	SDL_Init(NULL);
@@ -43,7 +43,7 @@ PEOPLE::PEOPLE()
 	downlength = 0;
 }
 
-PEOPLE::PEOPLE(const char* ip, int port)
+MythSocket::MythSocket(const char* ip, int port)
 {
 	IPaddress serverIP = {0};
 	isrunning = false;
@@ -60,7 +60,7 @@ PEOPLE::PEOPLE(const char* ip, int port)
 	isPush = 0;
 }
 
-int PEOPLE::socket_SendStr(const char* data, int length){
+int MythSocket::socket_SendStr(const char* data, int length){
 	if (length == -2){
 		length = strlen(data);
 	}
@@ -79,11 +79,11 @@ int PEOPLE::socket_SendStr(const char* data, int length){
 //	return 0;
 }
 
-PEOPLE::~PEOPLE()
+MythSocket::~MythSocket()
 {
 }
 
-int PEOPLE::socket_ReceiveData(char* recvBuf, int recvLength,int timeout)
+int MythSocket::socket_ReceiveData(char* recvBuf, int recvLength, int timeout)
 {
 
 	if (SDLNet_CheckSockets(socketset, timeout) > 0){
@@ -98,7 +98,7 @@ int PEOPLE::socket_ReceiveData(char* recvBuf, int recvLength,int timeout)
 		return -1;
 }
 
-int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
+int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 {
 	int tmplength = strlen(lnstr);
 	int i;
@@ -144,15 +144,19 @@ int PEOPLE::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
 	}
 }
 
-int PEOPLE::socket_strcmp(char* buff, char*str, int length)
+int MythSocket::socket_strcmp(char* buff, char*str, int length)
 {
+#ifdef WIN32
+	return SDL_memcmp(buff, str, length);
+#else
 	for (int i = 0; i < length; i++)
 		if (buff[i] != str[i])
 			return 1;
 	return 0;
+#endif
 }
 
-int PEOPLE::socket_CloseSocket()
+int MythSocket::socket_CloseSocket()
 {
 	//if (downbuffer){
 	//	delete [] downbuffer;

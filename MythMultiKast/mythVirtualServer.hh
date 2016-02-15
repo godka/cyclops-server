@@ -3,7 +3,7 @@
 #include <stdio.h>
 /* The maximum number of people who can talk at once */
 #define CHAT_MAXPEOPLE  200
-#include "PEOPLE.hh"
+#include "MythSocket.hh"
 #include <string>
 using namespace std;
 /*
@@ -26,10 +26,10 @@ public:
 	static mythVirtualServer* CreateNew(int port);
 	int StartServer();
 	int StopServer();
-	virtual void ServerCloseCallBack(PEOPLE* people);
-	virtual void ServerDecodeCallBack(PEOPLE* people,char* data,int datalength);
-	int closePeople(PEOPLE* people);
-	int ContainPeople(PEOPLE* mpeople);
+	virtual void ServerCloseCallBack(MythSocket* people);
+	virtual void ServerDecodeCallBack(MythSocket* people, char* data, int datalength);
+	int closePeople(MythSocket* people);
+	int ContainPeople(MythSocket* mpeople);
 	~mythVirtualServer(void);
 protected:
 	mythVirtualServer(int port);
@@ -42,7 +42,7 @@ private:
 	bool m_stop;
 	void HandleServer(void);
 	void HandleClient(int which);
-	PEOPLE *people[CHAT_MAXPEOPLE];
+	MythSocket *people[CHAT_MAXPEOPLE];
 	SDL_Thread* acceptthreadHandle;
 };
 

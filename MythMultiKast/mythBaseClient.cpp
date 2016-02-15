@@ -38,7 +38,7 @@ mythBaseClient::mythBaseClient(mythStreamServer* server , PEOPLE* people)
 	mymutex = SDL_CreateMutex();
 }
 */
-mythBaseClient::mythBaseClient(PEOPLE* people,bool usethread)
+mythBaseClient::mythBaseClient(MythSocket* people, bool usethread)
 {
 	//mserver = server;
 	//mypacketdata = NULL;
@@ -195,7 +195,7 @@ mythBaseClient* mythBaseClient::CreateNew(mythStreamServer* server , PEOPLE* peo
 }
 */
 
-mythBaseClient* mythBaseClient::CreateNew(PEOPLE* people, bool usethread /*= false*/)
+mythBaseClient* mythBaseClient::CreateNew(MythSocket* people, bool usethread /*= false*/)
 {
 	return new mythBaseClient(people,usethread);
 
