@@ -6,6 +6,7 @@ mythRedisList::mythRedisList()
 	listread = 0;
 	maxlistread = 0;
 	listwrite = 0;
+	file = fopen("in.264", "w");
 	context = redisConnect("127.0.0.1", 6379);
 	if (context->err) {
 		printf("SET:Redis:Connection error: %s\n", context->errstr);
@@ -28,7 +29,7 @@ PacketQueue * mythRedisList::get(int freePacket /*= 0*/)
 		//if (listread % AVFRAMECOUNT == 0){
 		tmplistwrite = readListIndex((int) magic);
 		if (tmplistwrite - listread > 10 || tmplistwrite < listread){
-			listread = tmplistwrite - 5;
+			listread = tmplistwrite;
 		}
 		//}
 		//if (listread != maxlistread || listread == 0){
@@ -50,6 +51,7 @@ PacketQueue * mythRedisList::get(int freePacket /*= 0*/)
 int mythRedisList::put(unsigned char* data, unsigned int length)
 {
 
+	fwrite(data, length, 1, file);
 	if (context){
 		redisCommand(context, "SET %d:%d %b", (int) magic, listwrite, data, length);
 		if (listwrite >= AVFRAMECOUNT){
