@@ -38,6 +38,8 @@
 //#define MYTH_STREAM_CLOSE
 //#define MYTH_USING_REDIS 1	//force use redis
 #define AVFRAMECOUNT 25
+#define RTSPLINK "rtsp://%s:%s%s"
+#define FINDCAMERA "select a.ip,a.username,a.password,a.httpport,b.FullSize,a.vstypeid,c.port,c.subname from videoserver as a,vstype as b,camera as c where a.vstypeid = b.vstypeid and a.videoserverid = c.videoserverid and c.cameraid = %d"
 
 #ifdef ANDROID
 #include <android/log.h>
@@ -54,4 +56,4 @@ typedef struct PacketQueue {
 	unsigned int h264PacketLength;
 } PacketQueue;
 
-extern char* global_filename = NULL;
+//char* global_filename = NULL;

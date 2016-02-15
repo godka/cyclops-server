@@ -1,5 +1,6 @@
 #include "mythRedisDecoder.hh"
-char* global_filename = NULL;
+#include "mythGlobal.hh"
+//char* global_filename = NULL;
 
 mythRedisDecoder::mythRedisDecoder(int cameraid)
 {
@@ -12,12 +13,16 @@ mythRedisDecoder::~mythRedisDecoder()
 {
 }
 
-void mythRedisDecoder::start()
+int mythRedisDecoder::MainLoop()
 {
 	char tmp[512] = { 0 };
-	SDL_snprintf(tmp, 512, "%s -client %d", global_filename, m_cameraid);
+#ifdef WIN32
+	SDL_snprintf(tmp, 512, "start %s -client %d", mythGlobal::GetInstance()->global_filename, m_cameraid);
+#else
+	SDL_snprintf(tmp, 512, "%s -client %d", mythGlobal::GetInstance()->global_filename, m_cameraid);
+#endif
 	puts(tmp);
-	system(tmp);
+	return system(tmp);
 }
 
 void mythRedisDecoder::stop()

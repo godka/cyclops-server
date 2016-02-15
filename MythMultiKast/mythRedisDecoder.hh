@@ -7,7 +7,7 @@ public:
 	static mythRedisDecoder* CreateNew(int cameraid){
 		return new mythRedisDecoder(cameraid);
 	}
-	void start();
+	int MainLoop();
 	void stop();
 	~mythRedisDecoder();
 protected:

@@ -15,7 +15,7 @@ public:
 	~mythLive555Decoder(void);
 	static void callbackdatastatic(void *myth,unsigned char* data,unsigned int length);
 	void callbackdata(unsigned char* data,unsigned int length);
-	void start();
+	int MainLoop();
 	void stop();
 protected:
 	mythLive555Decoder(char* rtsplink,char* username,char* password);

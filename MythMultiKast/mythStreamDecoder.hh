@@ -9,14 +9,14 @@ class mythStreamDecoder :
 public:
 	static mythStreamDecoder* CreateNew(char* ip, int port, int CameraID);
 	static mythStreamDecoder* CreateNew(char* ip, int CameraID);
-	void start();
+	//void start();
 	void stop();
 	~mythStreamDecoder(void);
 	static Uint32 TimerCallbackStatic(Uint32 interval, void *param);
+	int MainLoop();
 protected:
 	Uint32 TimerCallback(Uint32 interval);
-	int decodethread();
-	static int decodethreadstatic(void* data);
+	//static int decodethreadstatic(void* data);
 	mythStreamDecoder(char* ip, int port, int CameraID);
 	MythSocket *msocket;
 	SDL_Thread* startthread;

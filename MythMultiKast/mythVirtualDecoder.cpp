@@ -29,10 +29,24 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 	ori_count = 0;
 	ret_count = 0;
 	m_timeid = SDL_AddTimer(1000, TimerCallbackStatic, this);
+	m_thread = NULL;
 }
 
-void mythVirtualDecoder::start(){}
-void mythVirtualDecoder::stop(){}
+void mythVirtualDecoder::start(bool usethread){
+	if (usethread == true){
+		m_thread = SDL_CreateThread(MainLoopstatic, "mainloop", this);
+	}
+	else{
+		printf("I'm in mainloop");
+		MainLoopstatic(this);
+	}
+}
+void mythVirtualDecoder::StopThread(){
+	if (m_thread)
+		SDL_WaitThread(m_thread, NULL);
+	m_thread = NULL;
+	//StopCallback();
+}
 
 mythVirtualDecoder* mythVirtualDecoder::CreateNew(void){
 	return new mythVirtualDecoder();
@@ -54,5 +68,24 @@ Uint32 mythVirtualDecoder::TimerCallback(Uint32 interval){
 }
 
 unsigned int mythVirtualDecoder::GetTimeCount(){
+	return 0;
+}
+
+int mythVirtualDecoder::MainLoopstatic(void* data)
+{
+	mythVirtualDecoder* decoder = (mythVirtualDecoder*) data;
+	if (decoder){
+		return decoder->MainLoop();
+	}
+	return 0;
+}
+
+void mythVirtualDecoder::stop()
+{
+
+}
+
+int mythVirtualDecoder::MainLoop()
+{
 	return 0;
 }

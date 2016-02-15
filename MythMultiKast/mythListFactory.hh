@@ -18,7 +18,7 @@ protected:
 	mythListFactory();
 private:
 	mythVirtualList* vlist;
-	void* magic;
+	//void* magic;
 	int list_type;
 };
 

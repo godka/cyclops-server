@@ -7,8 +7,11 @@ class mythVirtualDecoder :
 {
 public:
 	static mythVirtualDecoder* CreateNew(void);
-	virtual void start();
+	void start(bool usethread = true);
 	virtual void stop();
+	void StopThread();
+	static int MainLoopstatic(void* data);
+	virtual int MainLoop();
 	virtual ~mythVirtualDecoder(void);
 	unsigned int GetTimeCount();
 	static Uint32 TimerCallbackStatic(Uint32 interval, void *param);
@@ -20,5 +23,6 @@ protected:
 	unsigned int ori_count;
 	unsigned int ret_count;
 	SDL_TimerID m_timeid;
+	SDL_Thread* m_thread;
 };
 

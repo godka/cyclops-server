@@ -24,16 +24,16 @@ MythKAst(asdic182@sina.com), in 2013 June.
 mythLive555Decoder::mythLive555Decoder(char* rtsplink,char* username,char* password)
 	:mythVirtualDecoder()
 {
-	m_rtsplink = rtsplink;
-	m_username = username;
-	m_password = password;
+	if (rtsplink)
+		m_rtsplink = rtsplink;
+	if (username)
+		m_username = username;
+	if (password)
+		m_password = password;
 	flag = 0;
 }
 mythLive555Decoder* mythLive555Decoder::CreateNew(char* rtsplink,char* username,char* password){
 	return new mythLive555Decoder(rtsplink,username,password);
-}
-void mythLive555Decoder::start(){
-	startthread = SDL_CreateThread(decodethreadstatic,"decode",this);
 }
 void mythLive555Decoder::callbackdatastatic(void *myth,unsigned char* data,unsigned int length){
 	mythLive555Decoder* mythlive555 = (mythLive555Decoder*)myth;
@@ -44,7 +44,7 @@ void mythLive555Decoder::callbackdata(unsigned char* data,unsigned int length)
 	m_count += length;
 	put(data,length);
 }
-int mythLive555Decoder::decodethread(){
+int mythLive555Decoder::MainLoop(){
 	rtsp = mythRTSP::CreateNew();
 	if (rtsp){
 		client = rtsp->openURL(this->m_rtsplink.c_str(), this->m_username.c_str(), this->m_password.c_str(), mythLive555Decoder::callbackdatastatic, (void*)this);
@@ -54,18 +54,15 @@ int mythLive555Decoder::decodethread(){
 	}
 	return 0;
 }
-int mythLive555Decoder::decodethreadstatic(void* data){
-	mythLive555Decoder* live555decoder = (mythLive555Decoder*)data;
-	return live555decoder->decodethread();
-}
-void mythLive555Decoder::stop(){
-	if (rtsp && client)
-		rtsp->Stop(client);
-	if (startthread)
-		SDL_WaitThread(startthread, NULL); 
-	startthread = NULL;
-	delete rtsp;
-}
 mythLive555Decoder::~mythLive555Decoder(void)
 {
+}
+
+void mythLive555Decoder::stop()
+{
+
+	if (rtsp && client)
+		rtsp->Stop(client);
+	StopThread();
+	delete rtsp;
 }

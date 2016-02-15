@@ -22,6 +22,8 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"
+#include "mythGlobal.hh"
+#include "mythRedisClient.hh"
 //char* global_filename;
 /*
 int checkArgs(int args, char** argv){
@@ -41,12 +43,13 @@ int checkArgs(int args, char** argv){
 */
 int main(int args,char** argv)
 {
-	global_filename = argv[0];
+	mythGlobal::GetInstance()->global_filename = argv[0];
 	//mythUdp* udp = mythUdp::CreateNew(8088,8087);
 	if (args > 2){
 		if (SDL_strcmp(argv[1], "-client") == 0){
 			int cameraid = atoi(argv[2]);
-
+			mythRedisClient* cli = mythRedisClient::CreateNew(cameraid);
+			cli->start();
 		}
 	}
 	else{

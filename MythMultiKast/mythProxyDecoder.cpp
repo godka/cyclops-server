@@ -1,7 +1,7 @@
 #include "mythProxyDecoder.hh"
 
 
-int mythProxyDecoder::decode_thread()
+int mythProxyDecoder::MainLoop()
 {
 #define BUFF_COUNT 1024*1024	
 	char* buf = new char[BUFF_COUNT];
@@ -58,16 +58,9 @@ int mythProxyDecoder::refreshSocket(MythSocket* people)
 	SDL_UnlockMutex(mmutex);
 	return 0;
 }
-
-void mythProxyDecoder::start()
-{
-	this->mthread = SDL_CreateThread(decode_thread_static, "decode_thread_static", this);
-}
-
 void mythProxyDecoder::stop()
 {
 	flag = 1;
-	if (mthread)
-		SDL_WaitThread(mthread, NULL);
+	StopThread();
 	return;
 }

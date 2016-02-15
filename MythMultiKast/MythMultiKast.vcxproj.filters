@@ -55,6 +55,9 @@
     <Filter Include="Source Files\kernel\list">
       <UniqueIdentifier>{18e4aa57-2a0a-4ab9-b7d6-eac7e75f68a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\decoder\redis">
+      <UniqueIdentifier>{3f5a4c70-2ad9-494f-8282-26b058212ea2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -160,6 +163,12 @@
       <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
     <ClCompile Include="mythRedisDecoder.cpp">
+      <Filter>Source Files\decoder\redis</Filter>
+    </ClCompile>
+    <ClCompile Include="mythGlobal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mythRedisClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -264,6 +273,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythRedisDecoder.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythGlobal.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythRedisClient.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

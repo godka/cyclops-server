@@ -103,9 +103,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mythAvlist.cpp" />
     <ClCompile Include="mythBaseClient.cpp" />
+    <ClCompile Include="mythGlobal.cpp" />
     <ClCompile Include="mythListFactory.cpp" />
     <ClCompile Include="mythLive555Decoder.cpp" />
     <ClCompile Include="mythProxyDecoder.cpp" />
+    <ClCompile Include="mythRedisClient.cpp" />
     <ClCompile Include="mythRedisDecoder.cpp" />
     <ClCompile Include="mythRedisList.cpp" />
     <ClCompile Include="mythRTSP.cpp" />
@@ -140,8 +142,10 @@
     <ClInclude Include="mythAvlist.hh" />
     <ClInclude Include="mythBaseClient.hh" />
     <ClInclude Include="MythConfig.hh" />
+    <ClInclude Include="mythGlobal.hh" />
     <ClInclude Include="mythListFactory.hh" />
     <ClInclude Include="mythProxyDecoder.hh" />
+    <ClInclude Include="mythRedisClient.hh" />
     <ClInclude Include="mythRedisDecoder.hh" />
     <ClInclude Include="mythRedisList.hh" />
     <ClInclude Include="mythRTSP.hh" />

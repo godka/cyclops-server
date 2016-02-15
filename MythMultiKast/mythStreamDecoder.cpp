@@ -36,19 +36,11 @@ mythStreamDecoder* mythStreamDecoder::CreateNew(char* ip, int CameraID){
 mythStreamDecoder* mythStreamDecoder::CreateNew(char* ip, int port, int CameraID){
 	return new mythStreamDecoder(ip, port, CameraID);
 }
-void mythStreamDecoder::start(){
-	startthread = SDL_CreateThread(decodethreadstatic,"decode",this);
-}
 void mythStreamDecoder::stop(){
 	//this->startthread = SDL_CreateThread(decodethreadstatic,"decode",this);
 	flag = 1;
-	if (startthread)
-		SDL_WaitThread(startthread,NULL);
+	StopThread();
 	return;
-}
-int mythStreamDecoder::decodethreadstatic(void* data){
-	mythStreamDecoder* m_decoder = (mythStreamDecoder*) data;
-	return m_decoder->decodethread();
 }
 int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
 	while (flag == 0){
@@ -68,7 +60,7 @@ int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
 	}
 	return 1;
 }
-int mythStreamDecoder::decodethread(){
+int mythStreamDecoder::MainLoop(){
 #define BUFF_COUNT 1024*1024	
 	char* buf = new char[BUFF_COUNT];
 	msocket = MythSocket::CreateNew(m_ip, m_port);

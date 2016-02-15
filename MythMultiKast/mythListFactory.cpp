@@ -62,6 +62,6 @@ int mythListFactory::free()
 
 int mythListFactory::SetMagic(void* value)
 {
-	magic = value;
+	vlist->magic = value;
 	return 0;
 }
