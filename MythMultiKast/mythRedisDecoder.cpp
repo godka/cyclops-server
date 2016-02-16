@@ -17,9 +17,9 @@ int mythRedisDecoder::MainLoop()
 {
 	char tmp[512] = { 0 };
 #ifdef WIN32
-	SDL_snprintf(tmp, 512, "start %s -client %d", mythGlobal::GetInstance()->global_filename, m_cameraid);
+	SDL_snprintf(tmp, 512, "start \"\" \"%s\" -client %d", mythGlobal::GetInstance()->global_filename, m_cameraid);
 #else
-	SDL_snprintf(tmp, 512, "%s -client %d", mythGlobal::GetInstance()->global_filename, m_cameraid);
+	SDL_snprintf(tmp, 512, "%s -client %d &", mythGlobal::GetInstance()->global_filename, m_cameraid);
 #endif
 	puts(tmp);
 	return system(tmp);

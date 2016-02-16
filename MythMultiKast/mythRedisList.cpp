@@ -27,7 +27,7 @@ mythRedisList::~mythRedisList()
 
 PacketQueue * mythRedisList::get(int freePacket)
 {
-	memset(&tmp, 0, sizeof(PacketQueue));
+	//memset(&tmp, 0, sizeof(PacketQueue));
 	redisReply* _reply = NULL;
 	unsigned long tmplistwrite = 0;
 	if (context){
@@ -43,6 +43,11 @@ PacketQueue * mythRedisList::get(int freePacket)
 				tmp.h264PacketLength = _reply->len;
 				tmp.magic = _reply;
 				listread++;
+			}
+			else{
+				tmp.h264Packet = 0;
+				tmp.h264PacketLength = 0;
+				tmp.magic = _reply;
 			}
 
 		}
