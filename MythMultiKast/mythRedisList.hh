@@ -1,7 +1,7 @@
 #pragma once
 #include "MythConfig.hh"
 #include "mythVirtualList.hh"
-#include "redis/hiredis.h"
+#include "hiredis.h"
 class mythRedisList
 	:public mythVirtualList
 {
