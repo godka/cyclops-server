@@ -35,8 +35,3 @@ PacketQueue * mythVirtualList::get(int freePacket /*= 0*/)
 {
 	return 0;
 }
-
-int mythVirtualList::free()
-{
-	return 0;
-}

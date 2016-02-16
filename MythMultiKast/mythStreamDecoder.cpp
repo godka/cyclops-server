@@ -91,7 +91,6 @@ int mythStreamDecoder::MainLoop(){
 		msocket->socket_CloseSocket();
 	}
 	delete [] buf;
-	this->free();
 	delete msocket;
 	msocket = NULL;
 	return 0;

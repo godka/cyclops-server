@@ -12,7 +12,6 @@ public:
 	//int put(unsigned char** dataline,unsigned int *datasize,unsigned int width,unsigned int height);
 	int release(PacketQueue *pack);
 	~mythListFactory();
-	int free();
 	int SetMagic(void* value);
 protected:
 	mythListFactory();

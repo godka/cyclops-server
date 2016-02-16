@@ -54,6 +54,7 @@
 typedef struct PacketQueue {
 	unsigned char* h264Packet;
 	unsigned int h264PacketLength;
+	void* magic;
 } PacketQueue;
 
 //char* global_filename = NULL;

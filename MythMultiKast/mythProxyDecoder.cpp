@@ -29,7 +29,6 @@ int mythProxyDecoder::MainLoop()
 	if (msocket){
 		msocket->socket_CloseSocket();
 		delete [] buf;
-		this->free();
 		delete msocket;
 		msocket = NULL;
 	}

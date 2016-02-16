@@ -39,7 +39,7 @@ MythSocket::MythSocket()
 	//SDLNet_TCP_AddSocket(socketset, sock);
 	maxlength = 512;
 	isPush = 0;
-	downbuffer = new char[4097];
+	//downbuffer = new char[4097];
 	downlength = 0;
 }
 
@@ -55,7 +55,7 @@ MythSocket::MythSocket(const char* ip, int port)
 		printf("%p,fuck,not open!\n",this);
 	}
 	SDLNet_TCP_AddSocket(socketset, sock);
-	downbuffer = new char[4097];
+	//downbuffer = new char[4097];
 	downlength = 0;
 	isPush = 0;
 }
@@ -76,7 +76,6 @@ int MythSocket::socket_SendStr(const char* data, int length){
 		return 1;
 		
 	return 0;
-//	return 0;
 }
 
 MythSocket::~MythSocket()
@@ -146,7 +145,7 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 
 int MythSocket::socket_strcmp(char* buff, char*str, int length)
 {
-#ifdef WIN32
+#if 1
 	return SDL_memcmp(buff, str, length);
 #else
 	for (int i = 0; i < length; i++)

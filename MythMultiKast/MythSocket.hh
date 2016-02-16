@@ -24,7 +24,7 @@ public:
 	void* data;
 private:
 	bool isrunning;
-	char* downbuffer;
+	//char* downbuffer;
 	int downlength;
 	int maxlength;
 	SDLNet_SocketSet socketset;

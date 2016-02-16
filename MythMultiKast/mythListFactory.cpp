@@ -52,14 +52,6 @@ int mythListFactory::release(PacketQueue *pack)
 		return NULL;
 }
 
-int mythListFactory::free()
-{
-	if (vlist)
-		return vlist->free();
-	else
-		return NULL;
-}
-
 int mythListFactory::SetMagic(void* value)
 {
 	vlist->magic = value;

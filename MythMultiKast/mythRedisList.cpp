@@ -7,12 +7,17 @@ mythRedisList::mythRedisList()
 	maxlistread = 0;
 	listwrite = 0;
 	//file = fopen("in.264", "w");
-	context = redisConnect("127.0.0.1", 6379);
+	
+	timeval tv = { 0 };
+	tv.tv_sec = 1; tv.tv_usec = 0;
+	context = redisConnectWithTimeout("127.0.0.1", 6379, tv);
 	if (context->err) {
 		printf("SET:Redis:Connection error: %s\n", context->errstr);
 	}
+	else{
+		redisCommand(context, "SET %d:listwrite %d", (int) magic, 0);
+	}
 
-	redisCommand(context, "SET %d:listwrite %d", (int) magic, 0);
 }
 
 
@@ -20,29 +25,26 @@ mythRedisList::~mythRedisList()
 {
 }
 
-PacketQueue * mythRedisList::get(int freePacket /*= 0*/)
+PacketQueue * mythRedisList::get(int freePacket)
 {
 	memset(&tmp, 0, sizeof(PacketQueue));
 	redisReply* _reply = NULL;
 	unsigned long tmplistwrite = 0;
 	if (context){
-		//if (listread % AVFRAMECOUNT == 0){
 		tmplistwrite = readListIndex((int) magic);
 		if (tmplistwrite - listread > 10 || tmplistwrite < listread){
 			listread = tmplistwrite;
 		}
-		//}
-		//if (listread != maxlistread || listread == 0){
-		//	maxlistread = listread;
 		_reply = (redisReply*) redisCommand(context, "GET %d:%d", (int) magic, listread);
 		if (_reply)
 		{
 			if (_reply->len > 0){
-				//printf("reply:%d\n", _reply->len);
 				tmp.h264Packet = (unsigned char*) _reply->str;
 				tmp.h264PacketLength = _reply->len;
+				tmp.magic = _reply;
 				listread++;
 			}
+
 		}
 	}
 	return &tmp;
@@ -50,22 +52,27 @@ PacketQueue * mythRedisList::get(int freePacket /*= 0*/)
 
 int mythRedisList::put(unsigned char* data, unsigned int length)
 {
-
-	//fwrite(data, length, 1, file);
+	redisReply* _reply = NULL;
 	if (context){
-		redisCommand(context, "SET %d:%d %b", (int) magic, listwrite, data, length);
+		_reply = (redisReply*) redisCommand(context, "SET %d:%d %b", (int) magic, listwrite, data, length);
 		if (listwrite >= AVFRAMECOUNT){
-			 redisCommand(context, "del %d:%d", (int) magic, listwrite - AVFRAMECOUNT);
+			_reply = (redisReply*) redisCommand(context, "del %d:%d", (int) magic, listwrite - AVFRAMECOUNT);
 		}
 		listwrite++;
-		redisCommand(context, "SET %d:listwrite %d", (int) magic, listwrite);
-		//printf("write:%d\n", length);
+		_reply = (redisReply*) redisCommand(context, "SET %d:listwrite %d", (int) magic, listwrite);
 	}
 	return 0;
 }
 
 int mythRedisList::release(PacketQueue *pack)
 {
+	if (pack){
+		if (pack->magic){
+			freeReplyObject(pack->magic);
+			//free(pack->magic);
+			//pack->magic = NULL;
+		}
+	}
 	return 0;
 }
 
@@ -75,7 +82,8 @@ unsigned long mythRedisList::readListIndex(int cameraid)
 	if (context){
 		redisReply* _reply = (redisReply*) redisCommand(context, "GET %d:listwrite", (int) cameraid);
 		if (_reply){
-			ret = atol(_reply->str);
+			if (_reply->str)
+				ret = atol(_reply->str);
 		}
 	}
 	return ret;

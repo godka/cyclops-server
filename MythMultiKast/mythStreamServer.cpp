@@ -158,23 +158,20 @@ int mythStreamServer::mainthread()
 {
 	PacketQueue* tmp = NULL;
 	connect();
-	//FILE* file = fopen("test.264", "w");
 	while(isrunning == 0){
 		SDL_PollEvent(NULL);
 		if (decoder){
 			if (baselist.size() <= 0){
-				//printf("size <= 0\n");
 				SDL_Delay(100);
 			}
 			else{
 				tmp = decoder->get();
 				if (tmp){
 					//add omp version
-					//fwrite(tmp->h264Packet, tmp->h264PacketLength, 1, file);
 					if (tmp->h264PacketLength > 0){
 						for (unsigned int i = 0; i < baselist.size(); i++){
 							mythBaseClient* tmpclient = baselist.at(i);
-							if (tmpclient != NULL){
+							if (tmpclient){
 								tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
 							}
 						}
