@@ -14,7 +14,8 @@ mythRedisClient::~mythRedisClient()
 
 void mythRedisClient::start()
 {
-#if 1
+	printf("cameraid = %d start\n",m_cameraid);
+#if 0
 	this->decoder = mythLive555Decoder::CreateNew("rtsp://1029.mythkast.net/test.264",NULL,NULL);
 	if (decoder){
 		decoder->SetMagic((void*) m_cameraid);	//set magic

@@ -23,7 +23,7 @@ private:
 	redisContext* context;
 	PacketQueue tmp;// = { 0 };// (PacketQueue*) SDL_malloc(sizeof(PacketQueue));
 	//int magic_cameraid;
-	FILE* file;
+	//FILE* file;
 protected:
 	mythRedisList();
 };
