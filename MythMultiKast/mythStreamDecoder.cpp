@@ -68,21 +68,21 @@ int mythStreamDecoder::MainLoop(){
 		char tmpsendstr[100];
 		SDL_snprintf(tmpsendstr, 100, "GET /CameraID=%d&Type=zyh264 HTTP/1.0\r\n\r\n", m_cameraid);
 		SendBufferBlock(tmpsendstr);
+		SDL_Delay(100);
 		while (flag == 0){
 			//printf("ready to receive buff\n");
 			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
 			if (rc > 0) {
 				m_count += rc;
 				put((unsigned char*) buf, rc);
+				printf("%d\n", rc);
 			}else{
 				printf("start to reconnect\n");
-				//msocket->Reconnect(m_ip,m_port);
 				SDL_Delay(1000);
 				msocket->socket_CloseSocket();
 				delete msocket;
 				msocket = MythSocket::CreateNew(m_ip, m_port);
 				SendBufferBlock(tmpsendstr);
-				//msocket->socket_SendStr(tmpsendstr);
 				printf("reconnecting\n");
 			}
 			SDL_PollEvent(NULL);

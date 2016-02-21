@@ -62,10 +62,10 @@ int mythBaseClient::DataCallBack(void* data, int len)
 		"Content-Type: image/h264\r\nContent_Length: %06d Stamp:%04x%02x%02x %04x%02x%02x %02d %08x\n\n", len,
 		1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec,
 		0, iFrameCount);
-	mythSendMessage(tempbuf);
+	//mythSendMessage(tempbuf);
 	iFrameCount++;
 	mythSendMessage(data, len);
-	mythSendMessage((void*)" \n\n--myboundary\n");
+	//mythSendMessage((void*)" \n\n--myboundary\n");
 	return 0;
 }
 

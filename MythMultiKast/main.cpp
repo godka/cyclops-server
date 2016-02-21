@@ -43,6 +43,8 @@ int checkArgs(int args, char** argv){
 */
 int main(int args,char** argv)
 {
+	SDL_Init(SDL_INIT_EVENTS);
+	SDLNet_Init();
 	mythGlobal::GetInstance()->global_filename = argv[0];
 	//mythUdp* udp = mythUdp::CreateNew(8088,8087);
 	if (args > 2){
@@ -54,11 +56,6 @@ int main(int args,char** argv)
 	}
 	else{
 		mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport);
-		//checkArgs(args, argv);
-		//if (args > 1){
-		//	mythVirtualSqlite::GetInstance()->SetSQLIP(argv[1]);
-		//	SDL_Log("sqlip is now changed to %s\n", argv[1]);
-		//}
 		streammapserver->StartServer();
 #ifdef _DEBUG
 		char input[256];

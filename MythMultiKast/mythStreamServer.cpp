@@ -109,6 +109,14 @@ void mythStreamServer::connect()
 				}
 				delete result;
 			}
+			else{
+				this->decoder = mythStreamDecoder::CreateNew("192.168.1.109",1017);
+
+				if (decoder){
+					decoder->SetMagic((void*) m_cameraid);	//set magic
+					decoder->start();
+				}
+			}
 			//if (result)
 			break;
 		case 1:
