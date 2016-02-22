@@ -75,7 +75,7 @@ int mythStreamDecoder::MainLoop(){
 			if (rc > 0) {
 				m_count += rc;
 				put((unsigned char*) buf, rc);
-				printf("%d\n", rc);
+				//printf("%d\n", rc);
 			}else{
 				printf("start to reconnect\n");
 				SDL_Delay(1000);
