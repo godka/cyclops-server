@@ -129,6 +129,9 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 								contentlength -= len;
 							}
 							else if (len == 0){
+								return 0;
+							}
+							else{
 								return -1;
 							}
 						}
@@ -137,7 +140,10 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 				}
 			}
 		}
-		else if(len <= 0){
+		else if(len == 0){
+			return 0;
+		}
+		else{
 			return -1;
 		}
 	}
