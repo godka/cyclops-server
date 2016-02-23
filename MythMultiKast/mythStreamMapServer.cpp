@@ -94,7 +94,8 @@ void mythStreamMapServer::ServerDecodeCallBack(MythSocket* people, char* data, i
 {
 	map<int,mythStreamServer*>::iterator Iter;
 	int cameraid = -1;
-	SDL_sscanf(data,"GET /CameraID=%d",&cameraid);
+	char cameratype[20] = { 0 };
+	SDL_sscanf(data,"GET /CameraID=%d&Type=%s ",&cameraid,cameratype);
 	if(cameraid != -1){
 		mythStreamServer* server = NULL;
 		//find cameraid from map
@@ -116,10 +117,7 @@ void mythStreamMapServer::ServerDecodeCallBack(MythSocket* people, char* data, i
 		if(!people->addtionaldata){
 			SDL_LockMutex(mapmutex);
 			int usingthread = read_profile_int("config", "usethread", 0, MYTH_INFORMATIONINI_FILE);
-			if (usingthread == 1)
-				client = mythBaseClient::CreateNew(people,true);
-			else
-				client = mythBaseClient::CreateNew(people, false);
+			client = mythBaseClient::CreateNew(people, usingthread,cameratype);
 			people->data = server;
 			people->addtionaldata = client;
 			server->AppendClient(client);

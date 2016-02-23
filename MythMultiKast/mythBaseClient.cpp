@@ -22,7 +22,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "mythBaseClient.hh"
 #define firstrequest "HTTP/1.1 200 OK\r\nServer: WWeb/2.0\r\nConnection: Close\r\nContent-Type: multipart/x-mixed-replace;boundary=--myboundary\r\n\r\n \n\n--myboundary\n"
 
-mythBaseClient::mythBaseClient(MythSocket* people, bool usethread)
+mythBaseClient::mythBaseClient(MythSocket* people, int usethread, const char* CameraType)
 {
 	musethread = usethread;
 	mpeople = people;
@@ -32,7 +32,15 @@ mythBaseClient::mythBaseClient(MythSocket* people, bool usethread)
 	iFrameCount = 4096;
 	mymutex = SDL_CreateMutex();
 	misrunning = true;
-	if (musethread)
+	if (CameraType){
+		if (SDL_strcmp(CameraType, "zyh264") == 0){
+			m_cameratype = 0;	//stream
+		}
+		else{ 
+			m_cameratype = 1;//HTTP
+		}
+	}
+	if (musethread == SDL_TRUE)
 		mthread = SDL_CreateThread(SendThreadStatic, "sendthread", this);
 }
 mythBaseClient::~mythBaseClient(void)
@@ -62,16 +70,18 @@ int mythBaseClient::DataCallBack(void* data, int len)
 		"Content-Type: image/h264\r\nContent_Length: %06d Stamp:%04x%02x%02x %04x%02x%02x %02d %08x\n\n", len,
 		1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec,
 		0, iFrameCount);
-	//mythSendMessage(tempbuf);
+	if (m_cameratype == 0)
+		mythSendMessage(tempbuf);
 	iFrameCount++;
 	mythSendMessage(data, len);
-	//mythSendMessage((void*)" \n\n--myboundary\n");
+	if (m_cameratype == 0)
+		mythSendMessage((void*)" \n\n--myboundary\n");
 	return 0;
 }
 
-mythBaseClient* mythBaseClient::CreateNew(MythSocket* people, bool usethread /*= false*/)
+mythBaseClient* mythBaseClient::CreateNew(MythSocket* people, int usethread, const char* CameraType)
 {
-	return new mythBaseClient(people,usethread);
+	return new mythBaseClient(people, usethread, CameraType);
 
 }
 

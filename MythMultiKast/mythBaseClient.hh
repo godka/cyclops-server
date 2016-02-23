@@ -20,12 +20,12 @@ public:
 			return 0;
 	}
 	int SendThread();
-	static mythBaseClient* CreateNew(MythSocket* people, bool usethread = false);
+	static mythBaseClient* CreateNew(MythSocket* people, int usethread = 0,const char* CameraType = NULL);
 	int mythSendMessage(void* data, int length = -1);
 	int DataCallBack(void* data, int len);
 	~mythBaseClient(void);
 private:
-	bool musethread;		//use thread or not
+	int musethread;		//use thread or not
 	bool isfirst;
 	MythSocket* mpeople;
 	int isrunning;
@@ -33,8 +33,9 @@ private:
 	SDL_mutex* mymutex;
 	int generate(char* data,int length);
 	int iFrameCount;
+	int m_cameratype;
 protected:
-	mythBaseClient(MythSocket* people, bool usethread);
+	mythBaseClient(MythSocket* people, int usethread, const char* CameraType);
 	SDL_Thread* mthread;
 	bool misrunning;
 };

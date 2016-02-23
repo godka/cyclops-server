@@ -43,8 +43,8 @@ int checkArgs(int args, char** argv){
 */
 int main(int args,char** argv)
 {
-	//SDL_Init(SDL_INIT_EVENTS);
-	//SDLNet_Init();
+	SDL_Init(SDL_INIT_EVENTS);
+	SDLNet_Init();
 	mythGlobal::GetInstance()->global_filename = argv[0];
 	//mythUdp* udp = mythUdp::CreateNew(8088,8087);
 	if (args > 2){

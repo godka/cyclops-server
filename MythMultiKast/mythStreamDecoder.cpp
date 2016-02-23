@@ -70,12 +70,10 @@ int mythStreamDecoder::MainLoop(){
 		SendBufferBlock(tmpsendstr);
 		SDL_Delay(100);
 		while (flag == 0){
-			//printf("ready to receive buff\n");
 			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
 			if (rc > 0) {
 				m_count += rc;
 				put((unsigned char*) buf, rc);
-				//printf("%d\n", rc);
 			}else if(rc == 0){
 				printf("start to reconnect\n");
 				SDL_Delay(1000);
