@@ -171,9 +171,6 @@
     <ClCompile Include="mythRedisClient.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="mythGetDict.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -283,9 +280,6 @@
     </ClInclude>
     <ClInclude Include="hiredis.h">
       <Filter>Header Files\redis</Filter>
-    </ClInclude>
-    <ClInclude Include="mythGetDict.hh">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -106,7 +106,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mythAvlist.cpp" />
     <ClCompile Include="mythBaseClient.cpp" />
-    <ClCompile Include="mythGetDict.cpp" />
     <ClCompile Include="mythGlobal.cpp" />
     <ClCompile Include="mythListFactory.cpp" />
     <ClCompile Include="mythLive555Decoder.cpp" />
@@ -148,7 +147,6 @@
     <ClInclude Include="mythAvlist.hh" />
     <ClInclude Include="mythBaseClient.hh" />
     <ClInclude Include="MythConfig.hh" />
-    <ClInclude Include="mythGetDict.hh" />
     <ClInclude Include="mythGlobal.hh" />
     <ClInclude Include="mythListFactory.hh" />
     <ClInclude Include="mythProxyDecoder.hh" />

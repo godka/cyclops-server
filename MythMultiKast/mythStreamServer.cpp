@@ -110,7 +110,7 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("192.168.1.109",1017);
+				this->decoder = mythStreamDecoder::CreateNew("120.204.70.218",1017);
 
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
@@ -155,6 +155,7 @@ bool mythStreamServer::FindClient(vector <mythBaseClient*>::iterator beg,
 		return false;
 }
 int mythStreamServer::AppendClient(mythBaseClient* client){
+	printf("Appending Client,%d\n", client);
 	SDL_LockMutex(streamservermutex);
 	if (!FindClient(baselist.begin(), baselist.end(), client)){
 		baselist.push_back(client);
@@ -230,6 +231,7 @@ int mythStreamServer::getClientNumber()
 
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
+	printf("Dropping Client,%d\n", client);
 	SDL_LockMutex(streamservermutex);
 	for (vector<mythBaseClient*>::iterator iter = baselist.begin(); iter != baselist.end();iter++)
 	{
