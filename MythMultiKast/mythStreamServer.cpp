@@ -110,7 +110,7 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("120.204.70.218",1017);
+				this->decoder = mythStreamDecoder::CreateNew("192.168.1.117",1017);
 
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
@@ -154,11 +154,7 @@ bool mythStreamServer::FindClient(vector <mythBaseClient*>::iterator beg,
 		return false;
 }
 
-int mythStreamServer::getSize(){
-	SDL_LockMutex(streamservermutex);
-	return baselist.size();
-	SDL_UnlockMutex(streamservermutex);
-}
+
 
 int mythStreamServer::AppendClient(mythBaseClient* client){
 	printf("Appending Client,%d\n", client);
@@ -171,24 +167,26 @@ int mythStreamServer::AppendClient(mythBaseClient* client){
 }
 int mythStreamServer::mainthread()
 {
+	//int msize = 0;
 	PacketQueue* tmp = NULL;
 	connect();
 	while (isrunning == 0){
 		SDL_PollEvent(NULL);
 		if (decoder){
+			//msize = getClientNumber();
 			tmp = decoder->get();
 			if (tmp){
 				//add omp version
 				if (tmp->h264PacketLength > 0){
-					for (unsigned int i = 0; i < getSize(); i++){
-						mythBaseClient* tmpclient = baselist.at(i);
+					//for (unsigned int i = 0; i < msize; i++){
+					for (vector<mythBaseClient*>::iterator iter = baselist.begin(); iter != baselist.end(); iter++){
+						mythBaseClient* tmpclient = *iter;
 						if (tmpclient){
 							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
 						}
 					}
 				}
 				decoder->release(tmp);
-				SDL_Delay(1);
 			}
 			SDL_PollEvent(NULL);
 			SDL_Delay(1);
@@ -224,7 +222,11 @@ int mythStreamServer::stop()
 
 int mythStreamServer::getClientNumber()
 {
-	return baselist.size();
+	unsigned int ret_size = 0;
+	//SDL_LockMutex(streamservermutex);
+	ret_size = baselist.size();
+	//SDL_UnlockMutex(streamservermutex);
+	return ret_size;
 }
 
 int mythStreamServer::DropClient(mythBaseClient* client)
