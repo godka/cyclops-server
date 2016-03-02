@@ -141,8 +141,7 @@ int mythStreamServer::mainthreadstatic( void* data )
 bool mythStreamServer::FindClient(vector <mythBaseClient*>::iterator beg,
 	vector <mythBaseClient*>::iterator end, mythBaseClient* ival)
 {
-	while (beg != end)
-	{
+	while (beg != end){
 		if (*beg == ival)
 			break;
 		else
@@ -154,6 +153,13 @@ bool mythStreamServer::FindClient(vector <mythBaseClient*>::iterator beg,
 	else
 		return false;
 }
+
+int mythStreamServer::getSize(){
+	SDL_LockMutex(streamservermutex);
+	return baselist.size();
+	SDL_UnlockMutex(streamservermutex);
+}
+
 int mythStreamServer::AppendClient(mythBaseClient* client){
 	printf("Appending Client,%d\n", client);
 	SDL_LockMutex(streamservermutex);
@@ -167,33 +173,25 @@ int mythStreamServer::mainthread()
 {
 	PacketQueue* tmp = NULL;
 	connect();
-	while(isrunning == 0){
+	while (isrunning == 0){
 		SDL_PollEvent(NULL);
 		if (decoder){
-			if (baselist.size() <= 0){
-				SDL_Delay(100);
-			}
-			else{
-				tmp = decoder->get();
-				if (tmp){
-					//add omp version
-					if (tmp->h264PacketLength > 0){
-						for (unsigned int i = 0; i < baselist.size(); i++){
-							mythBaseClient* tmpclient = baselist.at(i);
-							if (tmpclient){
-								tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
-							}
+			tmp = decoder->get();
+			if (tmp){
+				//add omp version
+				if (tmp->h264PacketLength > 0){
+					for (unsigned int i = 0; i < getSize(); i++){
+						mythBaseClient* tmpclient = baselist.at(i);
+						if (tmpclient){
+							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
 						}
 					}
-					decoder->release(tmp);
-					SDL_Delay(1);
-					//baselist.push_back(this);
 				}
-				//else{
-				SDL_PollEvent(NULL);
+				decoder->release(tmp);
 				SDL_Delay(1);
-				//}
 			}
+			SDL_PollEvent(NULL);
+			SDL_Delay(1);
 		}
 	}
 	if (decoder)

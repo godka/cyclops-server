@@ -15,7 +15,7 @@ int mythProxyDecoder::MainLoop()
 				put((unsigned char*) buf, rc);
 			}
 			else{
-				msocket->socket_CloseSocket();
+		//		msocket->socket_CloseSocket();
 				msocket = NULL;
 			}
 		}
@@ -27,9 +27,9 @@ int mythProxyDecoder::MainLoop()
 		SDL_PollEvent(NULL);
 	}
 	if (msocket){
-		msocket->socket_CloseSocket();
+		//msocket->socket_CloseSocket();
 		delete [] buf;
-		delete msocket;
+		//delete msocket;
 		msocket = NULL;
 	}
 	return 0;

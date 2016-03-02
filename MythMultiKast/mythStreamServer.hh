@@ -18,6 +18,7 @@ public:
 	//int addClientNumber();
 	//int minClientNumber();
 	//int setClientNumber(int num);
+	int getSize();
 	int getClientNumber();
 	int AppendClient(mythBaseClient* client);
 	int DropClient(mythBaseClient* client);
