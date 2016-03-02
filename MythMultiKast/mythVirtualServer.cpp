@@ -135,6 +135,7 @@ void mythVirtualServer::HandleClient(int which){
 	int length;
 	int maxlen = 512;
 	datalength = 0;
+	//may have some bugs
 	for(;;){
 		length = SDLNet_TCP_Recv(people[which]->sock, data + datalength, maxlen);
 		datalength += length;
