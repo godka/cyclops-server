@@ -157,8 +157,10 @@ void mythVirtualServer::HandleClient(int which){
 int mythVirtualServer::closePeople(MythSocket* people){
 	people->active = 0;
 	ServerCloseCallBack(people);
-	SDLNet_TCP_DelSocket(socketset, people->sock);
-	SDLNet_TCP_Close(people->sock);
+	if (people->sock)
+		SDLNet_TCP_DelSocket(socketset, people->sock);
+	if (people->sock)
+		SDLNet_TCP_Close(people->sock);
 	people->sock = NULL;
 	people->isPush = NULL;
 	people->addtionaldata = NULL;
