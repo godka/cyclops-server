@@ -12,6 +12,9 @@ mythListFactory::mythListFactory()
 	case 1:
 		vlist = mythRedisList::CreateNew();
 		break;
+	case 2:
+		vlist = mythShareMemList::CreateNew();
+		break;
 	default:
 		vlist = NULL;
 		break;

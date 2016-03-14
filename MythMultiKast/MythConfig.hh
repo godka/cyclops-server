@@ -16,11 +16,11 @@
 #if (defined _WIN32) || (defined WIN32)
 #	
 #	pragma comment(lib,"ws2_32")
-#	ifdef _DEBUG
-#		pragma comment(lib,"live555-multikast-debug.lib")
-#	else
-		#pragma comment(lib,"live555-multikast-release.lib")
-#	endif
+//#	ifdef _DEBUG
+//#		pragma comment(lib,"live555-multikast-debug.lib")
+//#	else
+//		#pragma comment(lib,"live555-multikast-release.lib")
+//#	endif
 #	pragma comment(lib,"SDL2.lib")
 #	pragma comment(lib,"SDL2main.lib")
 #	pragma comment(lib,"SDL2_net.lib")

@@ -3,6 +3,7 @@
 #include "mythVirtualList.hh"
 #include "mythAvlist.hh"
 #include "mythRedisList.hh"
+#include "mythShareMemList.hh"
 class mythListFactory
 {
 public:
