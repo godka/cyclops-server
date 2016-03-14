@@ -37,7 +37,7 @@ void mythVirtualDecoder::start(bool usethread){
 		m_thread = SDL_CreateThread(MainLoopstatic, "mainloop", this);
 	}
 	else{
-		printf("I'm in mainloop");
+		printf("[mythmultikast]I'm in mainloop\n");
 		MainLoopstatic(this);
 	}
 }

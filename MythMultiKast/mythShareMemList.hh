@@ -15,6 +15,7 @@ public:
 	~mythShareMemList();
 protected:
 	mythShareMemList();
+	int Init();
 private:
 	ShareMemory* m_sharememory;
 	char* m_sharebuffer; 
@@ -22,6 +23,7 @@ private:
 	PacketQueue *ListPacket[AVFRAMECOUNT];
 	SDL_mutex *mutex;
 	int listwrite, listread;
+	int* tmpwrite;
 	unsigned char* putcore(unsigned char* data, unsigned int datasize);
 	//unsigned char* totalbuffer;
 	unsigned int totalptr;
