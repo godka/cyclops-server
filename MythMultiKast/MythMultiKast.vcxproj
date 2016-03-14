@@ -310,6 +310,7 @@
     <ClCompile Include="OurRTSPClient.cpp" />
     <ClCompile Include="MythSocket.cpp" />
     <ClCompile Include="sds.c" />
+    <ClCompile Include="ShareMemory.cpp" />
     <ClCompile Include="StreamClientState.cpp" />
     <ClCompile Include="StreamSink.cpp" />
     <ClCompile Include="tinystr.cpp" />
@@ -351,6 +352,7 @@
     <ClInclude Include="OurRTSPClient.hh" />
     <ClInclude Include="MythSocket.hh" />
     <ClInclude Include="sds.h" />
+    <ClInclude Include="ShareMemory.hh" />
     <ClInclude Include="StreamClientState.hh" />
     <ClInclude Include="StreamSink.hh" />
     <ClInclude Include="tinystr.h" />

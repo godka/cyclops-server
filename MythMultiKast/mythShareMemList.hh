@@ -1,5 +1,6 @@
 #pragma once
 #include "mythVirtualList.hh"
+#include "ShareMemory.hh"
 class mythShareMemList :
 	public mythVirtualList
 {
@@ -14,5 +15,15 @@ public:
 	~mythShareMemList();
 protected:
 	mythShareMemList();
+private:
+	ShareMemory* m_sharememory;
+	char* m_sharebuffer; 
+	char* m_listbuffer;
+	PacketQueue *ListPacket[AVFRAMECOUNT];
+	SDL_mutex *mutex;
+	int listwrite, listread;
+	unsigned char* putcore(unsigned char* data, unsigned int datasize);
+	//unsigned char* totalbuffer;
+	unsigned int totalptr;
 };
 

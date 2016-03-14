@@ -61,6 +61,12 @@
     <Filter Include="Source Files\kernel\live555">
       <UniqueIdentifier>{36437114-ec84-4344-b398-a519fcb7c342}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\kernel\memory">
+      <UniqueIdentifier>{c54bcbdd-405a-4232-adb2-5fff1b615ae4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tinyxml">
+      <UniqueIdentifier>{b3670980-68a9-4273-b673-3d591e139ad2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -720,6 +726,9 @@
     <ClCompile Include="mythShareMemList.cpp">
       <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
+    <ClCompile Include="ShareMemory.cpp">
+      <Filter>Source Files\kernel\memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -744,12 +753,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythVirtualServer.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tinyxml.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tinystr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythVirtualSqlite.hh">
@@ -809,12 +812,6 @@
     <ClInclude Include="mythRedisClient.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="net.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sds.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="async.h">
       <Filter>Header Files\redis</Filter>
     </ClInclude>
@@ -832,6 +829,21 @@
     </ClInclude>
     <ClInclude Include="mythShareMemList.hh">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShareMemory.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sds.h">
+      <Filter>Header Files\redis</Filter>
+    </ClInclude>
+    <ClInclude Include="net.h">
+      <Filter>Header Files\redis</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml.h">
+      <Filter>Header Files\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="tinystr.h">
+      <Filter>Header Files\tinyxml</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

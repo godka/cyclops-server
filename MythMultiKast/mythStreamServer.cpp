@@ -110,7 +110,7 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("192.168.1.117",1017);
+				this->decoder = mythStreamDecoder::CreateNew("120.204.70.218",1017);
 
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
@@ -121,8 +121,17 @@ void mythStreamServer::connect()
 			break;
 		case 1:
 			decoder = mythRedisDecoder::CreateNew(m_cameraid);
-			if (decoder)
+			if (decoder){
+				decoder->SetMagic((void*) m_cameraid);	//set magic
 				decoder->start();
+			}
+			break;
+		case 2:
+			this->decoder = mythStreamDecoder::CreateNew("120.204.70.218", 1017);
+			if (decoder){
+				decoder->SetMagic((void*) m_cameraid);	//set magic
+				decoder->start();
+			}
 			break;
 		default:
 			break;

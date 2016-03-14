@@ -65,6 +65,14 @@ void mythRedisClient::start()
 		}
 		delete result;
 	}
+	else{
+		this->decoder = mythStreamDecoder::CreateNew("120.204.70.218", 1017);
+
+		if (decoder){
+			decoder->SetMagic((void*) m_cameraid);	//set magic
+			decoder->start(false);
+		}
+	}
 #endif
 }
 

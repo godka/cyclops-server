@@ -29,7 +29,7 @@ mythAvlist::mythAvlist(void)
 	this->startread = false;
 	this->mutex = SDL_CreateMutex();
 	this->totalptr = 0;
-	mBufferSize = 5;
+	mBufferSize = AVBUFFERSIZE;
 	InitalList();
 }
 int mythAvlist::InitalList(){

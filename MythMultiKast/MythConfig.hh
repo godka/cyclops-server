@@ -37,6 +37,7 @@
 #define MYTH_SERV_RECV_BUFFLEN 4096		//len to recv the buffer when recving data from mythvirtualserver
 //#define MYTH_STREAM_CLOSE
 //#define MYTH_USING_REDIS 1	//force use redis
+#define AVBUFFERSIZE 5 //M
 #define AVFRAMECOUNT 25
 #define RTSPLINK "rtsp://%s:%s%s"
 #define FINDCAMERA "select a.ip,a.username,a.password,a.httpport,b.FullSize,a.vstypeid,c.port,c.subname from videoserver as a,vstype as b,camera as c where a.vstypeid = b.vstypeid and a.videoserverid = c.videoserverid and c.cameraid = %d"
@@ -51,6 +52,7 @@
 #define LOGE printf
 #endif
 
+//magic is a fucking rubbish recently,
 typedef struct PacketQueue {
 	unsigned char* h264Packet;
 	unsigned int h264PacketLength;
