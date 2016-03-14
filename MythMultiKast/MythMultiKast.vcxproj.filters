@@ -174,9 +174,6 @@
     <ClCompile Include="mythRedisClient.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="mythShareMemList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="live555\inet.c">
       <Filter>Source Files\kernel\live555</Filter>
     </ClCompile>
@@ -719,6 +716,9 @@
     </ClCompile>
     <ClCompile Include="live555\WAVAudioFileServerMediaSubsession.cpp">
       <Filter>Source Files\kernel\live555</Filter>
+    </ClCompile>
+    <ClCompile Include="mythShareMemList.cpp">
+      <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
