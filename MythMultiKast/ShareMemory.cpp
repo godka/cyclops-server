@@ -49,7 +49,10 @@ ShareMemory::ShareMemory(const int key, unsigned long size, const char *path)
 #ifndef WIN32
 		if ("" != m_mapFilePath) return;
 #endif
-		if (!Create()) return;
+		if (!Create()){
+			puts("Create Sharememory Error!");
+			return;
+		}
 		Open(FILE_MAP_ALL_ACCESS);
 		m_isCreated = true;
 	}
@@ -144,6 +147,7 @@ bool ShareMemory::Create()
 			if (EACCES == errno) m_lastError += "not have permission to access";
 			if (ENOMEM == errno) m_lastError += "No memory could be allocated for segment overhead";
 			if (ENFILE == errno) m_lastError += "open too many file";
+			puts(m_lastError.c_str());
 			return false;
 		}
 	}

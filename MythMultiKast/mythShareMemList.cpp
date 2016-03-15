@@ -23,17 +23,11 @@ int mythShareMemList::Init(){
 			tmpwrite = (int*) m_sharememory->GetBuffer();
 			m_listbuffer = (char*) m_sharememory->GetBuffer() + sizeof(int);
 			m_sharebuffer = (char*) m_sharememory->GetBuffer() + +sizeof(int) + AVFRAMECOUNT * sizeof(PacketQueue);
-			if (!m_sharememory->isCreated()){
-				printf("I'm your SON.\n");
-			}
-			else{
-				printf("I'm your fucking father.\n");
-			}
 			//if the share memory is first create, initalize list is essential.
 			unsigned char* m_buf = (unsigned char*) m_listbuffer;
 			for (int i = 0; i < AVFRAMECOUNT; i++){
 				ListPacket[i] = (PacketQueue*) m_buf;
-				if (!m_sharememory->isCreated()){
+				if (m_sharememory->isCreated()){
 					ListPacket[i]->h264Packet = NULL;
 					ListPacket[i]->h264PacketLength = 0;
 					ListPacket[i]->magic = NULL;
