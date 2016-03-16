@@ -31,6 +31,7 @@ mythLive555Decoder::mythLive555Decoder(char* rtsplink,char* username,char* passw
 	if (password)
 		m_password = password;
 	flag = 0;
+	isrunning = false;
 }
 mythLive555Decoder* mythLive555Decoder::CreateNew(char* rtsplink,char* username,char* password){
 	return new mythLive555Decoder(rtsplink,username,password);
@@ -45,12 +46,19 @@ void mythLive555Decoder::callbackdata(unsigned char* data,unsigned int length)
 	put(data,length);
 }
 int mythLive555Decoder::MainLoop(){
+	isrunning = true;
 	rtsp = mythRTSP::CreateNew();
-	if (rtsp){
-		client = rtsp->openURL(this->m_rtsplink.c_str(), this->m_username.c_str(), this->m_password.c_str(), mythLive555Decoder::callbackdatastatic, (void*)this);
-		if (client){
-			rtsp->Start(client);
+	while (isrunning){
+		if (rtsp){
+			client = rtsp->openURL(this->m_rtsplink.c_str(), this->m_username.c_str(), this->m_password.c_str(), mythLive555Decoder::callbackdatastatic, (void*)this);
+			if (client){
+				rtsp->Start(client);
+			}
 		}
+		SDL_Delay(1000);
+#ifdef _DEBUG
+		printf("Ready to reconnect\n");
+#endif
 	}
 	return 0;
 }
@@ -60,7 +68,7 @@ mythLive555Decoder::~mythLive555Decoder(void)
 
 void mythLive555Decoder::stop()
 {
-
+	isrunning = false;
 	if (rtsp && client)
 		rtsp->Stop(client);
 	StopThread();

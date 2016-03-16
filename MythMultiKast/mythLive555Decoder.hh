@@ -23,6 +23,7 @@ protected:
 	SDL_Thread* startthread;
 	mythRTSP* rtsp;
 	RTSPClient* client;
+	bool isrunning;
 	char flag;
 };
 

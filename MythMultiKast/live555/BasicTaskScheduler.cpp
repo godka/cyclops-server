@@ -91,15 +91,16 @@ void BasicTaskScheduler::SingleStep(unsigned maxDelayTime) {
   if (selectResult < 0) {
 #if defined(__WIN32__) || defined(_WIN32)
     int err = WSAGetLastError();
+	printf("BasicTask got an error,errorcode:%d\n",err);
     // For some unknown reason, select() in Windoze sometimes fails with WSAEINVAL if
     // it was called with no entries set in "readSet".  If this happens, ignore it:
-    if (err == WSAEINVAL && readSet.fd_count == 0) {
-      err = EINTR;
-      // To stop this from happening again, create a dummy socket:
-      if (fDummySocketNum >= 0) closeSocket(fDummySocketNum);
-      fDummySocketNum = socket(AF_INET, SOCK_DGRAM, 0);
-      FD_SET((unsigned)fDummySocketNum, &fReadSet);
-    }
+  //  if (err == WSAEINVAL && readSet.fd_count == 0) {
+  //    err = EINTR;
+  //    // To stop this from happening again, create a dummy socket:
+ //     if (fDummySocketNum >= 0) closeSocket(fDummySocketNum);
+ //     fDummySocketNum = socket(AF_INET, SOCK_DGRAM, 0);
+  //    FD_SET((unsigned)fDummySocketNum, &fReadSet);
+  //  }
     if (err != EINTR) {
 #else
     if (errno != EINTR && errno != EAGAIN) {
