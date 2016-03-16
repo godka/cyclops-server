@@ -8,13 +8,13 @@
 #include <sys/shm.h>// for void *shmat(int shmid, const void *shmaddr, int shmflg);
 #include <sys/ipc.h>// for int shmget(key_t key, size_t size, int shmflg);
 #include <unistd.h>
-
+#include <memory.h>
 #include<sys/stat.h>
 #include<fcntl.h>
 #include <sys/mman.h>// for void *mmap(void*start,size_t length,int prot,int flags,int fd,off_toffsize);
 
 #include <errno.h> //for errno
-#include <error.h>
+//#include <error.h>
 
 #define FILE_MAP_READ 1
 #define FILE_MAP_WRITE 2
