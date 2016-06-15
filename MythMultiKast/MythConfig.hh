@@ -21,11 +21,22 @@
 //#	else
 //		#pragma comment(lib,"live555-multikast-release.lib")
 //#	endif
-#	pragma comment(lib,"SDL2.lib")
-#	pragma comment(lib,"SDL2main.lib")
-#	pragma comment(lib,"SDL2_net.lib")
+#	pragma comment(lib,"SDL2_x86.lib")
+#	pragma comment(lib,"SDL2main_x86.lib")
+#	pragma comment(lib,"SDL2_net_x86.lib")
 #endif
-
+#if (defined _WIN64) || (defined WIN64)
+#	
+#	pragma comment(lib,"ws2_32")
+//#	ifdef _DEBUG
+//#		pragma comment(lib,"live555-multikast-debug.lib")
+//#	else
+//		#pragma comment(lib,"live555-multikast-release.lib")
+//#	endif
+#	pragma comment(lib,"SDL2_x64.lib")
+#	pragma comment(lib,"SDL2main_x64.lib")
+#	pragma comment(lib,"SDL2_net_x64.lib")
+#endif
 #define mythcmp(A) strcmp(input,A) == 0
 #define streamserverport 5834
 

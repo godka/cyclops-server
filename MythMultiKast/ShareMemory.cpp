@@ -5,7 +5,7 @@
 #include "ShareMemory.hh"
 #include <cstdio>
 #include <cstdlib>
-#ifndef WIN32
+#if !(defined WIN32) && !(defined _WIN64)
 #include <sys/time.h>
 #endif
 
@@ -46,7 +46,7 @@ ShareMemory::ShareMemory(const int key, unsigned long size, const char *path)
 	if (NULL != path) m_mapFilePath = path;
 	if (!Open(FILE_MAP_ALL_ACCESS))
 	{
-#ifndef WIN32
+#if (defined WIN32) || (defined _WIN64)
 		if ("" != m_mapFilePath) return;
 #endif
 		if (!Create()){
@@ -68,7 +68,7 @@ ShareMemory::~ShareMemory()
 
 void ShareMemory::Init()
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined WIN64)
 	m_hFile = NULL;
 	m_hFileMap = NULL;
 #else
@@ -83,7 +83,7 @@ void ShareMemory::Init()
 
 bool ShareMemory::Create()
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	m_hFile = (HANDLE) 0xFFFFFFFF;// system
 	if ("" != m_mapFilePath)
 	{
@@ -157,7 +157,7 @@ bool ShareMemory::Create()
 
 bool ShareMemory::Open(unsigned long dwAccess)
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	if (NULL == m_hFileMap) m_hFileMap = OpenFileMapping(dwAccess, TRUE, m_shareName.c_str());
 	if (NULL == m_hFileMap)
 	{
@@ -197,7 +197,7 @@ bool ShareMemory::Open(unsigned long dwAccess)
 
 bool ShareMemory::CheckDir(const char *strDir)
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	return false;
 #else
 	if (-1 == access(strDir, 0))
@@ -213,7 +213,7 @@ bool ShareMemory::CheckDir(const char *strDir)
 
 bool ShareMemory::CheckFile(const char *strFile)
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	return false;
 #else
 	umask(0);
@@ -224,7 +224,7 @@ bool ShareMemory::CheckFile(const char *strFile)
 
 bool ShareMemory::OpenFileMap()
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	return false;
 #else
 	CheckDir(m_mapFilePath.c_str());
@@ -266,7 +266,7 @@ bool ShareMemory::OpenFileMap()
 
 void ShareMemory::Close()
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	if (NULL != m_lpFileMapBuffer) UnmapViewOfFile(m_lpFileMapBuffer);
 	if (NULL != m_hFileMap) CloseHandle(m_hFileMap);
 	if (NULL != m_hFile && INVALID_HANDLE_VALUE != m_hFile) CloseHandle(m_hFile);
@@ -283,7 +283,7 @@ void ShareMemory::Close()
 
 void ShareMemory::Destory()
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	Close();
 #else
 	if (-1 != m_shmid)
@@ -312,7 +312,7 @@ unsigned long ShareMemory::GetSize()
 
 void ShareMemory::TestSystem()
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	ShareMemory a(NULL, 409600, NULL);
 	char *p = (char*) a.GetBuffer();
 	char sss[409600];
@@ -367,7 +367,7 @@ void ShareMemory::TestSystem()
 
 void ShareMemory::TestFile()
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	ShareMemory a("12", 409600, "E:\Lib\HuoYu\HYLib\part_test\smtest");
 	char sss[409600];
 	SYSTEMTIME t1, t2;
@@ -421,7 +421,7 @@ void ShareMemory::TestFile()
 
 void ShareMemory::TestMemory()
 {
-#ifdef WIN32
+#if (defined WIN32) || (defined _WIN64)
 	ShareMemory a(NULL, 409600, NULL);
 	char *p = new char[409600];
 	char sss[409600];
