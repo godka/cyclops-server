@@ -110,7 +110,7 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythLive555Decoder::CreateNew("rtsp://127.0.0.1/1.264", "","");
+				this->decoder = mythStreamDecoder::CreateNew("192.168.31.198", 1017);
 
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic

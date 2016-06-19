@@ -24,6 +24,15 @@
 #	pragma comment(lib,"SDL2_x86.lib")
 #	pragma comment(lib,"SDL2main_x86.lib")
 #	pragma comment(lib,"SDL2_net_x86.lib")
+
+#	pragma comment(lib,"avcodec.lib")
+#	pragma comment(lib,"avdevice.lib")
+#	pragma comment(lib,"avfilter.lib")
+#	pragma comment(lib,"avformat.lib")
+#	pragma comment(lib,"avutil.lib")
+#	pragma comment(lib,"postproc.lib")
+#	pragma comment(lib,"swscale.lib")
+#	pragma comment(lib,"swresample.lib")
 #endif
 #if (defined _WIN64) || (defined WIN64)
 #	

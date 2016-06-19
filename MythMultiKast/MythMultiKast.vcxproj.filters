@@ -67,6 +67,12 @@
     <Filter Include="Header Files\tinyxml">
       <UniqueIdentifier>{b3670980-68a9-4273-b673-3d591e139ad2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\main">
+      <UniqueIdentifier>{4604d2e4-ab38-43c4-a0a7-0128c26791b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\mediapipeline">
+      <UniqueIdentifier>{33be486f-2ccb-43e3-811a-0e75424279ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -729,6 +735,27 @@
     <ClCompile Include="ShareMemory.cpp">
       <Filter>Source Files\kernel\memory</Filter>
     </ClCompile>
+    <ClCompile Include="SingleMain.cpp">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenRestyMain.cpp">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="MainInclude.hh">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mythOpenresyServer.cpp">
+      <Filter>Source Files\server</Filter>
+    </ClCompile>
+    <ClCompile Include="mythFFmpegEncoder.cpp">
+      <Filter>Source Files\kernel\mediapipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="mythFFmpeg.cpp">
+      <Filter>Source Files\kernel\mediapipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="mythMediaPipeline.cpp">
+      <Filter>Source Files\kernel\mediapipeline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -845,5 +872,25 @@
     <ClInclude Include="tinystr.h">
       <Filter>Header Files\tinyxml</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythOpenresyServer.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythMediaPipeline.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythFFmpegEncoder.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythFFmpeg.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MythMultiKast.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

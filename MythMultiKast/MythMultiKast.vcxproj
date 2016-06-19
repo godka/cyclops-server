@@ -394,11 +394,16 @@
     <ClCompile Include="live555\WAVAudioFileServerMediaSubsession.cpp" />
     <ClCompile Include="live555\WAVAudioFileSource.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainInclude.hh" />
     <ClCompile Include="mythAvlist.cpp" />
     <ClCompile Include="mythBaseClient.cpp" />
+    <ClCompile Include="mythFFmpeg.cpp" />
+    <ClCompile Include="mythFFmpegEncoder.cpp" />
     <ClCompile Include="mythGlobal.cpp" />
     <ClCompile Include="mythListFactory.cpp" />
     <ClCompile Include="mythLive555Decoder.cpp" />
+    <ClCompile Include="mythMediaPipeline.cpp" />
+    <ClCompile Include="mythOpenresyServer.cpp" />
     <ClCompile Include="mythProxyDecoder.cpp" />
     <ClCompile Include="mythRedisClient.cpp" />
     <ClCompile Include="mythRedisDecoder.cpp" />
@@ -416,10 +421,12 @@
     <ClCompile Include="mythVirtualSqlite.cpp" />
     <ClCompile Include="mythStreamDecoder.cpp" />
     <ClCompile Include="net.c" />
+    <ClCompile Include="OpenRestyMain.cpp" />
     <ClCompile Include="OurRTSPClient.cpp" />
     <ClCompile Include="MythSocket.cpp" />
     <ClCompile Include="sds.c" />
     <ClCompile Include="ShareMemory.cpp" />
+    <ClCompile Include="SingleMain.cpp" />
     <ClCompile Include="StreamClientState.cpp" />
     <ClCompile Include="StreamSink.cpp" />
     <ClCompile Include="tinystr.cpp" />
@@ -439,8 +446,12 @@
     <ClInclude Include="mythAvlist.hh" />
     <ClInclude Include="mythBaseClient.hh" />
     <ClInclude Include="MythConfig.hh" />
+    <ClInclude Include="mythFFmpeg.hh" />
+    <ClInclude Include="mythFFmpegEncoder.hh" />
     <ClInclude Include="mythGlobal.hh" />
     <ClInclude Include="mythListFactory.hh" />
+    <ClInclude Include="mythMediaPipeline.hh" />
+    <ClInclude Include="mythOpenresyServer.hh" />
     <ClInclude Include="mythProxyDecoder.hh" />
     <ClInclude Include="mythRedisClient.hh" />
     <ClInclude Include="mythRedisDecoder.hh" />
@@ -460,12 +471,16 @@
     <ClInclude Include="net.h" />
     <ClInclude Include="OurRTSPClient.hh" />
     <ClInclude Include="MythSocket.hh" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="sds.h" />
     <ClInclude Include="ShareMemory.hh" />
     <ClInclude Include="StreamClientState.hh" />
     <ClInclude Include="StreamSink.hh" />
     <ClInclude Include="tinystr.h" />
     <ClInclude Include="tinyxml.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MythMultiKast.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

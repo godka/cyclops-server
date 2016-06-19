@@ -30,6 +30,10 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 	ret_count = 0;
 	m_timeid = SDL_AddTimer(1000, TimerCallbackStatic, this);
 	m_thread = NULL;
+
+	int streamtype = read_profile_int("config", "streamtype", 0, MYTH_INFORMATIONINI_FILE);
+	int level = read_profile_int("config", "streamlevel", 0, MYTH_INFORMATIONINI_FILE);
+	m_pipeline = mythMediaPipeline::CreateNew(this, streamtype, level);//only for test
 }
 
 void mythVirtualDecoder::start(bool usethread){
@@ -69,6 +73,22 @@ Uint32 mythVirtualDecoder::TimerCallback(Uint32 interval){
 
 unsigned int mythVirtualDecoder::GetTimeCount(){
 	return 0;
+}
+
+int mythVirtualDecoder::put(unsigned char* data, unsigned int length)
+{
+	if (m_pipeline){
+		m_pipeline->PutMedia(data, length);
+	}
+	return 0;
+}
+
+PacketQueue * mythVirtualDecoder::get(int freePacket /*= 0*/)
+{
+	if (m_pipeline)
+		return m_pipeline->get(freePacket);
+	else
+		return NULL;
 }
 
 int mythVirtualDecoder::MainLoopstatic(void* data)

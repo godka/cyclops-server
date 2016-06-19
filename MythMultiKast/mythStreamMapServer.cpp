@@ -163,7 +163,7 @@ void mythStreamMapServer::ServerDecodeCallBack(MythSocket* people, char* data, i
 		}
 		else{
 			people->socket_SendStr("404");
-			people->socket_CloseSocket();
+			closePeople(people);
 			//ServerCloseCallBack(people);
 		}
 	}
