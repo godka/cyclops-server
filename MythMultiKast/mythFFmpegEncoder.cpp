@@ -85,7 +85,7 @@ bool mythFFmpegEncoder::Init(){
 	c->width = _width;
 	c->height = _height;
 	int bitrate = read_profile_int("config", "bitrate", 900, MYTH_INFORMATIONINI_FILE);
-	c->bit_rate = 900 * 1024;
+	c->bit_rate = bitrate * 1024;
 	c->gop_size = 25;
 	AVRational ration = { 1, 25 };
 	c->time_base = ration;
