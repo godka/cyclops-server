@@ -102,7 +102,7 @@ void mythVirtualServer::acceptthread(){
 	    /* Loop, waiting for network events */
     while (!m_stop) {
         /* Wait for events */
-        SDLNet_CheckSockets(socketset, 10);
+        SDLNet_CheckSockets(socketset, -1);
 
         /* Check for new connections */
         if ( SDLNet_SocketReady(servsock) ) {
@@ -119,7 +119,7 @@ void mythVirtualServer::acceptthread(){
 				}
 			}
         }
-		SDL_Delay(1);
+		//SDL_Delay(1);
 		SDL_PollEvent(NULL);
     }
     cleanup(0);

@@ -24,7 +24,7 @@ MythKAst(asdic182@sina.com), in 2013 June.
 
 mythBaseClient::mythBaseClient(MythSocket* people, int usethread, const char* CameraType)
 {
-	musethread = usethread;
+	//musethread = usethread;
 	mpeople = people;
 	mainthreadhandle = NULL;
 	isrunning = 0;
@@ -40,18 +40,42 @@ mythBaseClient::mythBaseClient(MythSocket* people, int usethread, const char* Ca
 			m_cameratype = 1;//HTTP
 		}
 	}
-	if (musethread == SDL_TRUE)
+	if (usethread == 1){
 		mthread = SDL_CreateThread(SendThreadStatic, "sendthread", this);
+		_mode = 1;
+	}
+	else{
+		mthread = NULL;
+		_mode = 0;
+	}
 }
 mythBaseClient::~mythBaseClient(void)
 {
 	SDL_DestroyMutex(mymutex);
-	if (musethread){
-		misrunning = false;
-		if (mthread)
-			SDL_WaitThread(mthread, 0);
-		mthread = NULL;
+	//if (mode == 1){
+	misrunning = false;
+	if (mthread)
+		SDL_WaitThread(mthread, 0);
+	mthread = NULL;
+	//}
+}
+
+void mythBaseClient::ChangeMode(int mode)
+{
+	if (mode == _mode)
+		return;
+	if (mode == 0){
+		if (mthread){
+			misrunning = false; 
+			if (mthread)
+				SDL_WaitThread(mthread, 0);
+			mthread = NULL;
+		}
 	}
+	else if (mode == 1){
+		mthread = SDL_CreateThread(SendThreadStatic, "sendthread", this);
+	}
+	_mode = mode;
 }
 
 int mythBaseClient::DataCallBack(void* data, int len)
@@ -95,7 +119,7 @@ int mythBaseClient::mythSendMessage( void* data,int length )
 {
 	if (length == -1)
 		length = strlen((char*) data);
-	if (musethread){
+	if (_mode == 1){
 		put((unsigned char*) data, (unsigned int) length);				//use avlist
 		return 0;
 	}

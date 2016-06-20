@@ -62,6 +62,7 @@
 #define RTSPLINK "rtsp://%s:%s%s"
 #define FINDCAMERA "select a.ip,a.username,a.password,a.httpport,b.FullSize,a.vstypeid,c.port,c.subname from videoserver as a,vstype as b,camera as c where a.vstypeid = b.vstypeid and a.videoserverid = c.videoserverid and c.cameraid = %d"
 
+#define STREAMSERVERMAX 100
 #ifdef ANDROID
 #include <android/log.h>
 #define LOG_TAG "org.app.sdl"

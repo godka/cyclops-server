@@ -8,8 +8,6 @@
 #include "mythStreamDecoder.hh"
 #include "mythBaseClient.hh"
 #include "mythStreamSQLresult.hh"
-#include <vector>
-using namespace std;
 class mythStreamServer 
 {
 public:
@@ -35,7 +33,7 @@ public:
 	int stop();
 	int m_cameraid;
 private:
-	vector<mythBaseClient*> baselist;
+	mythBaseClient* _baselist[STREAMSERVERMAX];
 	int ClientNumber;
 	void connect();
 protected:
@@ -51,11 +49,9 @@ protected:
 	//PeopleMap mpeople;
 	int PeopleAdd;
 	mythStreamServer(int cameraid, void* args = NULL);
-	bool FindClient(vector <mythBaseClient*>::iterator beg, vector <mythBaseClient*>::iterator end, mythBaseClient* ival);
-	SDL_mutex* numbermutex;
-	SDL_mutex* streamservermutex;
+	//bool FindClient(vector <mythBaseClient*>::iterator beg, vector <mythBaseClient*>::iterator end, mythBaseClient* ival);
+	bool FindClient(mythBaseClient* ival);
 	SDL_Thread* streamserverthread;
-	SDL_mutex* decodemutex;
 	int isrunning;
 	char* topchar;
 	int toplength;

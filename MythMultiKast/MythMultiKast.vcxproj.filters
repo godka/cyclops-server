@@ -756,6 +756,12 @@
     <ClCompile Include="mythMediaPipeline.cpp">
       <Filter>Source Files\kernel\mediapipeline</Filter>
     </ClCompile>
+    <ClCompile Include="WorkBenchMain.cpp">
+      <Filter>Source Files\main</Filter>
+    </ClCompile>
+    <ClCompile Include="mythWorkBenchServer.cpp">
+      <Filter>Source Files\server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -872,9 +878,6 @@
     <ClInclude Include="tinystr.h">
       <Filter>Header Files\tinyxml</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mythOpenresyServer.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -885,6 +888,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythFFmpeg.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythWorkBenchServer.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

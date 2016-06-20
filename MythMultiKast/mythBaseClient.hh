@@ -24,8 +24,9 @@ public:
 	int mythSendMessage(void* data, int length = -1);
 	int DataCallBack(void* data, int len);
 	~mythBaseClient(void);
+	void ChangeMode(int mode);//0 for single thread,1 for multithread
 private:
-	int musethread;		//use thread or not
+	//int musethread;		//use thread or not
 	bool isfirst;
 	MythSocket* mpeople;
 	int isrunning;
@@ -34,6 +35,7 @@ private:
 	int generate(char* data,int length);
 	int iFrameCount;
 	int m_cameratype;
+	int _mode;
 protected:
 	mythBaseClient(MythSocket* people, int usethread, const char* CameraType);
 	SDL_Thread* mthread;

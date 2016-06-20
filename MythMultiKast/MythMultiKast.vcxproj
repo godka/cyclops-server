@@ -422,6 +422,7 @@
     <ClCompile Include="mythVirtualServer.cpp" />
     <ClCompile Include="mythVirtualSqlite.cpp" />
     <ClCompile Include="mythStreamDecoder.cpp" />
+    <ClCompile Include="mythWorkBenchServer.cpp" />
     <ClCompile Include="net.c" />
     <ClCompile Include="OpenRestyMain.cpp" />
     <ClCompile Include="OurRTSPClient.cpp" />
@@ -435,6 +436,7 @@
     <ClCompile Include="tinyxml.cpp" />
     <ClCompile Include="tinyxmlerror.cpp" />
     <ClCompile Include="tinyxmlparser.cpp" />
+    <ClCompile Include="WorkBenchMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="async.h" />
@@ -470,10 +472,10 @@
     <ClInclude Include="mythVirtualServer.hh" />
     <ClInclude Include="mythVirtualSqlite.hh" />
     <ClInclude Include="mythStreamDecoder.hh" />
+    <ClInclude Include="mythWorkBenchServer.hh" />
     <ClInclude Include="net.h" />
     <ClInclude Include="OurRTSPClient.hh" />
     <ClInclude Include="MythSocket.hh" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="sds.h" />
     <ClInclude Include="ShareMemory.hh" />
     <ClInclude Include="StreamClientState.hh" />

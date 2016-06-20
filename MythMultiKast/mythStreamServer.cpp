@@ -35,21 +35,17 @@ mythStreamServer::mythStreamServer(int cameraid, void* args)
 	ClientNumber = 0;
 	m_cameraid = cameraid;
 	PeopleAdd = 0;
-	numbermutex = SDL_CreateMutex();
-	streamservermutex = SDL_CreateMutex();
-	decodemutex = SDL_CreateMutex();
-	baselist.reserve(100);
+	//baselist.reserve(100);
 	additionalargs = args;
 	//open("myth.db");
+
+	memset(_baselist, 0, sizeof(mythBaseClient*) * STREAMSERVERMAX);
 }
 
 
 mythStreamServer::~mythStreamServer(void)
 {
-	//delete decoder;
-	SDL_DestroyMutex(numbermutex);
-	SDL_DestroyMutex(streamservermutex);
-	//delete decoder;
+
 }
 
 void mythStreamServer::connect()
@@ -110,8 +106,8 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("120.204.70.218", 1017);
-
+				this->decoder = mythStreamDecoder::CreateNew("192.168.1.104", 1017);
+				//this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.1.128:10054/tcp/av0_0", "admin", "888888");
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
 					decoder->start();
@@ -147,6 +143,7 @@ int mythStreamServer::mainthreadstatic( void* data )
 	}
 	return 0;
 }
+/*
 bool mythStreamServer::FindClient(vector <mythBaseClient*>::iterator beg,
 	vector <mythBaseClient*>::iterator end, mythBaseClient* ival)
 {
@@ -162,16 +159,29 @@ bool mythStreamServer::FindClient(vector <mythBaseClient*>::iterator beg,
 	else
 		return false;
 }
-
+*/
+bool mythStreamServer::FindClient(mythBaseClient* ival){
+	for (int i = 0; i < STREAMSERVERMAX; i++){
+		if (_baselist[i] == ival)
+			return true;
+	}
+	return false;
+}
 
 
 int mythStreamServer::AppendClient(mythBaseClient* client){
 	printf("Appending Client,%d\n", client);
-	SDL_LockMutex(streamservermutex);
-	if (!FindClient(baselist.begin(), baselist.end(), client)){
-		baselist.push_back(client);
+	//if (!FindClient(baselist.begin(), baselist.end(), client)){
+	//	baselist.push_back(client);
+	//}
+	if (!FindClient(client)){
+		for (int i = 0; i < STREAMSERVERMAX; i++){
+			if (_baselist[i] == NULL){
+				_baselist[i] = client;
+				break;
+			}
+		}
 	}
-	SDL_UnlockMutex(streamservermutex);
 	return 0;
 }
 int mythStreamServer::mainthread()
@@ -189,14 +199,31 @@ int mythStreamServer::mainthread()
 				if (tmp->h264PacketLength > 0){
 					//for (unsigned int i = 0; i < msize; i++){
 					int timestart = SDL_GetTicks();
+					/*
 					for (vector<mythBaseClient*>::iterator iter = baselist.begin(); iter != baselist.end(); iter++){
 							mythBaseClient* tmpclient = *iter;
 							if (tmpclient){
 								tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
 							}
 					}
+					*/
+					for (int i = 0; i < STREAMSERVERMAX; i++){
+						mythBaseClient* tmpclient = _baselist[i];
+						if (tmpclient){
+							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
+						}
+					}
 					int timeend = SDL_GetTicks();
 					int timespan = timeend - timestart;
+					if (timespan > 40){
+						//send not good
+						for (int i = 0; i < STREAMSERVERMAX; i++){
+							mythBaseClient* tmpclient = _baselist[i];
+							if (tmpclient){
+								tmpclient->ChangeMode(1);
+							}
+						}
+					}
 					//printf("%dms\n", timeend - timestart);
 				}
 				decoder->release(tmp);
@@ -236,16 +263,19 @@ int mythStreamServer::stop()
 int mythStreamServer::getClientNumber()
 {
 	unsigned int ret_size = 0;
-	//SDL_LockMutex(streamservermutex);
-	ret_size = baselist.size();
-	//SDL_UnlockMutex(streamservermutex);
+	//ret_size = baselist.size();
+	for (int i = 0; i < STREAMSERVERMAX; i++){
+		if (_baselist[i]){
+			ret_size++;
+		}
+	}
 	return ret_size;
 }
 
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
 	printf("Dropping Client,%d\n", client);
-	SDL_LockMutex(streamservermutex);
+	/*
 	for (vector<mythBaseClient*>::iterator iter = baselist.begin(); iter != baselist.end();iter++)
 	{
 		if (*iter == client){
@@ -253,6 +283,12 @@ int mythStreamServer::DropClient(mythBaseClient* client)
 			break;
 		}
 	}
-	SDL_UnlockMutex(streamservermutex);
+	*/
+	for (int i = 0; i < STREAMSERVERMAX; i++){
+		if (_baselist[i] == client){
+			_baselist[i] = NULL;
+			break;
+		}
+	}
 	return 0;
 }
