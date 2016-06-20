@@ -25,6 +25,8 @@ public:
 	static mythMediaPipeline* CreateNew(void* ptr,int streamtype, int level){
 		return new mythMediaPipeline(ptr,streamtype, level);
 	}
+	static int encodethreadstatic(void* data);
+	int encodethread();
 	~mythMediaPipeline();
 	void PutMedia(void* data, int len);
 protected:
@@ -35,5 +37,8 @@ private:
 	void* _ptr;
 	int _streamtype;
 	int _level;
+	mythAvlist* yuvlist;
+	SDL_Thread* _thread;
+	bool isrunning;
 };
 

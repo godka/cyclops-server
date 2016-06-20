@@ -76,6 +76,8 @@
 typedef struct PacketQueue {
 	unsigned char* h264Packet;
 	unsigned int h264PacketLength;
+	unsigned char* yuvPacket[3];
+	unsigned int yuvPacketLength[3];
 	void* magic;
 } PacketQueue;
 

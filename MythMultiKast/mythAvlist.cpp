@@ -36,11 +36,18 @@ int mythAvlist::InitalList(){
 	//inital list
 	totalbuffer = new unsigned char[mBufferSize * 1024 * 1024];
 	ListPacket = new PacketQueue[AVFRAMECOUNT];
-	for(int i = 0;i < AVFRAMECOUNT;i++){
+	for (int i = 0; i < AVFRAMECOUNT; i++){
+
 		//ListPacket[i].YY = NULL;
 		//ListPacket[i].UU = NULL;
 		//ListPacket[i].VV = NULL;
 		ListPacket[i].h264Packet = NULL;
+		ListPacket[i].h264PacketLength = 0;
+
+		for (int j = 0; j < 3; j++){
+			ListPacket[i].yuvPacket[j] = NULL;
+			ListPacket[i].yuvPacketLength[j] = 0;
+		}
 	}
 	listwrite = 0;
 	listread = 0;
@@ -75,7 +82,7 @@ PacketQueue *mythAvlist::get(int freePacket){
 		tmp = NULL;
 	}else{
 		tmp = &this->ListPacket[this->listread];
-		if(tmp->h264Packet == NULL){
+		if(tmp->h264Packet == NULL && tmp->yuvPacket[0] == NULL){
 			tmp = NULL;
 		}else{
 			if(freePacket == 0){
@@ -100,30 +107,31 @@ unsigned char* mythAvlist::putcore(unsigned char* data,unsigned int datasize){
 	//printf("totalptr = %d\n",totalptr);
 	return (totalbuffer + totalptr - datasize);
 }
-/*
-int mythAvlist::put(unsigned char** dataline,unsigned int *datasize,unsigned int width,unsigned int height){
+
+int mythAvlist::put(unsigned char** dataline,unsigned int *datasize,int width,int height){
 	SDL_LockMutex(this->mutex);
 	if(listwrite >= AVFRAMECOUNT)listwrite = 0;
 	PacketQueue *tmp = &ListPacket[listwrite];
 	tmp->h264Packet = NULL;
-	tmp->width = width;
-	tmp->height = height;
+	//tmp->width = width;
+	//tmp->height = height;
 
-	tmp->YY = (unsigned char*)putcore(dataline[0],datasize[0] * height);
-	tmp->Ydatasize = datasize[0];
+	unsigned char* YY = (unsigned char*)putcore(dataline[0],datasize[0] * height);
+	unsigned int Ydatasize = datasize[0];
 	
-	tmp->UU = (unsigned char*)this->putcore(dataline[1], datasize[1] * height / 2);
-	tmp->Udatasize = datasize[1];
+	unsigned char* UU = (unsigned char*)this->putcore(dataline[1], datasize[1] * height / 2);
+	unsigned int Udatasize = datasize[1];
 	
-	tmp->VV = (unsigned char*)this->putcore(dataline[2], datasize[2] * height / 2);
-	tmp->Vdatasize = datasize[2];
-
+	unsigned char* VV = (unsigned char*)this->putcore(dataline[2], datasize[2] * height / 2);
+	unsigned int Vdatasize = datasize[2];
+	tmp->yuvPacket[0] = YY; tmp->yuvPacket[1] = UU; tmp->yuvPacket[2] = VV;
+	tmp->yuvPacketLength[0] = Ydatasize; tmp->yuvPacketLength[1] = Udatasize; tmp->yuvPacketLength[2] = Vdatasize;
 	listwrite++;
 	//LOGE("YUVlistcount=%d\n",listwrite);
 	SDL_UnlockMutex(this->mutex);
 	return 0;
 }
-*/
+
 int mythAvlist::release(PacketQueue *pack)
 {
 	return 0;

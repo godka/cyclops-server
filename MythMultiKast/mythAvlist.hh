@@ -10,7 +10,7 @@ public:
 	~mythAvlist(void);
 	PacketQueue *get(int freePacket = 0);
 	int put(unsigned char* data,unsigned int length);
-	//int put(unsigned char** dataline,unsigned int *datasize,unsigned int width,unsigned int height);
+	int put(unsigned char** dataline, unsigned int *datasize, int width, int height);
 	int release(PacketQueue *pack);
 	int free();
 private:
