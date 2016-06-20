@@ -33,7 +33,11 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 
 	int streamtype = read_profile_int("config", "streamtype", 0, MYTH_INFORMATIONINI_FILE);
 	int level = read_profile_int("config", "streamlevel", 0, MYTH_INFORMATIONINI_FILE);
-	m_pipeline = mythMediaPipeline::CreateNew(this, streamtype, level);//only for test
+	int pipeline = read_profile_int("config", "pipeline", 0, MYTH_INFORMATIONINI_FILE);
+	if (pipeline)
+		m_pipeline = mythMediaPipeline::CreateNew(this, streamtype, level);//only for test
+	else
+		m_pipeline = NULL;
 }
 
 void mythVirtualDecoder::start(bool usethread){
@@ -56,6 +60,8 @@ mythVirtualDecoder* mythVirtualDecoder::CreateNew(void){
 	return new mythVirtualDecoder();
 }
 mythVirtualDecoder::~mythVirtualDecoder(void){
+	if (m_pipeline)
+		delete m_pipeline;
 }
 
 Uint32 mythVirtualDecoder::TimerCallbackStatic(Uint32 interval, void *param){
@@ -80,6 +86,9 @@ int mythVirtualDecoder::put(unsigned char* data, unsigned int length)
 	if (m_pipeline){
 		m_pipeline->PutMedia(data, length);
 	}
+	else{
+		return mythListFactory::put(data, length);
+	}
 	return 0;
 }
 
@@ -88,7 +97,7 @@ PacketQueue * mythVirtualDecoder::get(int freePacket /*= 0*/)
 	if (m_pipeline)
 		return m_pipeline->get(freePacket);
 	else
-		return NULL;
+		return mythListFactory::get(freePacket);
 }
 
 int mythVirtualDecoder::MainLoopstatic(void* data)

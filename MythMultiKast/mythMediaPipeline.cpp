@@ -45,7 +45,7 @@ void mythMediaPipeline::decodecallback(char** pdata, int* plength, int width, in
 void mythMediaPipeline::encodecallback(char* pdata, int plength)
 {
 	put((unsigned char*)pdata, plength);
-	printf("out:%d\n", plength);
+	//printf("out:%d\n", plength);
 }
 
 mythMediaPipeline::~mythMediaPipeline()
@@ -60,6 +60,6 @@ void mythMediaPipeline::PutMedia(void* data, int len)
 {
 	if (m_decoder){
 		m_decoder->ProcessFrame((unsigned char*) data, len, decodecallback_static); 
-		printf("in:%d\n", len);
+		//printf("in:%d\n", len);
 	}
 }

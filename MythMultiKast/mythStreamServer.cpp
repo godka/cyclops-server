@@ -188,12 +188,16 @@ int mythStreamServer::mainthread()
 				//add omp version
 				if (tmp->h264PacketLength > 0){
 					//for (unsigned int i = 0; i < msize; i++){
+					int timestart = SDL_GetTicks();
 					for (vector<mythBaseClient*>::iterator iter = baselist.begin(); iter != baselist.end(); iter++){
-						mythBaseClient* tmpclient = *iter;
-						if (tmpclient){
-							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
-						}
+							mythBaseClient* tmpclient = *iter;
+							if (tmpclient){
+								tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
+							}
 					}
+					int timeend = SDL_GetTicks();
+					int timespan = timeend - timestart;
+					//printf("%dms\n", timeend - timestart);
 				}
 				decoder->release(tmp);
 			}
