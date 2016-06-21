@@ -28,8 +28,8 @@ MythKAst(asdic182@sina.com), in 2013 June.
 int main(int argc, char *argv []){
 	SDL_Init(SDL_INIT_EVENTS);
 	SDLNet_Init();
-	//SingleMain(argc, argv);
-	OpenRestyMain(argc, argv);
+	SingleMain(argc, argv);
+	//OpenRestyMain(argc, argv);
 	SDL_Quit();
 	return 0;
 }

@@ -70,7 +70,7 @@ bool mythFFmpeg::Init(){
 		avCodecContext->flags2 |= CODEC_FLAG2_CHUNKS;
 		//avCodecContext->flags2 |= CODEC_FLAG2_SHOW_ALL;
 	}
-	avFrame = avcodec_alloc_frame();
+	avFrame = av_frame_alloc();
 	if (!avFrame){
 		//failed to allocate frame
 		Cleanup();
@@ -102,8 +102,8 @@ void mythFFmpeg::ProcessFrame(unsigned char* framePtr, int frameSize,responseHan
 	if(avCodecContext == NULL && avFrame == NULL)return;
 	while (avpkt.size > 0) {
 		int got_frame = 0;
-		try
-		{
+		//try
+		//{
 			int len = avcodec_decode_video2(avCodecContext, avFrame, &got_frame, &avpkt);
 			if (len < 0) {
 				return;
@@ -114,11 +114,11 @@ void mythFFmpeg::ProcessFrame(unsigned char* framePtr, int frameSize,responseHan
 			}
 			avpkt.size -= len;
 			avpkt.data += len;
-		}
-		catch (void* e)
-		{
+		//}
+		//catch (void* e)
+		//{
 			
-		}
+		//}
 	}
 	//av_free_packet(&avpkt);
 }
