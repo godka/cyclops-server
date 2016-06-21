@@ -18,7 +18,7 @@ all: .dcpp .dc $(CPPSOURCES) $(CSOURCES) $(TARGET)
 -include .dcpp
 -include .dc
 $(TARGET): $(CPPOBJECTS) $(COBJECTS)
-	$(CXX) $(CPPOBJECTS) $(COBJECTS) -o $@ -L/usr/lib -lSDL2 -lSDL2_net -L/usr/local/lib/ -lliveMedia -lBasicUsageEnvironment -lgroupsock -lUsageEnvironment
+	$(CXX) $(CPPOBJECTS) $(COBJECTS) -o $@ -L/usr/lib -lSDL2 -lSDL2_net -L/usr/local/lib/ -lliveMedia -lBasicUsageEnvironment -lgroupsock -lUsageEnvironment -lavcodec -lavfilter -lavutil -lswresample -lswscale -lavdevice -lavformat -lpostproc 
 
 clean:
 	rm $(CPPOBJECTS) $(COBJECTS) .dcpp .dc
