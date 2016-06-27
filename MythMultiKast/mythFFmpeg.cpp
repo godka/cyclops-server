@@ -54,7 +54,7 @@ bool mythFFmpeg::Init(){
 
 	av_register_all();
 	avcodec_register_all();
-	avCodec = avcodec_find_decoder(CODEC_ID_H264);
+	avCodec = avcodec_find_decoder(AV_CODEC_ID_H264);
 	avCodecContext = avcodec_alloc_context3(avCodec);
 	if (!avCodecContext) {
 		//failed to allocate codec context
@@ -66,7 +66,7 @@ bool mythFFmpeg::Init(){
 		Cleanup();
 		return false;
 	}
-	if (avCodecContext->codec_id == CODEC_ID_H264){
+	if (avCodecContext->codec_id == AV_CODEC_ID_H264){
 		avCodecContext->flags2 |= CODEC_FLAG2_CHUNKS;
 		//avCodecContext->flags2 |= CODEC_FLAG2_SHOW_ALL;
 	}
