@@ -19,6 +19,7 @@ public:
 		else
 			return 0;
 	}
+	bool isfirst;
 	int SendThread();
 	static mythBaseClient* CreateNew(MythSocket* people, int usethread = 0,const char* CameraType = NULL);
 	int mythSendMessage(void* data, int length = -1);
@@ -27,15 +28,18 @@ public:
 	void ChangeMode(int mode);//0 for single thread,1 for multithread
 private:
 	//int musethread;		//use thread or not
-	bool isfirst;
 	MythSocket* mpeople;
 	int isrunning;
 	SDL_Thread* mainthreadhandle;
 	SDL_mutex* mymutex;
 	int generate(char* data,int length);
+	int AddBuffer(void* data, int length = -1);
+	int FlushBuffer();
 	int iFrameCount;
 	int m_cameratype;
 	int _mode;
+	char* sendBuffer;
+	int sendbufferptr;
 protected:
 	mythBaseClient(MythSocket* people, int usethread, const char* CameraType);
 	SDL_Thread* mthread;

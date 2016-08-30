@@ -32,6 +32,8 @@ mythBaseClient::mythBaseClient(MythSocket* people, int usethread, const char* Ca
 	iFrameCount = 4096;
 	mymutex = SDL_CreateMutex();
 	misrunning = true;
+	sendBuffer = (char*) SDL_malloc(3 * 1024 * 1024);
+	sendbufferptr = 0;
 	if (CameraType){
 		if (SDL_strcmp(CameraType, "zyh264") == 0){
 			m_cameratype = 0;	//stream
@@ -57,6 +59,8 @@ mythBaseClient::~mythBaseClient(void)
 	if (mthread)
 		SDL_WaitThread(mthread, 0);
 	mthread = NULL;
+	if (sendBuffer)
+		SDL_free(sendBuffer);
 	//}
 }
 
@@ -83,7 +87,7 @@ int mythBaseClient::DataCallBack(void* data, int len)
 	char tempbuf[256] = { 0 };
 
 	if (isfirst == true){
-		mythSendMessage((void*)firstrequest);
+		AddBuffer((void*) firstrequest);
 		isfirst = false;
 	}
 	time_t rawtime;
@@ -95,18 +99,18 @@ int mythBaseClient::DataCallBack(void* data, int len)
 		1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec,
 		0, iFrameCount);
 	if (m_cameratype == 0)
-		mythSendMessage(tempbuf);
+		AddBuffer(tempbuf);
 	iFrameCount++;
-	mythSendMessage(data, len);
+	AddBuffer(data, len);
 	if (m_cameratype == 0)
-		mythSendMessage((void*)" \n\n--myboundary\n");
+		AddBuffer((void*)" \n\n--myboundary\n");
+	FlushBuffer();
 	return 0;
 }
 
 mythBaseClient* mythBaseClient::CreateNew(MythSocket* people, int usethread, const char* CameraType)
 {
 	return new mythBaseClient(people, usethread, CameraType);
-
 }
 
 int mythBaseClient::generate(char* data, int length)
@@ -114,7 +118,18 @@ int mythBaseClient::generate(char* data, int length)
 
 	return 0;
 }
-
+int mythBaseClient::AddBuffer(void* data, int length){
+	if (length == -1)
+		length = strlen((char*) data);
+	SDL_memcpy(sendBuffer + sendbufferptr, data, length);
+	sendbufferptr += length;
+	return 0;
+}
+int mythBaseClient::FlushBuffer(){
+	mythSendMessage(sendBuffer, sendbufferptr);
+	sendbufferptr = 0;
+	return 0;
+}
 int mythBaseClient::mythSendMessage( void* data,int length )
 {
 	if (length == -1)

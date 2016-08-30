@@ -80,17 +80,20 @@ PacketQueue *mythAvlist::get(int freePacket){
 		this->listwrite - this->listread == 0 ||
 		(this->listwrite == 0 && this->listread == AVFRAMECOUNT)){
 		tmp = NULL;
-	}else{
+	}
+	else{
 		tmp = &this->ListPacket[this->listread];
-		if(tmp->h264Packet == NULL && tmp->yuvPacket[0] == NULL){
+		if (tmp->h264Packet == NULL && tmp->yuvPacket[0] == NULL){
 			tmp = NULL;
-		}else{
-			if(freePacket == 0){
-				if(listwrite - listread > 10){
+		}
+		else{
+			if (freePacket == 0){
+				if (listwrite - listread > 10){
 					LOGE("skip frames");
-					LOGE(" read = %d,write = %d,minus = %d\n",listread,listwrite,listwrite - listread);
+					LOGE(" read = %d,write = %d,minus = %d\n", listread, listwrite, listwrite - listread);
 					listread += 9;
-				}else
+				}
+				else
 					listread++;
 			}
 		}
@@ -136,6 +139,7 @@ int mythAvlist::release(PacketQueue *pack)
 {
 	return 0;
 }
+
 int mythAvlist::put(unsigned char* data,unsigned int length){	
 	if (!mutex){ return 1; }
 	SDL_LockMutex(this->mutex);
@@ -148,6 +152,7 @@ int mythAvlist::put(unsigned char* data,unsigned int length){
 
 	tmp->h264PacketLength = length;
 	tmp->h264Packet = putcore(data, length);
+	tmp->isIframe = IsIframe(tmp);
 	listwrite++;
 	//LOGE("H264listcount=%d\n",listwrite);
 	SDL_UnlockMutex(this->mutex);

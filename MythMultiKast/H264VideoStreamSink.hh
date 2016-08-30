@@ -9,7 +9,7 @@ public:
 		// "sPropParameterSetsStr" is an optional 'SDP format' string
 		// (comma-separated Base64-encoded) representing SPS and/or PPS NAL-units
 		// to prepend to the output
-		unsigned bufferSize = 100000);
+		unsigned bufferSize = 300000);
 	// See "FileSink.hh" for a description of these parameters.
 
 protected:

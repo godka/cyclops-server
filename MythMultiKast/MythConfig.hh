@@ -82,6 +82,7 @@ typedef struct PacketQueue {
 	unsigned int stream_type;
 	unsigned int tickcount;
 	void* magic;
+	bool isIframe;
 } PacketQueue;
 
 //char* global_filename = NULL;

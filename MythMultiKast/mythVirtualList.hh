@@ -9,6 +9,7 @@ public:
 	virtual int put(unsigned char* data, unsigned int length);
 	virtual int put(unsigned char** dataline, unsigned int *datasize, unsigned int width, unsigned int height);
 	virtual int release(PacketQueue *pack);
+	bool IsIframe(PacketQueue *pack);
 	void* magic;
 protected:
 	mythVirtualList();
