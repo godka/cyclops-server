@@ -1,11 +1,11 @@
 CXX=g++
 CC=gcc
 CPPINCLUDE += -I/usr/local/include -I./src 
-CPPFLAGS += -fpermissive -Wdeprecated-declarations -w -O3 -std=c++11
+CPPFLAGS += $(CPPINCLUDE) -fpermissive -Wdeprecated-declarations -w -O3 -std=c++11
 CPPLDFLAGS += -levent
-CPPSOURCES=./src/$(wildcard *.cpp)
+CPPSOURCES=$(wildcard ./src/*.cpp)
 CPPOBJECTS=$(CPPSOURCES:.cpp=.o)
-CSOURCES=./src/$(wildcard *.c)
+CSOURCES=$(wildcard ./src/*.c)
 COBJECTS=$(CSOURCES:.c=.o)
 TARGET=mythmultikast
 

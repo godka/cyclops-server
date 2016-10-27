@@ -4,7 +4,7 @@
 #endif
 #include <stdio.h>
 #include "mythIniFile.hh"
-#define USEPIPELINE 1
+
 #if (defined _WIN32) || (defined WIN32)
 #	
 #	pragma comment(lib,"ws2_32")
