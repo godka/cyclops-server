@@ -106,8 +106,8 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				//this->decoder = mythStreamDecoder::CreateNew("120.204.70.218", 1017);
-				this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
+				this->decoder = mythStreamDecoder::CreateNew("120.204.70.218", 1017);
+				//this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
 					decoder->start();
@@ -221,15 +221,15 @@ int mythStreamServer::mainthread()
 					}
 					int timeend = SDL_GetTicks();
 					int timespan = timeend - timestart;
-					//if (timespan > 40){
-					//	//send not good
-					//	for (int i = 0; i < STREAMSERVERMAX; i++){
-					//		mythBaseClient* tmpclient = _baselist[i];
-					//		if (tmpclient){
-					//			tmpclient->ChangeMode(1);
-					//		}
-					//	}
-					//}
+					if (timespan > 40){
+						//send not good
+						for (int i = 0; i < STREAMSERVERMAX; i++){
+							mythBaseClient* tmpclient = _baselist[i];
+							if (tmpclient){
+								tmpclient->ChangeMode(1);
+							}
+						}
+					}
 					//printf("%dms\n", timeend - timestart);
 				}
 				decoder->release(tmp);
