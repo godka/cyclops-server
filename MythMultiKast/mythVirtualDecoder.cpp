@@ -31,9 +31,9 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 	m_timeid = SDL_AddTimer(1000, TimerCallbackStatic, this);
 	m_thread = NULL;
 
-	int streamtype = read_profile_int("config", "streamtype", 0, MYTH_INFORMATIONINI_FILE);
-	int level = read_profile_int("config", "streamlevel", 0, MYTH_INFORMATIONINI_FILE);
-	int pipeline = read_profile_int("config", "pipeline", 0, MYTH_INFORMATIONINI_FILE);
+	int streamtype = mythIniFile::GetInstance()->GetInt("config", "streamtype"); 
+	int level = mythIniFile::GetInstance()->GetInt("config", "streamlevel"); 
+	int pipeline = mythIniFile::GetInstance()->GetInt("config", "pipeline");
 	if (pipeline)
 		m_pipeline = mythMediaPipeline::CreateNew(this, streamtype, level);//only for test
 	else

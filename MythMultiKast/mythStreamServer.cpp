@@ -37,8 +37,12 @@ mythStreamServer::mythStreamServer(int cameraid, void* args)
 	PeopleAdd = 0;
 	//baselist.reserve(100);
 	additionalargs = args;
+	_handler = NULL;
+	_handlerdata = NULL;
+	//_hasstart = false;
 	//open("myth.db");
 
+	SetStart(false);
 	memset(_baselist, 0, sizeof(mythBaseClient*) * STREAMSERVERMAX);
 }
 
@@ -59,7 +63,7 @@ void mythStreamServer::connect()
 	}
 	else{
 		mythStreamSQLresult* result = NULL;
-		int list_type = read_profile_int("config", "list_type", 0, MYTH_INFORMATIONINI_FILE);
+		int list_type = mythIniFile::GetInstance()->GetInt("config", "list_type"); 
 		switch (list_type)
 		{
 		case 0:
@@ -135,12 +139,24 @@ void mythStreamServer::connect()
 	}
 }
 
-int mythStreamServer::mainthreadstatic( void* data )
+void mythStreamServer::SetStart(bool foo)
+{
+	_hasstart = foo;
+}
+
+bool mythStreamServer::GetStart()
+{
+	return _hasstart;
+}
+
+int mythStreamServer::mainthreadstatic(void* data)
 {
 	if(data){
 		mythStreamServer* server = (mythStreamServer*)data;
 		server->mainthread();
+		//server->stop();
 	}
+	
 	return 0;
 }
 /*
@@ -187,8 +203,10 @@ int mythStreamServer::AppendClient(mythBaseClient* client){
 int mythStreamServer::mainthread()
 {
 	//int msize = 0;
+	int duration = 0;
 	PacketQueue* tmp = NULL;
 	connect();
+	int tickstart = 0;
 	while (isrunning == 0){
 		SDL_PollEvent(NULL);
 		if (decoder){
@@ -207,9 +225,11 @@ int mythStreamServer::mainthread()
 							}
 					}
 					*/
+					int streamcount = 0;
 					for (int i = 0; i < STREAMSERVERMAX; i++){
 						mythBaseClient* tmpclient = _baselist[i];
 						if (tmpclient){
+							streamcount++;
 							if (tmpclient->isfirst){
 								if (tmp->isIframe)
 									tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
@@ -219,6 +239,27 @@ int mythStreamServer::mainthread()
 							}
 						}
 					}
+					if(streamcount == 0){
+						//add ticks
+						if (tickstart == 0)
+							tickstart = SDL_GetTicks();
+						else{
+							duration = SDL_GetTicks() - tickstart;
+							if (duration > 5000){
+								break;
+								//if (_handler){
+								//	_handler(this, duration, _handlerdata);
+								//}
+								//stop();
+								//return 0;
+							}
+						}
+					}
+					else{
+						//refresh ticks
+						tickstart = SDL_GetTicks();
+					}
+#ifdef MYTHASYNCMODE
 					int timeend = SDL_GetTicks();
 					int timespan = timeend - timestart;
 					if (timespan > 40){
@@ -230,6 +271,7 @@ int mythStreamServer::mainthread()
 							}
 						}
 					}
+#endif
 					//printf("%dms\n", timeend - timestart);
 				}
 				decoder->release(tmp);
@@ -241,29 +283,51 @@ int mythStreamServer::mainthread()
 	if (decoder)
 		decoder->stop();
 	delete decoder;
+	//if (_handler){
+	//	_handler(this, duration, _handlerdata);
+	//}
+	SetStart(false);
+	//_hasstart = false;
+	streamserverthread = NULL;
+	printf("%d is closed\n", m_cameraid);
 	return 0;
 }
 
 int mythStreamServer::start(bool canthread)
 {
-	if (!canthread){
-		mainthreadstatic(this);
+	if (!GetStart()){
+		SetStart(true);
+		if (!canthread){
+			mainthreadstatic(this);
+		}
+		else{
+			isrunning = 0;
+			if (!streamserverthread)
+				streamserverthread = SDL_CreateThread(mainthreadstatic, "static", this);
+		}
 	}
 	else{
-		isrunning = 0;
-		if (!streamserverthread)
-			streamserverthread = SDL_CreateThread(mainthreadstatic, "static", this);
+		printf("Work has started,ID:%d\n", m_cameraid);
 	}
 	return 0;
 }
 
 int mythStreamServer::stop()
 {
+	SetStart(false);
+	//_hasstart = false;
 	isrunning = 1;
 	if (streamserverthread)
 		SDL_WaitThread(this->streamserverthread,NULL);
 	streamserverthread = NULL;
+	//delete this;
 	return 0;
+}
+
+void mythStreamServer::SetOnCloseHandler(OnCloseHandler* handler,void* handlerdata)
+{
+	_handler = handler;
+	_handlerdata = handlerdata;
 }
 
 int mythStreamServer::getClientNumber()

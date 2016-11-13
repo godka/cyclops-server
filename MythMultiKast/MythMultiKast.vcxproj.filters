@@ -129,9 +129,6 @@
     <ClCompile Include="mythVirtualSqlite.cpp">
       <Filter>Source Files\kernel\sql</Filter>
     </ClCompile>
-    <ClCompile Include="mythUdp.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
     <ClCompile Include="StreamSink.cpp">
       <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
@@ -762,6 +759,9 @@
     <ClCompile Include="mythWorkBenchServer.cpp">
       <Filter>Source Files\server</Filter>
     </ClCompile>
+    <ClCompile Include="mythIniFile.cpp">
+      <Filter>Source Files\kernel\ini</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -792,9 +792,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IniFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mythUdp.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythProxyDecoder.hh">
@@ -891,6 +888,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythWorkBenchServer.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythIniFile.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

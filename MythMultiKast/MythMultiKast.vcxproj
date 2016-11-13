@@ -403,6 +403,7 @@
     <ClCompile Include="mythFFmpeg.cpp" />
     <ClCompile Include="mythFFmpegEncoder.cpp" />
     <ClCompile Include="mythGlobal.cpp" />
+    <ClCompile Include="mythIniFile.cpp" />
     <ClCompile Include="mythListFactory.cpp" />
     <ClCompile Include="mythLive555Decoder.cpp" />
     <ClCompile Include="mythMediaPipeline.cpp" />
@@ -416,7 +417,6 @@
     <ClCompile Include="mythStreamMapServer.cpp" />
     <ClCompile Include="mythStreamServer.cpp" />
     <ClCompile Include="mythStreamSQLresult.cpp" />
-    <ClCompile Include="mythUdp.cpp" />
     <ClCompile Include="mythUseageEnvironment.cpp" />
     <ClCompile Include="mythVirtualDecoder.cpp" />
     <ClCompile Include="mythVirtualList.cpp" />
@@ -454,6 +454,7 @@
     <ClInclude Include="mythFFmpeg.hh" />
     <ClInclude Include="mythFFmpegEncoder.hh" />
     <ClInclude Include="mythGlobal.hh" />
+    <ClInclude Include="mythIniFile.hh" />
     <ClInclude Include="mythListFactory.hh" />
     <ClInclude Include="mythMediaPipeline.hh" />
     <ClInclude Include="mythOpenresyServer.hh" />
@@ -466,7 +467,6 @@
     <ClInclude Include="mythStreamMapServer.hh" />
     <ClInclude Include="mythStreamServer.hh" />
     <ClInclude Include="mythStreamSQLresult.hh" />
-    <ClInclude Include="mythUdp.hh" />
     <ClInclude Include="mythUseageEnvironment.hh" />
     <ClInclude Include="mythVirtualDecoder.hh" />
     <ClInclude Include="mythVirtualList.hh" />

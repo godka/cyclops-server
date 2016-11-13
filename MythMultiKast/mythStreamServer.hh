@@ -11,6 +11,8 @@
 class mythStreamServer 
 {
 public:
+	typedef void (OnCloseHandler)(mythStreamServer * streamserver, int duration, void* data);
+	void SetOnCloseHandler(OnCloseHandler* handler,void* data);
 	int getClientNumber();
 	int AppendClient(mythBaseClient* client);
 	int DropClient(mythBaseClient* client);
@@ -29,13 +31,18 @@ public:
 	int GetClientNumber();
 	void ClearAllClients();
 	*/
+	int GetID(){
+		return m_cameraid;
+	}
 	int start(bool canthread = true);
 	int stop();
-	int m_cameraid;
 private:
+	int m_cameraid;
 	mythBaseClient* _baselist[STREAMSERVERMAX];
 	int ClientNumber;
 	void connect();
+	void SetStart(bool foo);
+	bool GetStart();
 protected:
 	mythVirtualDecoder* decoder;
 	string username;
@@ -53,8 +60,12 @@ protected:
 	bool FindClient(mythBaseClient* ival);
 	SDL_Thread* streamserverthread;
 	int isrunning;
-	char* topchar;
-	int toplength;
+
+	OnCloseHandler* _handler;
+	void* _handlerdata;
+	//char* topchar;
+	//int toplength;
 	void* additionalargs;
+	bool _hasstart;
 };
 

@@ -26,8 +26,8 @@ void mythFFmpegEncoder::yuv2RGB(int width, int height,
 
 void mythFFmpegEncoder::RGB2yuv(int width, int height, int stride,const void* src, void** dst){
 	struct SwsContext *img_convert_ctx = sws_getContext(
-		width , height, PIX_FMT_BGRA,
-		width, height, PIX_FMT_YUV420P,
+		width , height, AV_PIX_FMT_BGRA,
+		width, height, AV_PIX_FMT_YUV420P,
 		SWS_FAST_BILINEAR, NULL, NULL, NULL);
 	uint8_t *rgb_src[3] = { (uint8_t *) src, NULL, NULL };
 
@@ -42,8 +42,8 @@ void mythFFmpegEncoder::RGB2yuv(int width, int height, int stride,const void* sr
 }
 void mythFFmpegEncoder::yuv2RGB(int width, int height, const void** src, int* src_linesize, void** dst){
 	struct SwsContext *img_convert_ctx = sws_getContext(
-		width, height, PIX_FMT_YUV420P,
-		width, height, PIX_FMT_RGBA,
+		width, height, AV_PIX_FMT_YUV420P,
+		width, height, AV_PIX_FMT_RGBA,
 		SWS_FAST_BILINEAR, NULL, NULL, NULL);
 	int dstwidth [] = { width * 4, width * 4, width * 4 };
 	if (img_convert_ctx){
@@ -84,7 +84,7 @@ bool mythFFmpegEncoder::Init(){
 	//av_dict_set(&opts, "b", "1.0M", 0);
 	c->width = _width;
 	c->height = _height;
-	int bitrate = read_profile_int("config", "bitrate", 900, MYTH_INFORMATIONINI_FILE);
+	int bitrate = mythIniFile::GetInstance()->GetInt("config", "bitrate",900);
 	c->bit_rate = bitrate * 1024;
 	c->gop_size = 25;
 	AVRational ration = { 1, 25 };

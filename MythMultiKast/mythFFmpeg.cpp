@@ -10,8 +10,8 @@ mythFFmpeg::mythFFmpeg(void* phwnd)
 }
 void mythFFmpeg::RGB2yuv(int width, int height, int stride, const void* src, void** dst){
 	struct SwsContext *img_convert_ctx = sws_getContext(
-		width, height, PIX_FMT_RGB24,
-		width, height, PIX_FMT_YUV420P,
+		width, height, AV_PIX_FMT_RGB24,
+		width, height, AV_PIX_FMT_YUV420P,
 		SWS_FAST_BILINEAR, NULL, NULL, NULL);
 	uint8_t *rgb_src[3] = { (uint8_t *) src, NULL, NULL };
 	int srcwidth [] = { stride, 0, 0 };
@@ -33,8 +33,8 @@ void mythFFmpeg::yuv2RGB(int width,int height,
 }
 void mythFFmpeg::yuv2RGB(int width, int height, const void** src, int* src_linesize, void** dst){
 	struct SwsContext *img_convert_ctx = sws_getContext(
-		width, height, PIX_FMT_YUV420P,
-		width, height, PIX_FMT_RGB24,
+		width, height, AV_PIX_FMT_YUV420P,
+		width, height, AV_PIX_FMT_RGB24,
 		SWS_FAST_BILINEAR, NULL, NULL, NULL);
 	int dstwidth [] = { width * 3, width * 3, width * 3 };
 	if (img_convert_ctx){

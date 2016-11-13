@@ -8,6 +8,11 @@ class mythStreamMapServer :
 	public mythVirtualServer//,public mythVirtualSqlite
 {
 public:
+	static void OnClientCloseStatic(mythStreamServer * streamserver, int duration, void* data){
+		mythStreamMapServer* mapserver = (mythStreamMapServer*) data;
+		mapserver->OnClientClose(streamserver, duration);
+	}
+	void OnClientClose(mythStreamServer * streamserver, int duration);
 	map<int,mythStreamServer*> servermap;
 	map<int, int> servercount;
 	static mythStreamMapServer* CreateNew(int port);

@@ -3,7 +3,7 @@
 
 mythListFactory::mythListFactory()
 {
-	list_type = read_profile_int("config", "list_type", 0, MYTH_INFORMATIONINI_FILE);
+	list_type = mythIniFile::GetInstance()->GetInt("config", "list_type");
 	switch (list_type)
 	{
 	case 0:

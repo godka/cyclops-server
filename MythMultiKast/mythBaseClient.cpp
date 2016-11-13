@@ -20,7 +20,6 @@ B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "mythBaseClient.hh"
-#define firstrequest "HTTP/1.1 200 OK\r\nServer: WWeb/2.0\r\nConnection: Close\r\nContent-Type: multipart/x-mixed-replace;boundary=--myboundary\r\n\r\n \n\n--myboundary\n"
 
 mythBaseClient::mythBaseClient(MythSocket* people, int usethread, const char* CameraType)
 {
