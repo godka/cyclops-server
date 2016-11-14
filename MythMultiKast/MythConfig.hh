@@ -32,6 +32,10 @@
 #	pragma comment(lib,"postproc.lib")
 #	pragma comment(lib,"swscale.lib")
 #	pragma comment(lib,"swresample.lib")
+
+#	pragma comment(lib,"libevent.lib")
+#	pragma comment(lib,"libevent_core.lib")
+#	pragma comment(lib,"libevent_extras.lib")
 #endif
 #if (defined _WIN64) || (defined WIN64)
 #	
