@@ -484,6 +484,11 @@
     <ClInclude Include="tinystr.h" />
     <ClInclude Include="tinyxml.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="libevent.lib" />
+    <Library Include="libevent_core.lib" />
+    <Library Include="libevent_extras.lib" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -894,4 +894,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="libevent.lib" />
+    <Library Include="libevent_core.lib" />
+    <Library Include="libevent_extras.lib" />
+  </ItemGroup>
 </Project>

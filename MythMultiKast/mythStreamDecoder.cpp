@@ -122,7 +122,9 @@ int mythStreamDecoder::MainLoop(){
 
 	// 连接服务器, 并启动事件循环
 	bufferevent_socket_connect(bufevt, paddr, addrlen);
-	bufferevent_write(bufevt, "GET /CameraID=1017&Type=zyh264 HTTP/1.0\r\n\r\n", 43);
+	char connectstr[256] = { 0 };
+	sprintf(connectstr, "GET /CameraID=%d&Type=zyh264 HTTP/1.0\r\n\r\n", m_cameraid);
+	bufferevent_write(bufevt, connectstr, strlen(connectstr));
 	event_base_dispatch(evbase);
 
 	if (bufevt)  bufferevent_free(bufevt);
