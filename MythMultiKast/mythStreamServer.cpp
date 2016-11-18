@@ -110,8 +110,8 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("192.168.31.198", 1017);
-				//this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
+				//this->decoder = mythStreamDecoder::CreateNew("192.168.31.198", 1017);
+				this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
 					decoder->start();
@@ -191,13 +191,13 @@ int mythStreamServer::mainthread()
 						mythBaseClient* tmpclient = _baselist[i];
 						if (tmpclient){
 							streamcount++;
-							//if (tmpclient->isfirst){
-							//	if (tmp->isIframe)
-							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
-							//}
-							//else{
-							//	tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
-							//}
+							if (tmpclient->isfirst){
+								if (tmp->isIframe)
+									tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
+							}
+							else{
+								tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
+							}
 						}
 					}
 					if(streamcount == 0){

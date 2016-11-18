@@ -78,7 +78,6 @@ int MythSocket::socket_SendStr(const char* data, int length){
 	else{
 		if (sock){
 			int len = SDLNet_TCP_Send(this->sock, data, length);
-			printf("socket send %d-%d\n", len, length);
 			if (len < length){
 				return 1;
 			}

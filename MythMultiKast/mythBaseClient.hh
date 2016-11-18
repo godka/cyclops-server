@@ -23,13 +23,9 @@ public:
 private:
 	MythSocket* mpeople;
 	int mythSendMessage(void* data, int length = -1);
-	int AddBuffer(void* data, int length = -1);
-	int FlushBuffer();
 	int iFrameCount;
 	int m_cameratype;
 	int _mode;
-	char* sendBuffer;
-	int sendbufferptr;
 protected:
 	mythBaseClient(MythSocket* people, const char* CameraType);
 };

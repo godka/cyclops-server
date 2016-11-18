@@ -54,7 +54,6 @@ void mythStreamDecoder::bufferevent_read_callback(struct bufferevent *bufevt)
 			buflen -= len;
 			if (buflen == 0){
 				put((unsigned char*) buf, bufindex);
-				//OnGettingFrame(buf, bufindex);
 				contentlength = 0;
 			}
 		}
@@ -95,9 +94,9 @@ int mythStreamDecoder::MainLoop(){
 	evbase = event_base_new();
 	struct bufferevent * bufevt = bufferevent_socket_new(evbase, fd, 0);
 
-	bufferevent_setcb(bufevt, [](struct bufferevent *bufevt, void *arg){
-		mythStreamDecoder* decoder = (mythStreamDecoder*) arg;
-		decoder->bufferevent_read_callback(bufevt);
+	bufferevent_setcb(bufevt, [](struct bufferevent* bev, void* data){
+		mythStreamDecoder* decoder = (mythStreamDecoder*) data;
+		decoder->bufferevent_read_callback(bev);
 	}, NULL, NULL, this);
 	bufferevent_enable(bufevt, EV_READ);
 
