@@ -18,10 +18,6 @@ class mythStreamDecoder :
 	public mythVirtualDecoder
 {
 public:
-	static void bufferevent_read_callback_static(struct bufferevent *bufevt, void *arg){
-		mythStreamDecoder* decoder = (mythStreamDecoder*) arg;
-		decoder->bufferevent_read_callback(bufevt);
-	}
 	void bufferevent_read_callback(struct bufferevent *bufevt);
 	static mythStreamDecoder* CreateNew(char* ip, int port, int CameraID);
 	static mythStreamDecoder* CreateNew(char* ip, int CameraID);
@@ -35,7 +31,6 @@ protected:
 	int init_win_socket();
 	//static int decodethreadstatic(void* data);
 	mythStreamDecoder(char* ip, int port, int CameraID);
-	SDL_Thread* startthread;
 private:
 	char* buf;
 	char* m_ip;

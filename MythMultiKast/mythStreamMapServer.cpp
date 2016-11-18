@@ -27,25 +27,18 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #endif
 //#include "mythUdp.hh"
 mythStreamMapServer::mythStreamMapServer(int port)
-:mythVirtualServer(port)//, mythVirtualSqlite()
+	:mythVirtualServer(port)//, mythVirtualSqlite()
 {
 	char tmpip[256] = { 0 };
 	int start = mythIniFile::GetInstance()->GetInt("config", "autostart");
 	if (start || MYTH_FORCE_AUTOSTART){
 		startAll();
 	}
-	mapmutex = SDL_CreateMutex();
-#ifdef MYTH_STREAM_CLOSE
-	this->timerid = SDL_AddTimer(1000, TimerCallbackStatic, this);
-#endif
+	servermap = mythServerMap::CreateNew();
 }
-int mythStreamMapServer::startAll(void){
-	//if (start){
-		//this->open("myth.db");
 
-#ifdef MYTH_STREAM_CLOSE
-	SDL_RemoveTimer(timerid);
-#endif
+int mythStreamMapServer::startAll(void)
+{
 	int sum = 0;
 	char sqlstr[256] = "select c.cameraid from videoserver as a,vstype as b,camera as c where a.vstypeid = b.vstypeid and a.videoserverid = c.videoserverid";
 	mythStreamSQLresult* result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqlstr);
@@ -55,35 +48,19 @@ int mythStreamMapServer::startAll(void){
 		while (result->MoveNext()){
 			string cameraidstr = result->prase("CameraID");
 			int cameraid = atoi(cameraidstr.c_str());
-			if (servermap[cameraid] == NULL){
-				//if I using fork?
-				mythStreamServer* server = mythStreamServer::CreateNew(cameraid);
-				servermap[cameraid] = server;
-				cout << ksum << "  cameraid:" << cameraid << " started." << endl;
-				//SDL_Delay(500);
-				server->start();
-				ksum++;
-			}
+			servermap->AppendClient(cameraid);
+			cout << ksum << "  cameraid:" << cameraid << " started." << endl;
+			ksum++;
 		}
 		delete result;
-		//cout << "sum client:" << ksum << endl;
-		//delete result;
-		//for (map<int, mythStreamServer*>::iterator Iter = servermap.begin(); Iter != servermap.end(); Iter++){
-		//	if (Iter->second){
-		//		Iter->second->start();
-		//		cout << sum++ << "  cameraid:" << Iter->first << " started." << endl;
-		//		SDL_Delay(1000);
-		//	}
-		//}
+
 	}
 	return 0;
-	//}
 }
+
 mythStreamMapServer::~mythStreamMapServer(void)
 {
-#ifdef MYTH_STREAM_CLOSE
-	SDL_RemoveTimer(timerid);
-#endif
+
 }
 
 void mythStreamMapServer::OnClientClose(mythStreamServer * streamserver, int duration)
@@ -104,130 +81,32 @@ void mythStreamMapServer::ServerDecodeCallBack(MythSocket* people, char* data, i
 	int cameraid = -1;
 	char cameratype[20] = { 0 };
 	SDL_sscanf(data,"GET /CameraID=%d&Type=%s ",&cameraid,cameratype);
-	if(cameraid != -1){
-		mythStreamServer* server = NULL;
-		//find cameraid from map
-		if (servermap[cameraid] == NULL){
-			SDL_LockMutex(mapmutex);
-			server = mythStreamServer::CreateNew(cameraid);			//add a new server into map list,not found ,so create 
-			//server->SetOnCloseHandler(OnClientCloseStatic, this);
-			servermap[cameraid] = server;
-			SDL_UnlockMutex(mapmutex);
-		}
-		else{
-			SDL_LockMutex(mapmutex);
-			server = servermap[cameraid];									//find an existing server from map list,then add client into server list
-			SDL_UnlockMutex(mapmutex);
-		}
-		mythBaseClient* client = NULL;
-		if(!people->addtionaldata){
-			SDL_LockMutex(mapmutex);
-			int usingthread = mythIniFile::GetInstance()->GetInt("config", "usethread");
-			client = mythBaseClient::CreateNew(people, usingthread, cameratype);
-			people->data = server;
-			people->addtionaldata = client;
-			server->AppendClient(client);
-			SDL_UnlockMutex(mapmutex);
-		}
-		if (server)
-			server->start();
+	if (cameraid != -1){
+		servermap->AppendClient(cameraid, people, cameratype);
 	}
 	else{
-		SDL_sscanf(data, "PUT /CameraID=%d", &cameraid);
-		if (cameraid != -1){
-			people->isPush = 1;
-			mythStreamServer* server = NULL;
-			//find cameraid from map
-			if (servermap[cameraid] == NULL){
-				SDL_LockMutex(mapmutex);
-				server = mythStreamServer::CreateNew(cameraid,people);			//add a new server into map list,not found ,so create 
-				servermap[cameraid] = server;
-				SDL_UnlockMutex(mapmutex);
-				server->start();
-			}
-			else{
-				SDL_LockMutex(mapmutex);
-				server = servermap[cameraid];									//find an existing server from map list,then add client into server list
-				if (server){
-					((mythProxyDecoder*) server->GetDecoder())->refreshSocket(people);	//problem
-				}
-				SDL_UnlockMutex(mapmutex);
-			}
-		}
-		else{
-			people->socket_SendStr("404");
-			closePeople(people);
-			//ServerCloseCallBack(people);
-		}
+		people->socket_SendStr("404");
+		closePeople(people);
 	}
 	return;
 }
 
 void mythStreamMapServer::showAllClients(){
-	int sum = 0;
-	int clientnum = 0;
-	for (map<int, mythStreamServer*>::iterator Iter = servermap.begin(); Iter != servermap.end(); Iter++){
-		if (Iter->second){
-			int tmpnum = Iter->second->getClientNumber();
-			cout << "server cameraid :" << Iter->second->GetID() << ";client num :" << tmpnum << endl;
-			sum++;
-			clientnum += tmpnum;
-		}
-	}
-	cout << "server num :" << sum << ";client sum :" << clientnum << endl;
+	//int sum = 0;
+	//int clientnum = 0;
+	//for (map<int, mythStreamServer*>::iterator Iter = servermap.begin(); Iter != servermap.end(); Iter++){
+	//	if (Iter->second){
+	//		int tmpnum = Iter->second->getClientNumber();
+	//		cout << "server cameraid :" << Iter->second->GetID() << ";client num :" << tmpnum << endl;
+	//		sum++;
+	//		clientnum += tmpnum;
+	//	}
+	//}
+	//cout << "server num :" << sum << ";client sum :" << clientnum << endl;
 }
 
 void mythStreamMapServer::ServerCloseCallBack(MythSocket* people)
 {
-	if (people->addtionaldata){
-		SDL_LockMutex(mapmutex);
-		mythBaseClient* client = (mythBaseClient*)people->addtionaldata;
-		mythStreamServer* server = (mythStreamServer*) people->data;
-		//people->sock = NULL;
-		server->DropClient(client);
-		delete client;
-		client = NULL;
-		SDL_UnlockMutex(mapmutex);
-	}
+	servermap->DropClient(people);
 	return;
 }
-//this will make a fatal error if using stream close,unknow bug
-#ifdef MYTH_STREAM_CLOSE
-Uint32 mythStreamMapServer::TimerCallbackStatic(Uint32 interval, void *param)
-{
-	mythStreamMapServer* mapserver = (mythStreamMapServer*) param;
-	return mapserver->TimerCallback(interval);
-}
-
-Uint32 mythStreamMapServer::TimerCallback(Uint32 interval)
-{
-	char tmp[256] = { 0 };
-	for (map<int, mythStreamServer*>::iterator Iter = servermap.begin(); Iter != servermap.end(); Iter++){
-		if (Iter->second){
-			int tmpnum = Iter->second->getClientNumber();
-			int speed = Iter->second->GetDecoder()->GetTimeCount();
-			sprintf(tmp, "status:%d:%d:%d\n", (int) Iter->first, tmpnum,speed);
-			mythUdp::GetInstance()->SendData(tmp);
-			if (tmpnum == 0){
-			//lock
-				servercount[tmpnum]++;
-				if (servercount[tmpnum] >= 5){
-					SDL_LockMutex(mapmutex);
-					Iter->second->stop();
-					//printf("delete server = %d\n", Iter->first);
-					delete Iter->second;
-					servermap[Iter->first] = NULL;
-					SDL_UnlockMutex(mapmutex);
-					//Iter->first
-					sprintf(tmp, "clear:%d\n", (int) Iter->first);
-					mythUdp::GetInstance()->SendData(tmp);
-				}
-			}
-			else{
-				servercount[tmpnum] = 0;
-			}
-		}
-	}
-	return interval;
-}
-#endif

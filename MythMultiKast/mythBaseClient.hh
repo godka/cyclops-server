@@ -8,31 +8,21 @@ extern "C"{
 };
 #include "MythSocket.hh"
 #include "mythAvlist.hh"
-class mythBaseClient:
-	public mythAvlist
+#include <thread>
+#include <chrono>
+#include <memory.h>
+#include <string.h>
+#include <stdio.h>
+class mythBaseClient
 {
 public:
-	static int SendThreadStatic(void* data){
-		mythBaseClient* cli = (mythBaseClient*) data;
-		if (cli)
-			return cli->SendThread();
-		else
-			return 0;
-	}
 	bool isfirst;
-	int SendThread();
-	static mythBaseClient* CreateNew(MythSocket* people, int usethread = 0,const char* CameraType = NULL);
-	int mythSendMessage(void* data, int length = -1);
+	static mythBaseClient* CreateNew(MythSocket* people,const char* CameraType = NULL);
 	int DataCallBack(void* data, int len);
 	~mythBaseClient(void);
-	void ChangeMode(int mode);//0 for single thread,1 for multithread
 private:
-	//int musethread;		//use thread or not
 	MythSocket* mpeople;
-	int isrunning;
-	SDL_Thread* mainthreadhandle;
-	SDL_mutex* mymutex;
-	int generate(char* data,int length);
+	int mythSendMessage(void* data, int length = -1);
 	int AddBuffer(void* data, int length = -1);
 	int FlushBuffer();
 	int iFrameCount;
@@ -41,8 +31,6 @@ private:
 	char* sendBuffer;
 	int sendbufferptr;
 protected:
-	mythBaseClient(MythSocket* people, int usethread, const char* CameraType);
-	SDL_Thread* mthread;
-	bool misrunning;
+	mythBaseClient(MythSocket* people, const char* CameraType);
 };
 

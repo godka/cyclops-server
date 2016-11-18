@@ -23,60 +23,59 @@ MythKAst(asdic182@sina.com), in 2013 June.
 mythVirtualServer::mythVirtualServer(int port){
 	m_stop = false;
 	m_port = port;
+	acceptthreadHandle = nullptr;
 	//this->StartServer();
 }
 
 void mythVirtualServer::HandleServer(void){
-    TCPsocket newsock;
-    int which;
+	TCPsocket newsock;
+	int which;
 
-    newsock = SDLNet_TCP_Accept(servsock);
-    if ( newsock == NULL ) {
-        return;
-    }
-	
-    /* Look for unconnected person slot */
-    for ( which=0; which<CHAT_MAXPEOPLE; ++which ) {
+	newsock = SDLNet_TCP_Accept(servsock);
+	if (newsock == NULL) {
+		return;
+	}
+
+	/* Look for unconnected person slot */
+	for (which = 0; which < CHAT_MAXPEOPLE; ++which) {
 		if (!people[which]->sock) {
-            break;
-        }
-    }
-    if ( which == CHAT_MAXPEOPLE ) {
-        /* Look for inactive person slot */
-        for ( which=0; which<CHAT_MAXPEOPLE; ++which ) {
+			break;
+		}
+	}
+	if (which == CHAT_MAXPEOPLE) {
+		/* Look for inactive person slot */
+		for (which = 0; which < CHAT_MAXPEOPLE; ++which) {
 			if (people[which]->sock && !people[which]->active) {
-                /* Kick them out.. */
-                //data = CHAT_BYE;
-                //SDLNet_TCP_Send(people[which].sock, &data, 1);
-                SDLNet_TCP_DelSocket(socketset,
-					people[which]->sock);
+				SDLNet_TCP_DelSocket(socketset,people[which]->sock);
 				SDLNet_TCP_Close(people[which]->sock);
 #ifdef _DEBUG
-    fprintf(stderr, "Killed inactive socket %d\n", which);
+				fprintf(stderr, "Killed inactive socket %d\n", which);
 #endif
-                break;
-            }
-        }
-    }
-    if ( which == CHAT_MAXPEOPLE ) {
-        SDLNet_TCP_Close(newsock);
+				break;
+			}
+		}
+	}
+	if (which == CHAT_MAXPEOPLE) {
+		SDLNet_TCP_Close(newsock);
 #ifdef _DEBUG
-    fprintf(stderr, "Connection refused -- chat room full\n");
+		fprintf(stderr, "Connection refused -- chat room full\n");
 #endif
-    } else {
+	}
+	else {
 		//people[which]->sock = newsock;
 		people[which]->generateSock(newsock);
 		people[which]->peer = *SDLNet_TCP_GetPeerAddress(newsock);
 		SDLNet_TCP_AddSocket(socketset, people[which]->sock);
 #ifdef _DEBUG
-    fprintf(stderr, "New inactive socket %d\n", which);
+		fprintf(stderr, "New inactive socket %d\n", which);
 #endif
-    }
+	}
 }
 int mythVirtualServer::StartServer(){
 	this->initalsocket(m_port);
 #ifdef _DEBUG
-	acceptthreadHandle = SDL_CreateThread(acceptthreadstatic, "accept", this);
+	if (!acceptthreadHandle)
+		acceptthreadHandle = new std::thread(&mythVirtualServer::acceptthread, this);
 	return 0;
 #else
 	puts("MythMultiKast: stable version.");
@@ -87,7 +86,9 @@ int mythVirtualServer::StartServer(){
 int mythVirtualServer::StopServer(){
 	this->m_stop = true;
 #ifdef _DEBUG
-	SDL_WaitThread(this->acceptthreadHandle, 0);
+	acceptthreadHandle->join();
+	delete acceptthreadHandle;
+	acceptthreadHandle = nullptr;
 #endif // _WIN32
 	return 0;
 }
@@ -120,7 +121,6 @@ void mythVirtualServer::acceptthread(){
 			}
         }
 		//SDL_Delay(1);
-		SDL_PollEvent(NULL);
     }
     cleanup(0);
 }
@@ -181,15 +181,7 @@ int mythVirtualServer::closePeople(MythSocket* people){
 	people->addtionaldata = NULL;
 	return 0;
 }
-string mythVirtualServer::GetLocalAddress(){
-	//unsigned char iphost[4] = { 0 };
-	//IPaddress serverip;
-	//SDLNet_GetLocalAddress(&serverip);
-	//SDL_memcpy(iphost, &serverip.host, 4);
-	//char tmpstr[100] = { 0 };
-	//sprintf(tmpstr, "%d.%d.%d.%d", iphost[0], iphost[1], iphost[2], iphost[3]);
-	return NULL;
-}
+
 int mythVirtualServer::initalsocket(int port){
 	
     IPaddress serverIP;

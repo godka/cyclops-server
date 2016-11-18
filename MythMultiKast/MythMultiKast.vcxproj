@@ -407,12 +407,12 @@
     <ClCompile Include="mythListFactory.cpp" />
     <ClCompile Include="mythLive555Decoder.cpp" />
     <ClCompile Include="mythMediaPipeline.cpp" />
-    <ClCompile Include="mythOpenresyServer.cpp" />
     <ClCompile Include="mythProxyDecoder.cpp" />
     <ClCompile Include="mythRedisClient.cpp" />
     <ClCompile Include="mythRedisDecoder.cpp" />
     <ClCompile Include="mythRedisList.cpp" />
     <ClCompile Include="mythRTSP.cpp" />
+    <ClCompile Include="mythServerMap.cpp" />
     <ClCompile Include="mythShareMemList.cpp" />
     <ClCompile Include="mythStreamMapServer.cpp" />
     <ClCompile Include="mythStreamServer.cpp" />
@@ -423,9 +423,7 @@
     <ClCompile Include="mythVirtualServer.cpp" />
     <ClCompile Include="mythVirtualSqlite.cpp" />
     <ClCompile Include="mythStreamDecoder.cpp" />
-    <ClCompile Include="mythWorkBenchServer.cpp" />
     <ClCompile Include="net.c" />
-    <ClCompile Include="OpenRestyMain.cpp" />
     <ClCompile Include="OurRTSPClient.cpp" />
     <ClCompile Include="MythSocket.cpp" />
     <ClCompile Include="sds.c" />
@@ -437,7 +435,6 @@
     <ClCompile Include="tinyxml.cpp" />
     <ClCompile Include="tinyxmlerror.cpp" />
     <ClCompile Include="tinyxmlparser.cpp" />
-    <ClCompile Include="WorkBenchMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="async.h" />
@@ -457,12 +454,12 @@
     <ClInclude Include="mythIniFile.hh" />
     <ClInclude Include="mythListFactory.hh" />
     <ClInclude Include="mythMediaPipeline.hh" />
-    <ClInclude Include="mythOpenresyServer.hh" />
     <ClInclude Include="mythProxyDecoder.hh" />
     <ClInclude Include="mythRedisClient.hh" />
     <ClInclude Include="mythRedisDecoder.hh" />
     <ClInclude Include="mythRedisList.hh" />
     <ClInclude Include="mythRTSP.hh" />
+    <ClInclude Include="mythServerMap.hh" />
     <ClInclude Include="mythShareMemList.hh" />
     <ClInclude Include="mythStreamMapServer.hh" />
     <ClInclude Include="mythStreamServer.hh" />
@@ -473,7 +470,6 @@
     <ClInclude Include="mythVirtualServer.hh" />
     <ClInclude Include="mythVirtualSqlite.hh" />
     <ClInclude Include="mythStreamDecoder.hh" />
-    <ClInclude Include="mythWorkBenchServer.hh" />
     <ClInclude Include="net.h" />
     <ClInclude Include="OurRTSPClient.hh" />
     <ClInclude Include="MythSocket.hh" />

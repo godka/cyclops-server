@@ -36,10 +36,7 @@ mythLive555Decoder::mythLive555Decoder(char* rtsplink,char* username,char* passw
 mythLive555Decoder* mythLive555Decoder::CreateNew(char* rtsplink,char* username,char* password){
 	return new mythLive555Decoder(rtsplink,username,password);
 }
-void mythLive555Decoder::callbackdatastatic(void *myth,unsigned char* data,unsigned int length){
-	mythLive555Decoder* mythlive555 = (mythLive555Decoder*)myth;
-	mythlive555->callbackdata(data,length);
-}
+
 void mythLive555Decoder::callbackdata(unsigned char* data,unsigned int length)
 {
 	m_count += length;
@@ -50,12 +47,15 @@ int mythLive555Decoder::MainLoop(){
 	rtsp = mythRTSP::CreateNew();
 	while (isrunning){
 		if (rtsp){
-			client = rtsp->openURL(this->m_rtsplink.c_str(), this->m_username.c_str(), this->m_password.c_str(), mythLive555Decoder::callbackdatastatic, (void*)this);
+			client = rtsp->openURL(this->m_rtsplink.c_str(), this->m_username.c_str(), this->m_password.c_str(), [](void *myth, unsigned char* data, unsigned int length){
+				mythLive555Decoder* mythlive555 = (mythLive555Decoder*) myth;
+				mythlive555->callbackdata(data, length);
+			}, (void*)this);
 			if (client){
 				rtsp->Start(client);
 			}
 		}
-		SDL_Delay(1000);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 #ifdef _DEBUG
 		printf("Ready to reconnect\n");
 #endif

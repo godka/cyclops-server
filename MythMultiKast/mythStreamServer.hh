@@ -8,6 +8,7 @@
 #include "mythStreamDecoder.hh"
 #include "mythBaseClient.hh"
 #include "mythStreamSQLresult.hh"
+#include <thread>
 class mythStreamServer 
 {
 public:
@@ -17,7 +18,6 @@ public:
 	int AppendClient(mythBaseClient* client);
 	int DropClient(mythBaseClient* client);
 	//char* getTop( int* length );
-	static int mainthreadstatic(void* data);
 	int mainthread();
 	static mythStreamServer* CreateNew(int cameraid,void* args = NULL);
 	//mythStreamServer* CreateNew(int cameraid, void* args);
@@ -37,6 +37,7 @@ public:
 	int start(bool canthread = true);
 	int stop();
 private:
+	long long mythTickCount();
 	int m_cameraid;
 	mythBaseClient* _baselist[STREAMSERVERMAX];
 	int ClientNumber;
@@ -58,7 +59,7 @@ protected:
 	mythStreamServer(int cameraid, void* args = NULL);
 	//bool FindClient(vector <mythBaseClient*>::iterator beg, vector <mythBaseClient*>::iterator end, mythBaseClient* ival);
 	bool FindClient(mythBaseClient* ival);
-	SDL_Thread* streamserverthread;
+	std::thread* streamserverthread;
 	int isrunning;
 
 	OnCloseHandler* _handler;

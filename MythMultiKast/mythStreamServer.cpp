@@ -30,7 +30,7 @@ mythStreamServer* mythStreamServer::CreateNew(int cameraid,void* args){
 mythStreamServer::mythStreamServer(int cameraid, void* args)
 	//:mythVirtualSqlite()
 {
-	streamserverthread = NULL;
+	streamserverthread = nullptr;
 	decoder = NULL;
 	ClientNumber = 0;
 	m_cameraid = cameraid;
@@ -67,7 +67,7 @@ void mythStreamServer::connect()
 		switch (list_type)
 		{
 		case 0:
-			SDL_snprintf(sqltmp, 4096, FINDCAMERA, m_cameraid);
+			sprintf(sqltmp, FINDCAMERA, m_cameraid);
 			result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqltmp);
 			if (result){
 				while (result->MoveNext()){
@@ -110,7 +110,7 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("120.204.70.218", 1017);
+				this->decoder = mythStreamDecoder::CreateNew("192.168.31.198", 1017);
 				//this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
@@ -149,33 +149,6 @@ bool mythStreamServer::GetStart()
 	return _hasstart;
 }
 
-int mythStreamServer::mainthreadstatic(void* data)
-{
-	if(data){
-		mythStreamServer* server = (mythStreamServer*)data;
-		server->mainthread();
-		//server->stop();
-	}
-	
-	return 0;
-}
-/*
-bool mythStreamServer::FindClient(vector <mythBaseClient*>::iterator beg,
-	vector <mythBaseClient*>::iterator end, mythBaseClient* ival)
-{
-	while (beg != end){
-		if (*beg == ival)
-			break;
-		else
-			++beg;
-	}
-
-	if (beg != end)
-		return true;
-	else
-		return false;
-}
-*/
 bool mythStreamServer::FindClient(mythBaseClient* ival){
 	for (int i = 0; i < STREAMSERVERMAX; i++){
 		if (_baselist[i] == ival)
@@ -187,9 +160,6 @@ bool mythStreamServer::FindClient(mythBaseClient* ival){
 
 int mythStreamServer::AppendClient(mythBaseClient* client){
 	printf("Appending Client,%d\n", client);
-	//if (!FindClient(baselist.begin(), baselist.end(), client)){
-	//	baselist.push_back(client);
-	//}
 	if (!FindClient(client)){
 		for (int i = 0; i < STREAMSERVERMAX; i++){
 			if (_baselist[i] == NULL){
@@ -200,94 +170,61 @@ int mythStreamServer::AppendClient(mythBaseClient* client){
 	}
 	return 0;
 }
+long long mythStreamServer::mythTickCount(){
+	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+}
 int mythStreamServer::mainthread()
 {
 	//int msize = 0;
-	int duration = 0;
+	long long duration = 0;
 	PacketQueue* tmp = NULL;
 	connect();
-	int tickstart = 0;
+	long long tickstart = 0;
 	while (isrunning == 0){
-		SDL_PollEvent(NULL);
 		if (decoder){
-			//msize = getClientNumber();
 			tmp = decoder->get();
 			if (tmp){
-				//add omp version
 				if (tmp->h264PacketLength > 0){
-					//for (unsigned int i = 0; i < msize; i++){
-					int timestart = SDL_GetTicks();
-					/*
-					for (vector<mythBaseClient*>::iterator iter = baselist.begin(); iter != baselist.end(); iter++){
-							mythBaseClient* tmpclient = *iter;
-							if (tmpclient){
-								tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
-							}
-					}
-					*/
+					auto timestart = mythTickCount();
 					int streamcount = 0;
 					for (int i = 0; i < STREAMSERVERMAX; i++){
 						mythBaseClient* tmpclient = _baselist[i];
 						if (tmpclient){
 							streamcount++;
-							if (tmpclient->isfirst){
-								if (tmp->isIframe)
-									tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
-							}
-							else{
-								tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
-							}
+							//if (tmpclient->isfirst){
+							//	if (tmp->isIframe)
+							tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
+							//}
+							//else{
+							//	tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
+							//}
 						}
 					}
 					if(streamcount == 0){
 						//add ticks
 						if (tickstart == 0)
-							tickstart = SDL_GetTicks();
+							tickstart = mythTickCount();
 						else{
-							duration = SDL_GetTicks() - tickstart;
+							duration = mythTickCount() - tickstart;
 							if (duration > 5000){
 								break;
-								//if (_handler){
-								//	_handler(this, duration, _handlerdata);
-								//}
-								//stop();
-								//return 0;
 							}
 						}
 					}
 					else{
 						//refresh ticks
-						tickstart = SDL_GetTicks();
+						tickstart = mythTickCount();
 					}
-#ifdef MYTHASYNCMODE
-					int timeend = SDL_GetTicks();
-					int timespan = timeend - timestart;
-					if (timespan > 40){
-						//send not good
-						for (int i = 0; i < STREAMSERVERMAX; i++){
-							mythBaseClient* tmpclient = _baselist[i];
-							if (tmpclient){
-								tmpclient->ChangeMode(1);
-							}
-						}
-					}
-#endif
-					//printf("%dms\n", timeend - timestart);
 				}
 				decoder->release(tmp);
 			}
-			SDL_PollEvent(NULL);
-			SDL_Delay(1);
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 	}
 	if (decoder)
 		decoder->stop();
 	delete decoder;
-	//if (_handler){
-	//	_handler(this, duration, _handlerdata);
-	//}
 	SetStart(false);
-	//_hasstart = false;
 	streamserverthread = NULL;
 	printf("%d is closed\n", m_cameraid);
 	return 0;
@@ -298,12 +235,12 @@ int mythStreamServer::start(bool canthread)
 	if (!GetStart()){
 		SetStart(true);
 		if (!canthread){
-			mainthreadstatic(this);
+			mainthread();
 		}
 		else{
 			isrunning = 0;
 			if (!streamserverthread)
-				streamserverthread = SDL_CreateThread(mainthreadstatic, "static", this);
+				streamserverthread = new std::thread(&mythStreamServer::mainthread, this);
 		}
 	}
 	else{
@@ -315,11 +252,10 @@ int mythStreamServer::start(bool canthread)
 int mythStreamServer::stop()
 {
 	SetStart(false);
-	//_hasstart = false;
 	isrunning = 1;
 	if (streamserverthread)
-		SDL_WaitThread(this->streamserverthread,NULL);
-	streamserverthread = NULL;
+		streamserverthread->join();
+	streamserverthread = nullptr;
 	//delete this;
 	return 0;
 }
@@ -333,7 +269,6 @@ void mythStreamServer::SetOnCloseHandler(OnCloseHandler* handler,void* handlerda
 int mythStreamServer::getClientNumber()
 {
 	unsigned int ret_size = 0;
-	//ret_size = baselist.size();
 	for (int i = 0; i < STREAMSERVERMAX; i++){
 		if (_baselist[i]){
 			ret_size++;
@@ -345,15 +280,6 @@ int mythStreamServer::getClientNumber()
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
 	printf("Dropping Client,%d\n", client);
-	/*
-	for (vector<mythBaseClient*>::iterator iter = baselist.begin(); iter != baselist.end();iter++)
-	{
-		if (*iter == client){
-			iter = baselist.erase(iter);
-			break;
-		}
-	}
-	*/
 	for (int i = 0; i < STREAMSERVERMAX; i++){
 		if (_baselist[i] == client){
 			_baselist[i] = NULL;

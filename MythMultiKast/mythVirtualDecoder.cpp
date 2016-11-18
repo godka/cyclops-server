@@ -29,7 +29,7 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 	ori_count = 0;
 	ret_count = 0;
 	m_timeid = SDL_AddTimer(1000, TimerCallbackStatic, this);
-	m_thread = NULL;
+	m_thread = nullptr;
 
 	int streamtype = mythIniFile::GetInstance()->GetInt("config", "streamtype"); 
 	int level = mythIniFile::GetInstance()->GetInt("config", "streamlevel"); 
@@ -42,17 +42,18 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 
 void mythVirtualDecoder::start(bool usethread){
 	if (usethread == true){
-		m_thread = SDL_CreateThread(MainLoopstatic, "mainloop", this);
+		if (!m_thread)
+			m_thread = new std::thread(&mythVirtualDecoder::MainLoop, this);
 	}
 	else{
 		printf("[mythmultikast]I'm in mainloop\n");
-		MainLoopstatic(this);
+		MainLoop();
 	}
 }
 void mythVirtualDecoder::StopThread(){
 	if (m_thread)
-		SDL_WaitThread(m_thread, NULL);
-	m_thread = NULL;
+		m_thread->join();
+	m_thread = nullptr;
 	//StopCallback();
 }
 
@@ -98,15 +99,6 @@ PacketQueue * mythVirtualDecoder::get(int freePacket /*= 0*/)
 		return m_pipeline->get(freePacket);
 	else
 		return mythListFactory::get(freePacket);
-}
-
-int mythVirtualDecoder::MainLoopstatic(void* data)
-{
-	mythVirtualDecoder* decoder = (mythVirtualDecoder*) data;
-	if (decoder){
-		return decoder->MainLoop();
-	}
-	return 0;
 }
 
 void mythVirtualDecoder::stop()

@@ -4,23 +4,11 @@
 /* The maximum number of people who can talk at once */
 #define CHAT_MAXPEOPLE  200
 #include "MythSocket.hh"
-#include <string>
-using namespace std;
-/*
-typedef struct {
-	int active;
-	TCPsocket sock;
-	IPaddress peer;
-	void* addtionaldata;
-} PEOPLE;
-*/
-//people[CHAT_MAXPEOPLE];
-
+#include <thread>
 
 class mythVirtualServer
 {
 public:
-	string GetLocalAddress();
 	static int acceptthreadstatic(void* data);
 	void acceptthread();
 	static mythVirtualServer* CreateNew(int port);
@@ -43,6 +31,6 @@ private:
 	void HandleServer(void);
 	void HandleClient(int which);
 	MythSocket *people[CHAT_MAXPEOPLE];
-	SDL_Thread* acceptthreadHandle;
+	std::thread* acceptthreadHandle;
 };
 

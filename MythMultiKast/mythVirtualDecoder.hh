@@ -2,6 +2,7 @@
 #include "MythConfig.hh"
 #include "mythListFactory.hh"
 #include "mythMediaPipeline.hh"
+#include <thread>
 class mythVirtualDecoder :
 	public mythListFactory
 {
@@ -10,7 +11,6 @@ public:
 	void start(bool usethread = true);
 	virtual void stop();
 	void StopThread();
-	static int MainLoopstatic(void* data);
 	virtual int MainLoop();
 	virtual ~mythVirtualDecoder(void);
 	unsigned int GetTimeCount();
@@ -25,7 +25,7 @@ protected:
 	unsigned int ori_count;
 	unsigned int ret_count;
 	SDL_TimerID m_timeid;
-	SDL_Thread* m_thread;
+	std::thread* m_thread;
 	mythMediaPipeline* m_pipeline;
 };
 

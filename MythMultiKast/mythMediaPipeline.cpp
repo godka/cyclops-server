@@ -10,15 +10,8 @@ mythMediaPipeline::mythMediaPipeline(void* ptr,int streamtype, int level)
 	m_encoder = NULL;
 	yuvlist = mythAvlist::CreateNew(50); 
 	isrunning = true;
-	_thread = SDL_CreateThread(encodethreadstatic, "encodethread", this);
+	_thread = new std::thread(&mythMediaPipeline::encodethread, this);
 	
-}
-int mythMediaPipeline::encodethreadstatic(void* data){
-	if (data){
-		mythMediaPipeline* tmp = (mythMediaPipeline*) data;
-		return tmp->encodethread();
-	}
-	return 0;
 }
 
 int mythMediaPipeline::encodethread()
@@ -26,9 +19,14 @@ int mythMediaPipeline::encodethread()
 	while (isrunning){
 		PacketQueue* pkt = yuvlist->get();
 		if (pkt){
-			m_encoder->ProcessFrame((unsigned char**) pkt->yuvPacket, (int*)pkt->yuvPacketLength, encodecallback_static);
+			m_encoder->ProcessFrame((unsigned char**) pkt->yuvPacket, (int*) pkt->yuvPacketLength, [](void* ptr, char* pdata, int plength){
+				if (ptr){
+					mythMediaPipeline* tmp = (mythMediaPipeline*) ptr;
+					tmp->encodecallback(pdata, plength);
+				}
+			});
 		}
-		SDL_Delay(1);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 	return 0;
 }
@@ -52,14 +50,19 @@ mythMediaPipeline::~mythMediaPipeline()
 {
 	isrunning = false;
 	if (_thread)
-		SDL_WaitThread(_thread, NULL);
-	_thread = NULL;
+		_thread->join();
+	_thread = nullptr;
 }
 
 void mythMediaPipeline::PutMedia(void* data, int len)
 {
 	if (m_decoder){
-		m_decoder->ProcessFrame((unsigned char*) data, len, decodecallback_static); 
+		m_decoder->ProcessFrame((unsigned char*) data, len, [](void *ptr, char** pdata, int* plength, int width, int height){
+			if (ptr){
+				mythMediaPipeline* tmp = (mythMediaPipeline*) ptr;
+				tmp->decodecallback(pdata, plength, width, height);
+			}
+		});
 		//printf("in:%d\n", len);
 	}
 }

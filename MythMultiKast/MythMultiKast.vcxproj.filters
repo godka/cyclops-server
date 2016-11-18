@@ -735,14 +735,8 @@
     <ClCompile Include="SingleMain.cpp">
       <Filter>Source Files\main</Filter>
     </ClCompile>
-    <ClCompile Include="OpenRestyMain.cpp">
-      <Filter>Source Files\main</Filter>
-    </ClCompile>
     <ClCompile Include="MainInclude.hh">
       <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="mythOpenresyServer.cpp">
-      <Filter>Source Files\server</Filter>
     </ClCompile>
     <ClCompile Include="mythFFmpegEncoder.cpp">
       <Filter>Source Files\kernel\mediapipeline</Filter>
@@ -753,14 +747,11 @@
     <ClCompile Include="mythMediaPipeline.cpp">
       <Filter>Source Files\kernel\mediapipeline</Filter>
     </ClCompile>
-    <ClCompile Include="WorkBenchMain.cpp">
-      <Filter>Source Files\main</Filter>
-    </ClCompile>
-    <ClCompile Include="mythWorkBenchServer.cpp">
-      <Filter>Source Files\server</Filter>
-    </ClCompile>
     <ClCompile Include="mythIniFile.cpp">
       <Filter>Source Files\kernel\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="mythServerMap.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -875,9 +866,6 @@
     <ClInclude Include="tinystr.h">
       <Filter>Header Files\tinyxml</Filter>
     </ClInclude>
-    <ClInclude Include="mythOpenresyServer.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mythMediaPipeline.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -887,10 +875,10 @@
     <ClInclude Include="mythFFmpeg.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythWorkBenchServer.hh">
+    <ClInclude Include="mythIniFile.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythIniFile.hh">
+    <ClInclude Include="mythServerMap.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

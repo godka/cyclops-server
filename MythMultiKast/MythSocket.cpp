@@ -20,7 +20,7 @@ B
 MythKAst(asdic182@sina.com), in 2013 June.
 *********************************************************************/
 #include "MythSocket.hh"
-
+#include <memory.h>
 
 void MythSocket::generateSock(TCPsocket msock)
 {
@@ -32,6 +32,7 @@ void MythSocket::generateSock(TCPsocket msock)
 
 MythSocket::MythSocket()
 {
+	_bev = nullptr;
 	isrunning = false;
 	SDL_Init(NULL);
 	SDLNet_Init();
@@ -43,8 +44,14 @@ MythSocket::MythSocket()
 	downlength = 0;
 }
 
+MythSocket::MythSocket(bufferevent* bev){
+	_bev = bev;
+	downlength = 0;
+	isPush = 0;
+}
 MythSocket::MythSocket(const char* ip, int port)
 {
+	_bev = nullptr;
 	IPaddress serverIP = {0};
 	isrunning = false;
 	SDL_Init(NULL);
@@ -61,20 +68,27 @@ MythSocket::MythSocket(const char* ip, int port)
 }
 
 int MythSocket::socket_SendStr(const char* data, int length){
+
 	if (length == -2){
 		length = strlen(data);
+	}	
+	if (_bev){
+		return bufferevent_write(_bev, data, length);
 	}
-	if (sock){
-		if (SDLNet_TCP_Send(this->sock, data, length) < length){
+	else{
+		if (sock){
+			int len = SDLNet_TCP_Send(this->sock, data, length);
+			printf("socket send %d-%d\n", len, length);
+			if (len < length){
+				return 1;
+			}
+			else{
+				return 0;
+			}
+		}
+		else
 			return 1;
-		}
-		else{
-			return 0;
-		}
 	}
-	else
-		return 1;
-		
 	return 0;
 }
 
@@ -84,17 +98,21 @@ MythSocket::~MythSocket()
 
 int MythSocket::socket_ReceiveData(char* recvBuf, int recvLength, int timeout)
 {
-
-	if (SDLNet_CheckSockets(socketset, timeout) > 0){
-		if (SDLNet_SocketReady(sock)){
-			return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
-		}
-		else{
-			return -1;
-		}
+	if (_bev){
+		return bufferevent_read(_bev,recvBuf,recvLength);
 	}
-	else
-		return -1;
+	else{
+		if (SDLNet_CheckSockets(socketset, timeout) > 0){
+			if (SDLNet_SocketReady(sock)){
+				return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
+			}
+			else{
+				return -1;
+			}
+		}
+		else
+			return -1;
+	}
 }
 
 int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
@@ -108,7 +126,7 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 	int contentlength;
 	int length = 60;
 	while (1){
-		SDL_Delay(1);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		len = socket_ReceiveData(recv, rlength, 100);
 		if (len > 0){
 			for (i = 0; i < len - tmplength; i++){
@@ -152,7 +170,7 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 int MythSocket::socket_strcmp(char* buff, char*str, int length)
 {
 #if 1
-	return SDL_memcmp(buff, str, length);
+	return memcmp(buff, str, length);
 #else
 	for (int i = 0; i < length; i++)
 		if (buff[i] != str[i])
@@ -168,6 +186,8 @@ int MythSocket::socket_CloseSocket()
 	//	downbuffer = NULL;
 	//}
 	this->isPush = 0;
+	if (_bev)
+		return 0;
 	SDLNet_TCP_Close(sock);
 	SDLNet_TCP_DelSocket(socketset, sock);
 	return 0;

@@ -20,11 +20,10 @@ int mythProxyDecoder::MainLoop()
 			}
 		}
 		else{
-			SDL_Delay(100);
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
 		SDL_UnlockMutex(mmutex);
-		SDL_Delay(1);
-		SDL_PollEvent(NULL);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 	/*
 	if (msocket){
