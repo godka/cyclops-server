@@ -117,9 +117,6 @@
     <ClCompile Include="mythStreamServer.cpp">
       <Filter>Source Files\server</Filter>
     </ClCompile>
-    <ClCompile Include="mythVirtualServer.cpp">
-      <Filter>Source Files\server</Filter>
-    </ClCompile>
     <ClCompile Include="mythBaseClient.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
@@ -751,7 +748,7 @@
       <Filter>Source Files\kernel\ini</Filter>
     </ClCompile>
     <ClCompile Include="mythServerMap.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\kernel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -774,9 +771,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythVirtualDecoder.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mythVirtualServer.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythVirtualSqlite.hh">

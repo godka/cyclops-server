@@ -10,6 +10,17 @@
 #ifdef WIN32
 #include <Winsock2.h>
 #pragma comment(lib,"ws2_32")
+#else
+#include <wchar.h>
+#include <unistd.h>
+#include <assert.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <time.h>
+#include <unistd.h>
+#include <fcntl.h>
 #endif
 #include <string.h>
 #include <thread>
@@ -23,31 +34,24 @@ public:
 	static MythSocket* CreateNew(const char* ip, int port){
 		return new MythSocket(ip, port);
 	}
-	static MythSocket* CreateNew(){
-		return new MythSocket();
+	static MythSocket* CreateNew(int sockfd){
+		return new MythSocket(sockfd);
 	}
-	static MythSocket* CreateNew(bufferevent* bev){
-		return new MythSocket(bev);
-	}
-	void generateSock(TCPsocket msock);
 	~MythSocket();
 	int active;
 	int isPush;
-	TCPsocket sock;
-	IPaddress peer;
 	void* addtionaldata;
 	void* data;
 private:
+	int _sockfd;
 	bool isrunning;
 	//char* downbuffer;
 	int downlength;
 	int maxlength;
-	SDLNet_SocketSet socketset;
-	int socket_strcmp(char* buff, char*str, int length);
-	bufferevent* _bev;
 protected:
 	MythSocket(const char* ip, int port);
 	MythSocket();
-	MythSocket(bufferevent* bev);
+	MythSocket(int sockfd);
+	int wait_on_socket(int sockfd, int for_recv, long timeout_ms);
 };
 

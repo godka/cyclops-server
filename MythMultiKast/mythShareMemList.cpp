@@ -1,5 +1,5 @@
 #include "mythShareMemList.hh"
-
+#include <memory.h>
 
 mythShareMemList::mythShareMemList()
 {
@@ -38,7 +38,6 @@ int mythShareMemList::Init(){
 			listread = 0;
 			totalptr = 0;
 		}
-		mutex = SDL_CreateMutex();
 	}
 	return 0;
 }
@@ -83,7 +82,7 @@ PacketQueue * mythShareMemList::get(int freePacket /*= 0*/)
 unsigned char* mythShareMemList::putcore(unsigned char* data, unsigned int datasize){
 	if (totalptr + datasize > (unsigned int) (AVBUFFERSIZE * 1024 * 1024))
 		totalptr = 0;
-	SDL_memcpy(m_sharebuffer + totalptr, data, datasize);
+	memcpy(m_sharebuffer + totalptr, data, datasize);
 	totalptr += datasize;
 	return (unsigned char*)(totalptr - datasize);
 }
@@ -91,7 +90,6 @@ int mythShareMemList::put(unsigned char* data, unsigned int length)
 {
 	Init();
 	if (!m_sharememory){ return 1; }
-	if (!mutex){ return 1; }
 	//SDL_LockMutex(mutex);
 	if (listwrite >= AVFRAMECOUNT)listwrite = 0;
 	PacketQueue *tmp = ListPacket[listwrite];

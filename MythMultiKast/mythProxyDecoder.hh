@@ -1,6 +1,7 @@
 #pragma once
 #include "mythVirtualDecoder.hh"
 #include "MythSocket.hh"
+#include <mutex>
 class mythProxyDecoder :
 	public mythVirtualDecoder
 {
@@ -15,6 +16,6 @@ public:
 protected:
 	mythProxyDecoder(MythSocket* people);
 	MythSocket* msocket;
-	SDL_mutex* mmutex;
+	std::mutex mmutex;
 };
 

@@ -2,7 +2,7 @@
 #include "MythConfig.hh"
 #include "IniFile.h"
 #include <string>
-using namespace std;
+#include <mutex>
 class mythIniFile
 {
 public:
@@ -14,11 +14,11 @@ public:
 	}
 	static mythIniFile* mmythIniFile;
 	int GetInt(const char* section, const char* name, int defaultret = 0);
-	string GetStr(const char* section, const char* name, string defaultret = "");
+	std::string GetStr(const char* section, const char* name, std::string defaultret = "");
 protected:
 	mythIniFile();
 	~mythIniFile();
 private:
-	SDL_mutex* _mutex; 
+	std::mutex _mutex; 
 };
 

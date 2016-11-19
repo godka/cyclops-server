@@ -37,7 +37,6 @@ protected:
 private:
 	//sqlite3* pDB;
 	char* m_filename;
-	SDL_mutex* mutex;
 	string m_ip;
 	//mythSQLresult* result;
 };

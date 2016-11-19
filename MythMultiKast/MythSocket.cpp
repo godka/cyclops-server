@@ -22,73 +22,90 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "MythSocket.hh"
 #include <memory.h>
 
-void MythSocket::generateSock(TCPsocket msock)
-{
-	if (msock){
-		sock = msock;
-		SDLNet_TCP_AddSocket(socketset, sock);
-	}
-}
-
-MythSocket::MythSocket()
-{
-	_bev = nullptr;
-	isrunning = false;
-	SDL_Init(NULL);
-	SDLNet_Init();
-	socketset = SDLNet_AllocSocketSet(2);
-	//SDLNet_TCP_AddSocket(socketset, sock);
-	maxlength = 512;
-	isPush = 0;
-	//downbuffer = new char[4097];
-	downlength = 0;
-}
-
-MythSocket::MythSocket(bufferevent* bev){
-	_bev = bev;
+MythSocket::MythSocket(int sockfd){
+	_sockfd = sockfd;
 	downlength = 0;
 	isPush = 0;
 }
 MythSocket::MythSocket(const char* ip, int port)
 {
-	_bev = nullptr;
-	IPaddress serverIP = {0};
-	isrunning = false;
-	SDL_Init(NULL);
-	SDLNet_Init();
-	socketset = SDLNet_AllocSocketSet(2);
-	SDLNet_ResolveHost(&serverIP, ip, (Uint16)port);
-	if (!(sock = SDLNet_TCP_Open(&serverIP))){
-		printf("%p,fuck,not open!\n",this);
+#ifdef _WIN32
+	WSADATA wsaData;
+	WORD wVersionRequested;
+
+	wVersionRequested = MAKEWORD(2, 2);		//macro in c
+	if (WSAStartup(wVersionRequested, &wsaData) != 0){
+		printf("Error on Initalize Socket\n");
 	}
-	SDLNet_TCP_AddSocket(socketset, sock);
-	//downbuffer = new char[4097];
+#endif
+	_sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	//do not bind  ..	dynamic
+	SOCKADDR_IN addrSrv;
+	addrSrv.sin_family=AF_INET;
+	addrSrv.sin_port=htons(port);
+	addrSrv.sin_addr.s_addr = inet_addr(ip);
+	//if (!wait_on_socket(_sockfd, 1, 1000L)){
+	//	printf("Select Failed,%d\n", _sockfd);
+	//}
+	unsigned long ul = 1;
+#ifdef WIN32
+	ioctlsocket(_sockfd, FIONBIO, (unsigned long *) &ul);//设置成非阻塞模式。
+#else
+	ioctl(_sockfd, FIONBIO, &ul);
+#endif
+	if (connect(_sockfd, (sockaddr *) (&addrSrv), sizeof(addrSrv)) == -1){
+		int ret = wait_on_socket(_sockfd, 0, 1000L);
+		if (ret == 0)
+			printf("Connect Failed!,%d\n",_sockfd);
+	}
+	ul = 0;
+#ifdef WIN32
+	ioctlsocket(_sockfd, FIONBIO, (unsigned long *) &ul);
+#else
+	ioctl(_sockfd, FIONBIO, &ul);
+#endif
 	downlength = 0;
 	isPush = 0;
 }
+int MythSocket::wait_on_socket(int sockfd, int for_recv, long timeout_ms)
+{
+	struct timeval tv;
+	fd_set infd, outfd, errfd;
+	int res;
 
+	tv.tv_sec = timeout_ms / 1000;
+	tv.tv_usec = (timeout_ms % 1000) * 1000;
+
+	FD_ZERO(&infd);
+	FD_ZERO(&outfd);
+	FD_ZERO(&errfd);
+
+	FD_SET(sockfd, &errfd); /* always check for error */
+
+	if (for_recv)
+	{
+		FD_SET(sockfd, &infd);
+	}
+	else
+	{
+		FD_SET(sockfd, &outfd);
+	}
+
+	/* select() returns the number of signalled sockets or -1 */
+	res = select(sockfd + 1, &infd, &outfd, &errfd, &tv);
+	return res;
+}
 int MythSocket::socket_SendStr(const char* data, int length){
 
 	if (length == -2){
 		length = strlen(data);
-	}	
-	if (_bev){
-		return bufferevent_write(_bev, data, length);
 	}
-	else{
-		if (sock){
-			int len = SDLNet_TCP_Send(this->sock, data, length);
-			if (len < length){
-				return 1;
-			}
-			else{
-				return 0;
-			}
-		}
-		else
-			return 1;
+	if (!wait_on_socket(_sockfd, 0, 1000L)) {
+		printf("Error: timeout.\n");
+		return 1;
 	}
-	return 0;
+	int len = send(_sockfd, data, length, 0);
+	return len - length;
 }
 
 MythSocket::~MythSocket()
@@ -97,21 +114,10 @@ MythSocket::~MythSocket()
 
 int MythSocket::socket_ReceiveData(char* recvBuf, int recvLength, int timeout)
 {
-	if (_bev){
-		return bufferevent_read(_bev,recvBuf,recvLength);
+	if (!wait_on_socket(_sockfd, 1, 1000L)){
+		return -1;
 	}
-	else{
-		if (SDLNet_CheckSockets(socketset, timeout) > 0){
-			if (SDLNet_SocketReady(sock)){
-				return SDLNet_TCP_Recv(sock, recvBuf, recvLength);
-			}
-			else{
-				return -1;
-			}
-		}
-		else
-			return -1;
-	}
+	return recv(_sockfd, recvBuf, recvLength, 0);
 }
 
 int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
@@ -121,7 +127,7 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 	int len;
 	int buffptr = 0;
 	int rlength = 4096;
-	char recv[4097];// = (char*)malloc(rlength);
+	char recv[4097];
 	int contentlength;
 	int length = 60;
 	while (1){
@@ -129,14 +135,14 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 		len = socket_ReceiveData(recv, rlength, 100);
 		if (len > 0){
 			for (i = 0; i < len - tmplength; i++){
-				if (socket_strcmp(&recv[i], lnstr, tmplength) == 0){
-					SDL_sscanf(&recv[i], "Content_Length: %06d", &contentlength);
+				if (memcmp(&recv[i], lnstr, tmplength) == 0){
+					sscanf(&recv[i], "Content_Length: %06d", &contentlength);
 					if (contentlength > 0){
 						int tmpptr = 0;
 						int returnvalue = contentlength;
 						int tmplen = len - i - length > contentlength ? contentlength : len - i - length;
 						if (tmplen < 0)tmplen = 0;
-						SDL_memcpy(recvBuf, &recv[i + length], tmplen);
+						memcpy(recvBuf, &recv[i + length], tmplen);
 						tmpptr += tmplen;
 						contentlength -= tmplen;
 						while (contentlength > 0){
@@ -166,28 +172,14 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 	}
 }
 
-int MythSocket::socket_strcmp(char* buff, char*str, int length)
-{
-#if 1
-	return memcmp(buff, str, length);
-#else
-	for (int i = 0; i < length; i++)
-		if (buff[i] != str[i])
-			return 1;
-	return 0;
-#endif
-}
-
 int MythSocket::socket_CloseSocket()
 {
-	//if (downbuffer){
-	//	delete [] downbuffer;
-	//	downbuffer = NULL;
-	//}
 	this->isPush = 0;
-	if (_bev)
-		return 0;
-	SDLNet_TCP_Close(sock);
-	SDLNet_TCP_DelSocket(socketset, sock);
+#ifdef _WIN32
+	closesocket(_sockfd);
+	WSACleanup();
+#else
+	close(_sockfd);
+#endif
 	return 0;
 }

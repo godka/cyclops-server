@@ -92,7 +92,6 @@ done:
 mythVirtualSqlite::mythVirtualSqlite()
 {
 	//m_ip = "127.0.0.1";
-	this->mutex = SDL_CreateMutex();
 	this->mVirtualSqllite = this;
 	m_ip = mythIniFile::GetInstance()->GetStr("config","ip");
 	//result = (SQLresult*)malloc(sizeof(SQLresult));

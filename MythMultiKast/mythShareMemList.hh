@@ -21,7 +21,6 @@ private:
 	char* m_sharebuffer; 
 	char* m_listbuffer;
 	PacketQueue *ListPacket[AVFRAMECOUNT];
-	SDL_mutex *mutex;
 	int listwrite, listread;
 	int* tmpwrite;
 	unsigned char* putcore(unsigned char* data, unsigned int datasize);

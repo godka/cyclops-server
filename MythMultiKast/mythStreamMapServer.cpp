@@ -1,112 +1,84 @@
-﻿/********************************************************************
-Created by MythKAst
-©2013 MythKAst Some rights reserved.
+﻿#include "mythStreamMapServer.hh"
+mythServerMap* servermap = nullptr;
 
+int initalsocket(int port)
+{
+	struct event_base *base;
+	struct evconnlistener *listener;
+	struct sockaddr_in sin;
 
-You can build it with vc2010,gcc.
-Anybody who gets this source code is able to modify or rebuild it anyway,
-but please keep this section when you want to spread a new version.
-It's strongly not recommended to change the original copyright. Adding new version
-information, however, is Allowed. Thanks.
-For the latest version, please be sure to check my website:
-Http://code.google.com/mythkast
+#ifdef _WIN32
+	WSADATA wsaData;
+	WORD wVersionRequested;
 
-
-你可以用vc2010,gcc编译这些代码
-任何得到此代码的人都可以修改或者重新编译这段代码，但是请保留这段文字。
-请不要修改原始版权，但是可以添加新的版本信息。
-最新版本请留意：Http://code.google.com/mythkast
-B
-MythKAst(asdic182@sina.com), in 2013 June.
-*********************************************************************/
-#include "mythStreamMapServer.hh"
-#include "mythVirtualSqlite.hh"
-//#define AUTOSTART
-#ifndef WIN32
-#include <unistd.h>  
+	wVersionRequested = MAKEWORD(2, 2);		//macro in c
+	if (WSAStartup(wVersionRequested, &wsaData) != 0){
+		return 1;
+	}
 #endif
-//#include "mythUdp.hh"
-mythStreamMapServer::mythStreamMapServer(int port)
-	:mythVirtualServer(port)//, mythVirtualSqlite()
-{
-	char tmpip[256] = { 0 };
-	int start = mythIniFile::GetInstance()->GetInt("config", "autostart");
-	if (start || MYTH_FORCE_AUTOSTART){
-		startAll();
-	}
 	servermap = mythServerMap::CreateNew();
-}
-
-int mythStreamMapServer::startAll(void)
-{
-	int sum = 0;
-	char sqlstr[256] = "select c.cameraid from videoserver as a,vstype as b,camera as c where a.vstypeid = b.vstypeid and a.videoserverid = c.videoserverid";
-	mythStreamSQLresult* result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqlstr);
-	if (result){
-		int ksum = 0;
-		//read result from baseserver one by one
-		while (result->MoveNext()){
-			string cameraidstr = result->prase("CameraID");
-			int cameraid = atoi(cameraidstr.c_str());
-			servermap->AppendClient(cameraid);
-			cout << ksum << "  cameraid:" << cameraid << " started." << endl;
-			ksum++;
-		}
-		delete result;
-
+	base = event_base_new();
+	if (!base) {
+		puts("Couldn't open event base");
+		return 1;
 	}
+	memset(&sin, 0, sizeof(sin));
+	sin.sin_family = AF_INET;
+	sin.sin_addr.s_addr = htonl(0);
+	sin.sin_port = htons(port);
+
+	listener = evconnlistener_new_bind(base, [](struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *address, int socklen, void *ctx){
+		/* We got a new connection! Set up a bufferevent for it. */
+		struct event_base *base = evconnlistener_get_base(listener);
+		struct bufferevent *bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
+		int sockfd = bufferevent_getfd(bev);
+		MythSocket* people = MythSocket::CreateNew(sockfd);
+		bufferevent_setcb(bev, [](struct bufferevent *bev, void *ctx){
+			MythSocket* people = (MythSocket*) ctx;
+			//bufferevent* bev = (bufferevent*) (people->_bev);
+			/* This callback is invoked when there is data to read on bev. */
+			//struct evbuffer *input = bufferevent_get_input(bev);
+			size_t inputlen = 0;
+			char inputstr[512] = { 0 };
+			int len  = bufferevent_read(bev, inputstr, 512);
+			if (len > 2){
+				int cameraid = -1;
+				char cameratype[20] = { 0 };
+				sscanf(inputstr, "GET /CameraID=%d&Type=%s ", &cameraid, cameratype);
+				if (cameraid != -1){
+					servermap->AppendClient(cameraid, people, cameratype);
+				}
+				else{
+					people->socket_SendStr("404");
+					bufferevent_free(bev);
+				}
+			}
+		}, NULL, [](struct bufferevent *bev, short events, void *ctx){
+			MythSocket* people = (MythSocket*) ctx;
+			servermap->DropClient(people);
+			if (events & BEV_EVENT_ERROR)
+				perror("Error from bufferevent");
+			if (events & (BEV_EVENT_EOF | BEV_EVENT_ERROR)) {
+				bufferevent_free(bev);
+			}
+		},people);
+		bufferevent_enable(bev, EV_READ | EV_WRITE);
+	},
+		NULL, LEV_OPT_THREADSAFE | LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE, -1, (struct sockaddr*)&sin, sizeof(sin));
+	if (!listener) {
+		perror("Couldn't create listener");
+		return 1;
+	}
+	evconnlistener_set_error_cb(listener, [](struct evconnlistener *listener, void *ctx){
+		struct event_base *base = evconnlistener_get_base(listener);
+		int err = EVUTIL_SOCKET_ERROR();
+		fprintf(stderr, "Got an error %d (%s) on the listener. "
+			"Shutting down.\n", err, evutil_socket_error_to_string(err));
+
+		event_base_loopexit(base, NULL);
+	});
+	printf("Server IP: %d.%d.%d.%d ---  %d\n", 0,0,0,0, port);
+	puts("MythMultiKast in libevent: stable version.");
+	event_base_dispatch(base);
 	return 0;
-}
-
-mythStreamMapServer::~mythStreamMapServer(void)
-{
-
-}
-
-void mythStreamMapServer::OnClientClose(mythStreamServer * streamserver, int duration)
-{
-	//SDL_LockMutex(mapmutex);
-	//servermap[streamserver->GetID()] = NULL;
-	//SDL_UnlockMutex(mapmutex);
-	printf("%d is closed\n", streamserver->GetID());
-}
-
-mythStreamMapServer* mythStreamMapServer::CreateNew(int port)
-{
-	return new mythStreamMapServer(port);
-}
-
-void mythStreamMapServer::ServerDecodeCallBack(MythSocket* people, char* data, int datalength)
-{
-	int cameraid = -1;
-	char cameratype[20] = { 0 };
-	SDL_sscanf(data,"GET /CameraID=%d&Type=%s ",&cameraid,cameratype);
-	if (cameraid != -1){
-		servermap->AppendClient(cameraid, people, cameratype);
-	}
-	else{
-		people->socket_SendStr("404");
-		closePeople(people);
-	}
-	return;
-}
-
-void mythStreamMapServer::showAllClients(){
-	//int sum = 0;
-	//int clientnum = 0;
-	//for (map<int, mythStreamServer*>::iterator Iter = servermap.begin(); Iter != servermap.end(); Iter++){
-	//	if (Iter->second){
-	//		int tmpnum = Iter->second->getClientNumber();
-	//		cout << "server cameraid :" << Iter->second->GetID() << ";client num :" << tmpnum << endl;
-	//		sum++;
-	//		clientnum += tmpnum;
-	//	}
-	//}
-	//cout << "server num :" << sum << ";client sum :" << clientnum << endl;
-}
-
-void mythStreamMapServer::ServerCloseCallBack(MythSocket* people)
-{
-	servermap->DropClient(people);
-	return;
 }

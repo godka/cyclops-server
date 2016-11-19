@@ -110,8 +110,8 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				//this->decoder = mythStreamDecoder::CreateNew("192.168.31.198", 1017);
-				this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
+				this->decoder = mythStreamDecoder::CreateNew("192.168.31.198", 1017);
+				//this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
 					decoder->start();
@@ -225,7 +225,8 @@ int mythStreamServer::mainthread()
 		decoder->stop();
 	delete decoder;
 	SetStart(false);
-	streamserverthread = NULL;
+	decoder = nullptr;
+	streamserverthread = nullptr;
 	printf("%d is closed\n", m_cameraid);
 	return 0;
 }

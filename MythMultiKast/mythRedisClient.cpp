@@ -23,7 +23,7 @@ void mythRedisClient::start()
 	}
 #else
 	char sqltmp[4096] = { 0 };
-	SDL_snprintf(sqltmp, 4096, FINDCAMERA, m_cameraid);
+	sprintf(sqltmp, FINDCAMERA, m_cameraid);
 	mythStreamSQLresult* result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqltmp);
 	if (result){
 		while (result->MoveNext()){

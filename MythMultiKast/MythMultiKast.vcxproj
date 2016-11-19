@@ -420,7 +420,6 @@
     <ClCompile Include="mythUseageEnvironment.cpp" />
     <ClCompile Include="mythVirtualDecoder.cpp" />
     <ClCompile Include="mythVirtualList.cpp" />
-    <ClCompile Include="mythVirtualServer.cpp" />
     <ClCompile Include="mythVirtualSqlite.cpp" />
     <ClCompile Include="mythStreamDecoder.cpp" />
     <ClCompile Include="net.c" />
@@ -467,7 +466,6 @@
     <ClInclude Include="mythUseageEnvironment.hh" />
     <ClInclude Include="mythVirtualDecoder.hh" />
     <ClInclude Include="mythVirtualList.hh" />
-    <ClInclude Include="mythVirtualServer.hh" />
     <ClInclude Include="mythVirtualSqlite.hh" />
     <ClInclude Include="mythStreamDecoder.hh" />
     <ClInclude Include="net.h" />

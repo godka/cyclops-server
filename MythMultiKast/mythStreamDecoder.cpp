@@ -1,65 +1,34 @@
-﻿#include "mythStreamDecoder.hh"
-int mythStreamDecoder::init_win_socket()
-{
-#ifdef WIN32
-	WSADATA wsaData;
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-	{
-		return -1;
-	}
-#endif
-	return 0;
-}
-mythStreamDecoder::mythStreamDecoder(char* ip, int port, int CameraID)
-	:mythVirtualDecoder(){
-#ifdef WIN32
-	init_win_socket();
-#endif
+﻿/********************************************************************
+ Created by MythKAst
+ ©2013 MythKAst Some rights reserved.
+
+
+ You can build it with vc2010,gcc.
+ Anybody who gets this source code is able to modify or rebuild it anyway,
+ but please keep this section when you want to spread a new version.
+ It's strongly not recommended to change the original copyright. Adding new version
+ information, however, is Allowed. Thanks.
+ For the latest version, please be sure to check my website:
+ Http://code.google.com/mythkast
+
+
+ 你可以用vc2010,gcc编译这些代码
+ 任何得到此代码的人都可以修改或者重新编译这段代码，但是请保留这段文字。
+ 请不要修改原始版权，但是可以添加新的版本信息。
+ 最新版本请留意：Http://code.google.com/mythkast
+ B
+ MythKAst(asdic182@sina.com), in 2013 June.
+ *********************************************************************/
+#include "mythStreamDecoder.hh"
+
+ mythStreamDecoder::mythStreamDecoder(char* ip, int port, int CameraID)
+ :mythVirtualDecoder(){
 	flag = 0;
 	m_ip = ip;
 	m_port = port;
 	m_cameraid = CameraID;
-	buflen = 0;
-	bufindex = 0;
-	isSkipOA = false;
+	msocket = NULL;
 }
-
-void mythStreamDecoder::bufferevent_read_callback(struct bufferevent *bufevt)
-{
-	static int contentlength = 0;
-	size_t len = 0;
-	if (contentlength == 0){
-		char* request_line = evbuffer_readln(bufferevent_get_input(bufevt), &len, EVBUFFER_EOL_CRLF);
-		if (len > 0){
-			sscanf(request_line, "Content_Length: %06d", &contentlength);
-			if (contentlength > 0){
-				isSkipOA = false;
-				bufindex = 0;
-				buflen = contentlength;
-				//printf("Content Length = %d\n", contentlength);
-				return;
-			}
-		}
-		free(request_line);
-	}
-	else{
-		if (!isSkipOA){
-			char tmp;
-			len = bufferevent_read(bufevt, &tmp, 1);
-			isSkipOA = true;
-		}
-		else{
-			len = bufferevent_read(bufevt, buf + bufindex, buflen);
-			bufindex += len;
-			buflen -= len;
-			if (buflen == 0){
-				put((unsigned char*) buf, bufindex);
-				contentlength = 0;
-			}
-		}
-	}
-}
-
 mythStreamDecoder* mythStreamDecoder::CreateNew(char* ip, int CameraID){
 	return new mythStreamDecoder(ip, streamserverport, CameraID);
 }
@@ -69,59 +38,63 @@ mythStreamDecoder* mythStreamDecoder::CreateNew(char* ip, int port, int CameraID
 void mythStreamDecoder::stop(){
 	//this->startthread = SDL_CreateThread(decodethreadstatic,"decode",this);
 	flag = 1;
-	event_base_loopexit(evbase, NULL);
 	StopThread();
 	return;
 }
-// 根据ip和端口生成sockaddr结构并返回其地址，同时输出addrlen(实现略)
-struct sockaddr * mythStreamDecoder::make_sock_addr(const char *ip, int port, int *addrlen){
-	sockaddr_in * addrSrv = (sockaddr_in *) malloc(sizeof(sockaddr_in));
-	addrSrv->sin_family = AF_INET;
-	addrSrv->sin_port = htons(port);
-	addrSrv->sin_addr.s_addr = inet_addr(ip);
-	*addrlen = sizeof(sockaddr);
-	return (sockaddr*) addrSrv;
+int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
+	while (flag == 0){
+		if (msocket){
+			if (msocket->socket_SendStr(tmpsendstr) == 0){
+				return 0;
+				break;
+			}
+			else{
+				printf("start to reconnect\n");
+				std::this_thread::sleep_for(std::chrono::seconds(1));
+				msocket->socket_CloseSocket();
+				delete msocket;
+				msocket = MythSocket::CreateNew(m_ip, m_port);
+			}
+		}
+	}
+	return 1;
 }
 int mythStreamDecoder::MainLoop(){
 #define BUFF_COUNT 1024*1024	
-	buf = new char[BUFF_COUNT];
-	int addrlen = 0;
-	struct sockaddr * paddr = make_sock_addr(m_ip, m_port, &addrlen);
-
-	int fd = socket(AF_INET, SOCK_STREAM, 0);
-
-	// 创建event base并绑定bufferevent
-	evbase = event_base_new();
-	struct bufferevent * bufevt = bufferevent_socket_new(evbase, fd, 0);
-
-	bufferevent_setcb(bufevt, [](struct bufferevent* bev, void* data){
-		mythStreamDecoder* decoder = (mythStreamDecoder*) data;
-		decoder->bufferevent_read_callback(bev);
-	}, NULL, NULL, this);
-	bufferevent_enable(bufevt, EV_READ);
-
-	// 连接服务器, 并启动事件循环
-	bufferevent_socket_connect(bufevt, paddr, addrlen);
-	char connectstr[256] = { 0 };
-	sprintf(connectstr, "GET /CameraID=%d&Type=zyh264 HTTP/1.0\r\n\r\n", m_cameraid);
-	bufferevent_write(bufevt, connectstr, strlen(connectstr));
-	event_base_dispatch(evbase);
-
-	if (bufevt)  bufferevent_free(bufevt);
-	if (evbase)  event_base_free(evbase);
-	if (fd >= 0) {
-#ifdef WIN32
-		closesocket(fd);
-#else
-		close(fd);
-#endif
+	char* buf = new char[BUFF_COUNT];
+	msocket = MythSocket::CreateNew(m_ip, m_port);
+	if (msocket != NULL){
+		char tmpsendstr[100];
+		sprintf(tmpsendstr, "GET /CameraID=%d&Type=zyh264 HTTP/1.0\r\n\r\n", m_cameraid);
+		SendBufferBlock(tmpsendstr);
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		while (flag == 0){
+			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
+			if (rc > 0) {
+				m_count += rc;
+				put((unsigned char*) buf, rc);
+			}
+			else if (rc == 0){
+				printf("start to reconnect\n");
+				std::this_thread::sleep_for(std::chrono::seconds(1));
+				msocket->socket_CloseSocket();
+				delete msocket;
+				msocket = MythSocket::CreateNew(m_ip, m_port);
+				SendBufferBlock(tmpsendstr);
+				printf("reconnecting\n");
+			}
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		}
+		msocket->socket_CloseSocket();
 	}
 	delete [] buf;
+	delete msocket;
+	msocket = NULL;
 	return 0;
 }
 mythStreamDecoder::~mythStreamDecoder(void){
-#ifdef WIN32
-	WSACleanup();
-#endif
+	if (msocket){
+		delete msocket;
+	}
 }
 

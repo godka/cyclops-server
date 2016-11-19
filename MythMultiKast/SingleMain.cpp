@@ -25,53 +25,19 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "mythGlobal.hh"
 #include "mythRedisClient.hh"
 #include "MainInclude.hh"
+#include <string.h>
 int SingleMain(int args, char** argv)
 {
 	mythGlobal::GetInstance()->global_filename = argv[0];
-	//mythUdp* udp = mythUdp::CreateNew(8088,8087);
 	if (args > 2){
-		if (SDL_strcmp(argv[1], "-client") == 0){
+		if (strcmp(argv[1], "-client") == 0){
 			int cameraid = atoi(argv[2]);
 			mythRedisClient* cli = mythRedisClient::CreateNew(cameraid);
 			cli->start();
 		}
 	}
 	else{
-		mythStreamMapServer* streammapserver = mythStreamMapServer::CreateNew(streamserverport);
-		streammapserver->StartServer();
-#ifdef _DEBUG
-		char input[256];
-		for (;;){
-			printf(">");
-			gets(input);
-			if (mythcmp("exit")){
-				break;
-			}
-			else if (mythcmp("show")){
-				streammapserver->showAllClients();
-			}
-			else if (mythcmp("stop")){
-				streammapserver->StopServer();
-				cout << "stop servers OK" << endl;
-			}
-			else if (mythcmp("startall")){
-				streammapserver->startAll();
-			}
-			else if (mythcmp("setsql")){
-				printf("<SETSQL>Input IP:");
-				gets(input);
-				string str = input;
-				mythVirtualSqlite::GetInstance()->SetSQLIP(str);
-				//streammapserver->startAll();
-			}
-			else{
-				system(input);
-			}
-		}
-#endif
-		streammapserver->StopServer();
-		delete streammapserver;
+		initalsocket(streamserverport);
 	}
-	SDL_Quit();
 	return 0;
 }

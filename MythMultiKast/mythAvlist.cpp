@@ -21,13 +21,12 @@
 *********************************************************************/
 #include "mythAvlist.hh"
 #include <stdio.h>
-//#include <memory.h>
+#include <memory.h>
 mythAvlist::mythAvlist(void)
 	:mythVirtualList()
 {
 	listcount = 0;
 	this->startread = false;
-	this->mutex = SDL_CreateMutex();
 	this->totalptr = 0;
 	mBufferSize = AVBUFFERSIZE;
 	InitalList();
@@ -57,7 +56,6 @@ mythAvlist::mythAvlist(int BufferSize)
 {
 	listcount = 0;
 	this->startread = false;
-	mutex = SDL_CreateMutex();
 	mBufferSize = BufferSize;
 	//totalbuffer = (unsigned char*)SDL_malloc(BufferSize * 1024 * 1024);
 	totalptr = 0;
@@ -74,7 +72,7 @@ mythAvlist::~mythAvlist(void)
 	free();
 }
 PacketQueue *mythAvlist::get(int freePacket){
-	SDL_LockMutex(this->mutex);
+	_mutex.lock();
 	PacketQueue *tmp;
 	if (this->listwrite - this->listread == 1 ||
 		this->listwrite - this->listread == 0 ||
@@ -99,20 +97,20 @@ PacketQueue *mythAvlist::get(int freePacket){
 		}
 	}
 	listread %= AVFRAMECOUNT;
-	SDL_UnlockMutex(this->mutex);
+	_mutex.unlock();
 	return tmp;
 }
 unsigned char* mythAvlist::putcore(unsigned char* data,unsigned int datasize){
 	if(totalptr + datasize > (unsigned int)(mBufferSize * 1024 * 1024))
 		totalptr = 0;
-	SDL_memcpy(totalbuffer + totalptr, data, datasize);
+	memcpy(totalbuffer + totalptr, data, datasize);
 	totalptr += datasize;
 	//printf("totalptr = %d\n",totalptr);
 	return (totalbuffer + totalptr - datasize);
 }
 
 int mythAvlist::put(unsigned char** dataline,unsigned int *datasize,int width,int height){
-	SDL_LockMutex(this->mutex);
+	_mutex.lock();
 	if(listwrite >= AVFRAMECOUNT)listwrite = 0;
 	PacketQueue *tmp = &ListPacket[listwrite];
 	tmp->h264Packet = NULL;
@@ -131,7 +129,7 @@ int mythAvlist::put(unsigned char** dataline,unsigned int *datasize,int width,in
 	tmp->yuvPacketLength[0] = Ydatasize; tmp->yuvPacketLength[1] = Udatasize; tmp->yuvPacketLength[2] = Vdatasize;
 	listwrite++;
 	//LOGE("YUVlistcount=%d\n",listwrite);
-	SDL_UnlockMutex(this->mutex);
+	_mutex.unlock();
 	return 0;
 }
 
@@ -141,8 +139,7 @@ int mythAvlist::release(PacketQueue *pack)
 }
 
 int mythAvlist::put(unsigned char* data,unsigned int length){	
-	if (!mutex){ return 1; }
-	SDL_LockMutex(this->mutex);
+	_mutex.lock();
 	if(listwrite >= AVFRAMECOUNT)listwrite = 0;
 	PacketQueue *tmp = &ListPacket[listwrite];
 
@@ -155,13 +152,10 @@ int mythAvlist::put(unsigned char* data,unsigned int length){
 	tmp->isIframe = IsIframe(tmp);
 	listwrite++;
 	//LOGE("H264listcount=%d\n",listwrite);
-	SDL_UnlockMutex(this->mutex);
+	_mutex.unlock();
 	return 0;
 }
 int mythAvlist::free(){
-	if (mutex)
-		SDL_DestroyMutex(mutex);
-	mutex = NULL;
 	if (ListPacket)
 		delete [] ListPacket;
 	ListPacket = NULL;

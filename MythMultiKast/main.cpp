@@ -26,10 +26,6 @@ MythKAst(asdic182@sina.com), in 2013 June.
 #include "mythRedisClient.hh"
 #include "MainInclude.hh"
 int main(int argc, char *argv []){
-	SDL_Init(SDL_INIT_EVENTS);
-	SDLNet_Init();
 	SingleMain(argc, argv);
-	//OpenRestyMain(argc, argv);
-	SDL_Quit();
 	return 0;
 }

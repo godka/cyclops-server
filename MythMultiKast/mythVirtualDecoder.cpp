@@ -28,7 +28,6 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 	m_count = 0;
 	ori_count = 0;
 	ret_count = 0;
-	m_timeid = SDL_AddTimer(1000, TimerCallbackStatic, this);
 	m_thread = nullptr;
 
 	int streamtype = mythIniFile::GetInstance()->GetInt("config", "streamtype"); 
@@ -63,19 +62,6 @@ mythVirtualDecoder* mythVirtualDecoder::CreateNew(void){
 mythVirtualDecoder::~mythVirtualDecoder(void){
 	if (m_pipeline)
 		delete m_pipeline;
-}
-
-Uint32 mythVirtualDecoder::TimerCallbackStatic(Uint32 interval, void *param){
-	mythVirtualDecoder* decoder = (mythVirtualDecoder*) param;
-	return decoder->TimerCallback(interval);
-}
-
-Uint32 mythVirtualDecoder::TimerCallback(Uint32 interval){
-	int tmp = m_count - ori_count;
-	ret_count = tmp / interval;
-	ori_count = m_count;
-	//printf("%d k/s\n", ret_count);
-	return interval;
 }
 
 unsigned int mythVirtualDecoder::GetTimeCount(){

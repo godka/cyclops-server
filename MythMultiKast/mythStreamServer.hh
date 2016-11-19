@@ -4,7 +4,6 @@
 #include "mythLive555Decoder.hh"
 #include "mythRedisDecoder.hh"
 #include "mythProxyDecoder.hh"
-#include "mythVirtualServer.hh"
 #include "mythStreamDecoder.hh"
 #include "mythBaseClient.hh"
 #include "mythStreamSQLresult.hh"
@@ -25,12 +24,6 @@ public:
 	mythVirtualDecoder* GetDecoder(){
 		return decoder;
 	}
-	/*
-	void AddClient(PEOPLE* people);
-	void DelClient(PEOPLE* people);
-	int GetClientNumber();
-	void ClearAllClients();
-	*/
 	int GetID(){
 		return m_cameraid;
 	}
@@ -53,19 +46,14 @@ protected:
 	string vstypeid;
 	string ip;
 	string realcameraid;
-	//vector<mythBaseClient*> mpeople;
-	//PeopleMap mpeople;
 	int PeopleAdd;
 	mythStreamServer(int cameraid, void* args = NULL);
-	//bool FindClient(vector <mythBaseClient*>::iterator beg, vector <mythBaseClient*>::iterator end, mythBaseClient* ival);
 	bool FindClient(mythBaseClient* ival);
 	std::thread* streamserverthread;
 	int isrunning;
 
 	OnCloseHandler* _handler;
 	void* _handlerdata;
-	//char* topchar;
-	//int toplength;
 	void* additionalargs;
 	bool _hasstart;
 };
