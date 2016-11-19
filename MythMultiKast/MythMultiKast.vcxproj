@@ -483,6 +483,10 @@
     <Library Include="libevent_core.lib" />
     <Library Include="libevent_extras.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="configure" />
+    <None Include="Makefile" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -28,16 +28,12 @@ int initalsocket(int port)
 	sin.sin_port = htons(port);
 
 	listener = evconnlistener_new_bind(base, [](struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *address, int socklen, void *ctx){
-		/* We got a new connection! Set up a bufferevent for it. */
 		struct event_base *base = evconnlistener_get_base(listener);
 		struct bufferevent *bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
 		int sockfd = bufferevent_getfd(bev);
 		MythSocket* people = MythSocket::CreateNew(sockfd);
 		bufferevent_setcb(bev, [](struct bufferevent *bev, void *ctx){
 			MythSocket* people = (MythSocket*) ctx;
-			//bufferevent* bev = (bufferevent*) (people->_bev);
-			/* This callback is invoked when there is data to read on bev. */
-			//struct evbuffer *input = bufferevent_get_input(bev);
 			size_t inputlen = 0;
 			char inputstr[512] = { 0 };
 			int len  = bufferevent_read(bev, inputstr, 512);
@@ -80,5 +76,8 @@ int initalsocket(int port)
 	printf("Server IP: %d.%d.%d.%d ---  %d\n", 0,0,0,0, port);
 	puts("MythMultiKast in libevent: stable version.");
 	event_base_dispatch(base);
+#ifdef WIN32
+	WSACleanup();
+#endif
 	return 0;
 }

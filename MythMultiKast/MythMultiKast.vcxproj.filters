@@ -881,4 +881,8 @@
     <Library Include="libevent_core.lib" />
     <Library Include="libevent_extras.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+    <None Include="configure" />
+  </ItemGroup>
 </Project>
