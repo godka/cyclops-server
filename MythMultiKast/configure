@@ -2,7 +2,7 @@
 rm *.lib
 rm -rf event2
 rm -rf live555
-rm -rf lib*
+rm -rf lib*/
 
 tar -zxvf libevent-2.0.22-stable.tar.gz
 cd libevent-2.0.22-stable
