@@ -40,7 +40,7 @@ MythSocket::MythSocket(const char* ip, int port)
 #endif
 	_sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	//do not bind  ..	dynamic
-	SOCKADDR_IN addrSrv;
+	//SOCKADDR_IN addrSrv;
 	addrSrv.sin_family=AF_INET;
 	addrSrv.sin_port=htons(port);
 	addrSrv.sin_addr.s_addr = inet_addr(ip);

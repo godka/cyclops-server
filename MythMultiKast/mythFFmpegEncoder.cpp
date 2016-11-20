@@ -89,7 +89,7 @@ bool mythFFmpegEncoder::Init(){
 	c->gop_size = 25;
 	AVRational ration = { 1, 25 };
 	c->time_base = ration;
-	c->pix_fmt = PIX_FMT_YUV420P;
+	c->pix_fmt = AV_PIX_FMT_YUV420P;
 	c->max_b_frames = 1;
 
 	switch (_level)

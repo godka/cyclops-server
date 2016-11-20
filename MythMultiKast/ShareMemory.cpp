@@ -8,7 +8,7 @@
 #if !(defined WIN32) && !(defined _WIN64)
 #include <sys/time.h>
 #endif
-
+#include <memory.h>
 using namespace std;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
