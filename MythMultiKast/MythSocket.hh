@@ -1,6 +1,7 @@
 #pragma once
 #include "MythConfig.hh"
 #ifdef WIN32
+#define _WINSOCK_DEPRECATED_NO_WARNINGS 1
 #include <Winsock2.h>
 #pragma comment(lib,"ws2_32")
 #else

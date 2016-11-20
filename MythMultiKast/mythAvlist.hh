@@ -1,8 +1,6 @@
 #pragma once
 #include "mythVirtualList.hh"
 #include <mutex>
-//#include "SDL2/SDL.h"
-
 class mythAvlist :
 	public mythVirtualList
 {
@@ -23,7 +21,6 @@ protected:
 	mythAvlist(int BufferSize);
 	//int InitalList(void);
 	int abort_request;
-    std::mutex _mutex;
 	unsigned char* totalbuffer;
 	unsigned int totalptr;
 	unsigned int listcount;
