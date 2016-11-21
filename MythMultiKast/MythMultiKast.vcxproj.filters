@@ -882,7 +882,8 @@
     <Library Include="libevent_extras.lib" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Makefile" />
     <None Include="configure" />
+    <None Include="Makefile.tail" />
+    <None Include="Makefile.head" />
   </ItemGroup>
 </Project>

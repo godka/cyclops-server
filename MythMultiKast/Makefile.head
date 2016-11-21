@@ -1,0 +1,2 @@
+CPPFLAGS += -DUSEPIPELINE
+CPPLDFLAGS += -lavcodec -lavfilter -lavutil -lswresample -lswscale -lavdevice -lavformat -lpostproc 

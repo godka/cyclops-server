@@ -485,7 +485,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="configure" />
-    <None Include="Makefile" />
+    <None Include="Makefile.head" />
+    <None Include="Makefile.tail" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
