@@ -38,11 +38,7 @@ public:
 	void* addtionaldata;
 	void* data;
 private:
-#ifdef WIN32
-	SOCKADDR_IN addrSrv;
-#else
-	struct SOCKADDR_IN addrSrv;
-#endif
+	struct sockaddr_in addrSrv;
 	int _sockfd;
 	bool isrunning;
 	//char* downbuffer;
