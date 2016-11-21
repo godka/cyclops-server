@@ -12,10 +12,12 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 	int streamtype = mythIniFile::GetInstance()->GetInt("config", "streamtype"); 
 	int level = mythIniFile::GetInstance()->GetInt("config", "streamlevel"); 
 	int pipeline = mythIniFile::GetInstance()->GetInt("config", "pipeline");
+#ifdef USEPIPELINE
 	if (pipeline)
 		m_pipeline = mythMediaPipeline::CreateNew(this, streamtype, level);//only for test
 	else
 		m_pipeline = NULL;
+#endif
 }
 
 void mythVirtualDecoder::start(bool usethread){
@@ -39,8 +41,10 @@ mythVirtualDecoder* mythVirtualDecoder::CreateNew(void){
 	return new mythVirtualDecoder();
 }
 mythVirtualDecoder::~mythVirtualDecoder(void){
+#ifdef USEPIPELINE
 	if (m_pipeline)
 		delete m_pipeline;
+#endif
 }
 
 unsigned int mythVirtualDecoder::GetTimeCount(){
@@ -49,21 +53,26 @@ unsigned int mythVirtualDecoder::GetTimeCount(){
 
 int mythVirtualDecoder::put(unsigned char* data, unsigned int length)
 {
+#ifdef USEPIPELINE
 	if (m_pipeline){
 		m_pipeline->PutMedia(data, length);
+		return 0;
 	}
-	else{
+	else
+#else
 		return mythListFactory::put(data, length);
-	}
-	return 0;
+#endif
 }
 
 PacketQueue * mythVirtualDecoder::get(int freePacket /*= 0*/)
 {
+#ifdef USEPIPELINE
 	if (m_pipeline)
 		return m_pipeline->get(freePacket);
 	else
+#else
 		return mythListFactory::get(freePacket);
+#endif
 }
 
 void mythVirtualDecoder::stop()

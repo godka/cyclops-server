@@ -4,19 +4,19 @@
 #endif
 #include <stdio.h>
 #include "mythIniFile.hh"
-
 #if (defined _WIN32) || (defined WIN32)
 #	
 #	pragma comment(lib,"ws2_32")
-
-#	pragma comment(lib,"avcodec.lib")
-#	pragma comment(lib,"avdevice.lib")
-#	pragma comment(lib,"avfilter.lib")
-#	pragma comment(lib,"avformat.lib")
-#	pragma comment(lib,"avutil.lib")
-#	pragma comment(lib,"postproc.lib")
-#	pragma comment(lib,"swscale.lib")
-#	pragma comment(lib,"swresample.lib")
+#	ifdef USEPIPELINE
+#		pragma comment(lib,"avcodec.lib")
+#		pragma comment(lib,"avdevice.lib")
+#		pragma comment(lib,"avfilter.lib")
+#		pragma comment(lib,"avformat.lib")
+#		pragma comment(lib,"avutil.lib")
+#		pragma comment(lib,"postproc.lib")
+#		pragma comment(lib,"swscale.lib")
+#		pragma comment(lib,"swresample.lib")
+#	endif
 #endif
 #define mythcmp(A) strcmp(input,A) == 0
 #define streamserverport 5834

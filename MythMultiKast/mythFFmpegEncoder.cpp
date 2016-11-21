@@ -1,3 +1,5 @@
+#include "MythConfig.hh"
+#ifdef USEPIPELINE
 #include "mythFFmpegEncoder.hh"
 #include <stdio.h>
 mythFFmpegEncoder::mythFFmpegEncoder(void* phwnd,int streamtype, int level,int width,int height)
@@ -195,3 +197,4 @@ void mythFFmpegEncoder::ProcessFrame(unsigned char** src, int* srclinesize, resp
 	}
 	//}
 }
+#endif

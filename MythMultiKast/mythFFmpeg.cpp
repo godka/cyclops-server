@@ -1,3 +1,5 @@
+#include "MythConfig.hh"
+#ifdef USEPIPELINE
 #include "mythFFmpeg.hh"
 #include <stdio.h>
 mythFFmpeg::mythFFmpeg(void* phwnd)
@@ -122,3 +124,4 @@ void mythFFmpeg::ProcessFrame(unsigned char* framePtr, int frameSize,responseHan
 	}
 	//av_free_packet(&avpkt);
 }
+#endif

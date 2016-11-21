@@ -1,4 +1,6 @@
 #pragma once
+#include "MythConfig.hh"
+#ifdef USEPIPELINE
 extern "C"{
 #ifndef INT64_C
 #define INT64_C(c) (c ## LL)
@@ -34,4 +36,4 @@ protected:
 	AVCodecContext* avCodecContext;
 	AVFrame *avFrame;
 };
-
+#endif

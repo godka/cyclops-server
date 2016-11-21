@@ -1,3 +1,5 @@
+#include "MythConfig.hh"
+#ifdef USEPIPELINE
 #include "mythMediaPipeline.hh"
 
 mythMediaPipeline::mythMediaPipeline(void* ptr,int streamtype, int level)
@@ -66,3 +68,4 @@ void mythMediaPipeline::PutMedia(void* data, int len)
 		//printf("in:%d\n", len);
 	}
 }
+#endif

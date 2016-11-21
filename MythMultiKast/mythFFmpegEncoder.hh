@@ -1,4 +1,6 @@
 #pragma once
+#include "MythConfig.hh"
+#ifdef USEPIPELINE
 extern "C"{
 #ifndef INT64_C
 #define INT64_C(c) (c ## LL)
@@ -11,7 +13,6 @@ extern "C"{
 #include "libavdevice/avdevice.h"
 #include "libavutil/opt.h"       // for av_opt_set  
 }
-#include "MythConfig.hh"
 /*
 #pragma comment( lib, "libgcc.a")  
 #pragma comment( lib, "libmingwex.a")  
@@ -67,4 +68,4 @@ protected:
 	int _width;
 	int _height;
 };
-
+#endif

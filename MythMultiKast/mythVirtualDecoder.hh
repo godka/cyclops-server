@@ -1,7 +1,9 @@
 #pragma once
 #include "MythConfig.hh"
 #include "mythListFactory.hh"
+#ifdef USEPIPELINE
 #include "mythMediaPipeline.hh"
+#endif
 #include <thread>
 class mythVirtualDecoder :
 	public mythListFactory
@@ -23,6 +25,8 @@ protected:
 	unsigned int ori_count;
 	unsigned int ret_count;
 	std::thread* m_thread;
+#ifdef USEPIPELINE
 	mythMediaPipeline* m_pipeline;
+#endif
 };
 

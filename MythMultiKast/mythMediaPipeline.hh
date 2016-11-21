@@ -1,4 +1,6 @@
 #pragma once
+#include "MythConfig.hh"
+#ifdef USEPIPELINE
 #include "mythAvlist.hh"
 #include "mythFFmpeg.hh"
 #include "mythFFmpegEncoder.hh"
@@ -29,4 +31,5 @@ private:
 	std::thread* _thread;
 	bool isrunning;
 };
+#endif
 
