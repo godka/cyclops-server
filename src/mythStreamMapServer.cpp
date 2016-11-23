@@ -68,13 +68,13 @@ int initalsocket(int port)
 	evconnlistener_set_error_cb(listener, [](struct evconnlistener *listener, void *ctx){
 		struct event_base *base = evconnlistener_get_base(listener);
 		int err = EVUTIL_SOCKET_ERROR();
-		fprintf(stderr, "Got an error %d (%s) on the listener. "
+		mythLog::GetInstance()->printf("Got an error %d (%s) on the listener. "
 			"Shutting down.\n", err, evutil_socket_error_to_string(err));
 
 		event_base_loopexit(base, NULL);
 	});
-	printf("Server IP: %d.%d.%d.%d ---  %d\n", 0,0,0,0, port);
-	puts("MythMultiKast in libevent: stable version.");
+	mythLog::GetInstance()->printf("Server IP: %d.%d.%d.%d ---  %d\n", 0, 0, 0, 0, port);
+	mythLog::GetInstance()->printf("MythMultiKast in libevent: stable version.");
 	event_base_dispatch(base);
 #ifdef WIN32
 	WSACleanup();

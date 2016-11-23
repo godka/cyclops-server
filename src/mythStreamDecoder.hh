@@ -3,6 +3,7 @@
 #include "mythVirtualDecoder.hh"
 #include "MythSocket.hh"
 #include <thread>
+#include <string>
 class mythStreamDecoder :
 	public mythVirtualDecoder
 {
@@ -18,7 +19,7 @@ protected:
 	mythStreamDecoder(char* ip, int port, int CameraID);
 	MythSocket *msocket;
 private:
-	char* m_ip;
+	std::string m_ip;
 	int m_port;
 	int m_cameraid;
 	int SendBufferBlock(const char* socket_SendStr);

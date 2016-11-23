@@ -8,7 +8,6 @@
 #include "mythStreamDecoder.hh"
 #include "mythVirtualSqlite.hh"
 #include <string>
-using namespace std;
 class mythRedisClient
 {
 public:
@@ -22,13 +21,13 @@ private:
 	int m_cameraid;
 	mythVirtualDecoder* decoder;
 
-	string username;
-	string password;
-	string httpport;
-	string FullSize;
-	string vstypeid;
-	string ip;
-	string realcameraid;
+	std::string username;
+	std::string password;
+	std::string httpport;
+	std::string FullSize;
+	std::string vstypeid;
+	std::string ip;
+	std::string realcameraid;
 
 protected:
 	mythRedisClient(int cameraid);

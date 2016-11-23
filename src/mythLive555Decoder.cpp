@@ -36,7 +36,7 @@ int mythLive555Decoder::MainLoop(){
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 #ifdef _DEBUG
-		printf("Ready to reconnect\n");
+		mythLog::GetInstance()->printf("Ready to reconnect\n");
 #endif
 	}
 	return 0;

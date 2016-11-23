@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string>
 #include <iostream>
-using namespace std;
 class mythVirtualSqlite
 {
 public:
@@ -17,7 +16,7 @@ public:
 	int execSQL(const char* string);
 	//mythSQLresult* doSQL(const char* str);
 	//mythSQLresult* doSQL(string str);
-	string doSQLex(const char* str);
+	std::string doSQLex(const char* str);
 	mythStreamSQLresult* doSQLFromStream(const char* str);
 	void close();
 	//void freeResult(mythSQLresult* result);
@@ -27,17 +26,17 @@ public:
 	int convert(const char *from, const char *to, char* save, int savelen, char *src, int srclen);
 	char* parseSQL(const char* keywords);
 	~mythVirtualSqlite(void);
-	int SetSQLIP(string ip);
+	int SetSQLIP(std::string ip);
 protected:
 	mythVirtualSqlite();
-	string CreateXMLline(string element,string tag);
-	string replace(string str, const char *string_to_replace, const char *new_string);
+	std::string CreateXMLline(std::string element, std::string tag);
+	std::string replace(std::string str, const char *string_to_replace, const char *new_string);
 	void myth_toupper(char* data);
-	string GetHeader(const char* str);
+	std::string GetHeader(const char* str);
 private:
 	//sqlite3* pDB;
 	char* m_filename;
-	string m_ip;
+	std::string m_ip;
 	//mythSQLresult* result;
 };
 

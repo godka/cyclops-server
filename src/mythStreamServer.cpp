@@ -89,7 +89,7 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("192.168.31.198", 1017);
+				this->decoder = mythStreamDecoder::CreateNew("192.168.1.102", 1017);
 				//this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
@@ -138,7 +138,7 @@ bool mythStreamServer::FindClient(mythBaseClient* ival){
 
 
 int mythStreamServer::AppendClient(mythBaseClient* client){
-	printf("Appending Client,%d\n", client);
+	mythLog::GetInstance()->printf("Appending Client,%d\n", client);
 	if (!FindClient(client)){
 		for (int i = 0; i < STREAMSERVERMAX; i++){
 			if (_baselist[i] == NULL){
@@ -152,13 +152,21 @@ int mythStreamServer::AppendClient(mythBaseClient* client){
 long long mythStreamServer::mythTickCount(){
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
+bool mythStreamServer::CheckTime(long long &foo,int timeout){
+	if (foo == 0){
+		foo = mythTickCount();
+		return false;
+	}
+	auto  _nowtime = mythTickCount();
+	auto _duration = _nowtime - foo;
+	return (_duration < timeout);
+}
 int mythStreamServer::mainthread()
 {
-	//int msize = 0;
-	long long duration = 0;
 	PacketQueue* tmp = NULL;
 	connect();
-	long long tickstart = 0;
+	long long closetick = 0;
+	long long recvtick = 0;
 	while (isrunning == 0){
 		if (decoder){
 			tmp = decoder->get();
@@ -179,20 +187,17 @@ int mythStreamServer::mainthread()
 							}
 						}
 					}
-					if(streamcount == 0){
+					if (streamcount == 0){
 						//add ticks
-						if (tickstart == 0)
-							tickstart = mythTickCount();
-						else{
-							duration = mythTickCount() - tickstart;
-							if (duration > 5000){
-								break;
-							}
-						}
+						if (CheckTime(closetick, 5000))
+							break;
 					}
 					else{
 						//refresh ticks
-						tickstart = mythTickCount();
+						closetick = mythTickCount();
+					}
+					if (CheckTime(recvtick, 1000)){
+						
 					}
 				}
 				decoder->release(tmp);
@@ -206,7 +211,7 @@ int mythStreamServer::mainthread()
 	SetStart(false);
 	decoder = nullptr;
 	streamserverthread = nullptr;
-	printf("%d is closed\n", m_cameraid);
+	mythLog::GetInstance()->printf("%d is closed\n", m_cameraid);
 	return 0;
 }
 
@@ -224,7 +229,7 @@ int mythStreamServer::start(bool canthread)
 		}
 	}
 	else{
-		printf("Work has started,ID:%d\n", m_cameraid);
+		mythLog::GetInstance()->printf("Work has started,ID:%d\n", m_cameraid);
 	}
 	return 0;
 }
@@ -259,7 +264,7 @@ int mythStreamServer::getClientNumber()
 
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
-	printf("Dropping Client,%d\n", client);
+	mythLog::GetInstance()->printf("Dropping Client,%d\n", client);
 	for (int i = 0; i < STREAMSERVERMAX; i++){
 		if (_baselist[i] == client){
 			_baselist[i] = NULL;

@@ -12,7 +12,7 @@ mythRedisList::mythRedisList()
 	tv.tv_sec = 1; tv.tv_usec = 0;
 	context = redisConnectWithTimeout("127.0.0.1", 6379, tv);
 	if (context->err) {
-		printf("SET:Redis:Connection error: %s\n", context->errstr);
+		mythLog::GetInstance()->printf("SET:Redis:Connection error: %s\n", context->errstr);
 	}
 	else{
 		redisCommand(context, "SET %d:listwrite %d", (int) magic, 0);

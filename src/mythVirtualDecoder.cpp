@@ -26,7 +26,7 @@ void mythVirtualDecoder::start(bool usethread){
 			m_thread = new std::thread(&mythVirtualDecoder::MainLoop, this);
 	}
 	else{
-		printf("[mythmultikast]I'm in mainloop\n");
+		mythLog::GetInstance()->printf("[mythmultikast]I'm in mainloop\n");
 		MainLoop();
 	}
 }

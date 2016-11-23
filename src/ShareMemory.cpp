@@ -9,7 +9,6 @@
 #include <sys/time.h>
 #endif
 #include <memory.h>
-using namespace std;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -87,7 +86,7 @@ bool ShareMemory::Create()
 	m_hFile = (HANDLE) 0xFFFFFFFF;// system
 	if ("" != m_mapFilePath)
 	{
-		string strFile = m_mapFilePath + "/" + m_shareName;
+		std::string strFile = m_mapFilePath + "/" + m_shareName;
 		// file
 		m_hFile = CreateFile(
 			strFile.c_str(),

@@ -119,7 +119,7 @@ char* mythVirtualSqlite::parseSQL(const char* keywords){
 }
 
 
-string mythVirtualSqlite::replace(string str, const char *string_to_replace, const char *new_string)
+std::string mythVirtualSqlite::replace(std::string str, const char *string_to_replace, const char *new_string)
 {
 	//查找第一个匹配的字符串
 	int index = str.find(string_to_replace);
@@ -135,7 +135,7 @@ string mythVirtualSqlite::replace(string str, const char *string_to_replace, con
 }
 
 int mythVirtualSqlite::execSQLex(const char* str){
-	string generatestr = replace(str, "%20", " ");
+	std::string generatestr = replace(str, "%20", " ");
 	return execSQL(generatestr.c_str());
 }
 int mythVirtualSqlite::execSQL(const char* string){
@@ -154,19 +154,19 @@ mythVirtualSqlite::~mythVirtualSqlite(void)
 	//this->close();
 }
 
-int mythVirtualSqlite::SetSQLIP(string ip){
+int mythVirtualSqlite::SetSQLIP(std::string ip){
 	m_ip = ip;
-	cout << "SQL IP set success:" << m_ip << endl; 
+	std::cout << "SQL IP set success:" << m_ip << std::endl;
 	return 0;
 }
 mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 {
 	mythStreamSQLresult* retresult = NULL;
-	string ret = "GET /scripts/dbnet.dll?param=";
+	std::string ret = "GET /scripts/dbnet.dll?param=";
 	ret += "<XML><function>";
 
 	myth_toupper((char*)str);
-	string header = GetHeader(str);
+	std::string header = GetHeader(str);
 	ret += "SQL_" + header;
 	ret += "</function>";
 	ret += "<Content>";
@@ -183,13 +183,13 @@ mythStreamSQLresult* mythVirtualSqlite::doSQLFromStream(const char* str)
 		socket->socket_CloseSocket();
 	}
 	else{
-		printf("error:Cannot connect to database! remoteip: %s\n",m_ip.c_str());
+		mythLog::GetInstance()->printf("error:Cannot connect to database! remoteip: %s\n", m_ip.c_str());
 	}
 	delete socket;
 	return retresult;
 	//toupper()
 }
-string mythVirtualSqlite::GetHeader(const char* str){
+std::string mythVirtualSqlite::GetHeader(const char* str){
 	//string tmpret;
 	char tmpstr[256] = { 0 };
 	for (int i = 0;; i++){

@@ -31,6 +31,7 @@ public:
 	int stop();
 private:
 	long long mythTickCount();
+	bool CheckTime(long long &foo, int timeout);
 	int m_cameraid;
 	mythBaseClient* _baselist[STREAMSERVERMAX];
 	int ClientNumber;

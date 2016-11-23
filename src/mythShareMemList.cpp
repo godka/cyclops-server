@@ -11,7 +11,7 @@ mythShareMemList::mythShareMemList()
 int mythShareMemList::Init(){
 	if (m_sharememory)return 0;
 	if (magic){
-		printf("%d\n", (int) magic);
+		//printf("%d\n", (int) magic);
 		//create new share memory with AVBUFFERSIZE(M)
 		/*
 		listwrite|listbuffer                 |sharebuffer

@@ -28,11 +28,11 @@ int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
 				break;
 			}
 			else{
-				printf("start to reconnect\n");
+				mythLog::GetInstance()->printf("start to reconnect\n");
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				msocket->socket_CloseSocket();
 				delete msocket;
-				msocket = MythSocket::CreateNew(m_ip, m_port);
+				msocket = MythSocket::CreateNew(m_ip.c_str(), m_port);
 			}
 		}
 	}
@@ -41,7 +41,7 @@ int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
 int mythStreamDecoder::MainLoop(){
 #define BUFF_COUNT 1024*1024	
 	char* buf = new char[BUFF_COUNT];
-	msocket = MythSocket::CreateNew(m_ip, m_port);
+	msocket = MythSocket::CreateNew(m_ip.c_str(), m_port);
 	if (msocket != NULL){
 		char tmpsendstr[100];
 		sprintf(tmpsendstr, "GET /CameraID=%d&Type=zyh264 HTTP/1.0\r\n\r\n", m_cameraid);
@@ -54,13 +54,13 @@ int mythStreamDecoder::MainLoop(){
 				put((unsigned char*) buf, rc);
 			}
 			else if (rc == 0){
-				printf("start to reconnect\n");
+				mythLog::GetInstance()->printf("start to reconnect:ip=%s,port=%d\n",m_ip.c_str(),m_port);
 				std::this_thread::sleep_for(std::chrono::seconds(1));
 				msocket->socket_CloseSocket();
 				delete msocket;
-				msocket = MythSocket::CreateNew(m_ip, m_port);
+				msocket = MythSocket::CreateNew(m_ip.c_str(), m_port);
 				SendBufferBlock(tmpsendstr);
-				printf("reconnecting\n");
+				mythLog::GetInstance()->printf("reconnecting:ip=%s,port=%d\n", m_ip.c_str(), m_port);
 			}
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}

@@ -14,7 +14,7 @@ MythSocket::MythSocket(const char* ip, int port)
 
 	wVersionRequested = MAKEWORD(2, 2);		//macro in c
 	if (WSAStartup(wVersionRequested, &wsaData) != 0){
-		printf("Error on Initalize Socket\n");
+		mythLog::GetInstance()->printf("Error on Initalize Socket\n");
 	}
 #endif
 	_sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -35,7 +35,7 @@ MythSocket::MythSocket(const char* ip, int port)
 	if (connect(_sockfd, (sockaddr *) (&addrSrv), sizeof(addrSrv)) == -1){
 		int ret = wait_on_socket(_sockfd, 0, 1000L);
 		if (ret == 0)
-			printf("Connect Failed!,%d\n",_sockfd);
+			mythLog::GetInstance()->printf("Connect Failed!,%d\n", _sockfd);
 	}
 	ul = 0;
 #ifdef WIN32
@@ -80,7 +80,7 @@ int MythSocket::socket_SendStr(const char* data, int length){
 		length = strlen(data);
 	}
 	if (!wait_on_socket(_sockfd, 0, 1000L)) {
-		printf("Error: timeout.\n");
+		mythLog::GetInstance()->printf("Error: timeout.\n");
 		return 1;
 	}
 	int len = send(_sockfd, data, length, 0);

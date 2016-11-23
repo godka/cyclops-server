@@ -750,6 +750,9 @@
     <ClCompile Include="mythServerMap.cpp">
       <Filter>Source Files\kernel</Filter>
     </ClCompile>
+    <ClCompile Include="mythLog.cpp">
+      <Filter>Source Files\kernel\ini</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -873,6 +876,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythServerMap.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythLog.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -48,7 +48,7 @@ int mythStreamSQLresult::close()
 {
 	return 0;
 }
-string mythStreamSQLresult::TryPrase(const char* keywords){
+std::string mythStreamSQLresult::TryPrase(const char* keywords){
 	if (element){
 		TiXmlElement* retchild = element->FirstChildElement(keywords);
 		if (retchild){

@@ -347,6 +347,7 @@
     <ClCompile Include="MPEGVideoStreamParser.cpp" />
     <ClCompile Include="MultiFramedRTPSink.cpp" />
     <ClCompile Include="MultiFramedRTPSource.cpp" />
+    <ClCompile Include="mythLog.cpp" />
     <ClCompile Include="NetAddress.cpp" />
     <ClCompile Include="NetInterface.cpp" />
     <ClCompile Include="OggDemuxedTrack.cpp" />
@@ -452,6 +453,7 @@
     <ClInclude Include="mythGlobal.hh" />
     <ClInclude Include="mythIniFile.hh" />
     <ClInclude Include="mythListFactory.hh" />
+    <ClInclude Include="mythLog.hh" />
     <ClInclude Include="mythMediaPipeline.hh" />
     <ClInclude Include="mythProxyDecoder.hh" />
     <ClInclude Include="mythRedisClient.hh" />
