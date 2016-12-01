@@ -34,9 +34,11 @@ int initalsocket(int port)
 		MythSocket* people = MythSocket::CreateNew(sockfd);
 		bufferevent_setcb(bev, [](struct bufferevent *bev, void *ctx){
 			MythSocket* people = (MythSocket*) ctx;
+			if (people->isPush)
+				return;
 			size_t inputlen = 0;
 			char inputstr[512] = { 0 };
-			int len  = bufferevent_read(bev, inputstr, 512);
+			int len = bufferevent_read(bev, inputstr, 512);
 			if (len > 2){
 				int cameraid = -1;
 				char cameratype[20] = { 0 };
@@ -44,9 +46,15 @@ int initalsocket(int port)
 				if (cameraid != -1){
 					servermap->AppendClient(cameraid, people, cameratype);
 				}
-				else{
-					people->socket_SendStr("404");
-					bufferevent_free(bev);
+				else {
+					sscanf(inputstr, "PUT /CameraID=%d", &cameraid);
+					if (cameraid != -1){
+						servermap->AppendClient(cameraid, people);
+					}
+					else{
+						people->socket_SendStr("404");
+						bufferevent_free(bev);
+					}
 				}
 			}
 		}, NULL, [](struct bufferevent *bev, short events, void *ctx){

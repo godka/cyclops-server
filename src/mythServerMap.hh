@@ -12,6 +12,7 @@ public:
 	}
 	void AppendClient(int cameraid, MythSocket* socket, const char* cameratype);
 	void AppendClient(int cameraid);
+	void AppendClient(int cameraid, MythSocket* people);
 	void DropClient(MythSocket* socket);
 	~mythServerMap();
 protected:

@@ -5,7 +5,24 @@ mythServerMap::mythServerMap()
 {
 }
 
-
+void mythServerMap::AppendClient(int cameraid, MythSocket* people){
+		people->isPush = 1;
+		mythStreamServer* server = NULL;
+		mapmutex.lock();
+		if (servermap[cameraid] == NULL){
+			server = mythStreamServer::CreateNew(cameraid, people);			//add a new server into map list,not found ,so create 
+			servermap[cameraid] = server;
+		}
+		else{
+			server = servermap[cameraid];									//find an existing server from map list,then add client into server list
+			if (server){
+				((mythProxyDecoder*) server->GetDecoder())->refreshSocket(people);	//problem
+			}
+		}
+		mapmutex.unlock();
+		if (server)
+			server->start();
+}
 void mythServerMap::AppendClient(int cameraid,MythSocket* people,const char* cameratype)
 {
 	mythStreamServer* server = nullptr;
