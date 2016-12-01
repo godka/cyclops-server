@@ -70,7 +70,7 @@ void mythStreamServer::connect()
 							break;
 #endif
 						default:
-							string strRecordUrl = "rtsp://" + ip + ":" + httpport + FullSize;
+							std::string strRecordUrl = "rtsp://" + ip + ":" + httpport + FullSize;
 							int iFind = strRecordUrl.find("$camera");
 							if (iFind >= 0)
 								strRecordUrl.replace(iFind, iFind + strlen("$camera"), realcameraid);
@@ -89,7 +89,7 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("192.168.1.102", 1017);
+				this->decoder = mythStreamDecoder::CreateNew("120.204.70.218", 1017);
 				//this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
