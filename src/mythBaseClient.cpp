@@ -3,6 +3,7 @@
 
 mythBaseClient::mythBaseClient(MythSocket* people, const char* CameraType)
 {
+	_hassendIframe = false;
 	_sps = nullptr; _pps = nullptr;
 	_spslen = 0; _ppslen = 0;
 	width = 0; height = 0; fps = 0;
@@ -43,7 +44,7 @@ int mythBaseClient::DataCallBack(void* data, int len)
 		}
 		while (1) {
 			nal = get_nal(&nal_len, &buf_offset, (uint8_t*)data, len);
-			if (nal == NULL) break;
+			if (nal_len <= 3) break;
 			int nalu = nal[0] & 0x1f;
 			switch (nalu)
 			{
@@ -60,18 +61,26 @@ int mythBaseClient::DataCallBack(void* data, int len)
 					memcpy(_pps, nal, nal_len);
 					_ppslen = nal_len;
 				}
-				break;
-			case 5:
-				ts = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - timestart;
 				if (_spslen > 0 && _ppslen > 0){
 					writespspps((uint8_t*) _sps, _spslen, (uint8_t*) _pps, _ppslen, ts);
 				}
+				break;
+			case 5:
+				ts = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - timestart;
+				if (!_hassendIframe){
+					if (_spslen > 0 && _ppslen > 0){
+						writespspps((uint8_t*) _sps, _spslen, (uint8_t*) _pps, _ppslen, ts);
+					}
+				}
 				writeavcframe(nal, nal_len, ts, true);
+				_hassendIframe = true;
 				//std::cout << ts << "ms" << std::endl;
 				break;
 			default:
-				ts = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - timestart;
-				writeavcframe(nal, nal_len, ts, false);
+				if (_hassendIframe){
+					ts = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - timestart;
+					writeavcframe(nal, nal_len, ts, false);
+				}
 				//std::cout << ts << "ms" << std::endl;
 				break;
 			}
@@ -108,7 +117,9 @@ mythBaseClient* mythBaseClient::CreateNew(MythSocket* people, const char* Camera
 
 int mythBaseClient::mythSendMessage(void* data, int length)
 {
+#ifdef _DEBUG
 	mythLog::GetInstance()->printf("writing to socket:%d\n", length);
+#endif // _DEBUG
 	if (length == -1)
 		length = strlen((char*) data);
 	int tmplength = 0;

@@ -451,6 +451,7 @@ private:
 	int _spslen; int _ppslen;
 	unsigned int width, height, fps;
 	long long timestart;
+	bool _hassendIframe;
 	//void OnFlvFrame(unsigned char* data, int len);
 protected:
 	mythBaseClient(MythSocket* people, const char* CameraType);
