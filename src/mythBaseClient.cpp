@@ -117,15 +117,20 @@ mythBaseClient* mythBaseClient::CreateNew(MythSocket* people, const char* Camera
 
 int mythBaseClient::mythSendMessage(void* data, int length)
 {
-#ifdef _DEBUG
-	mythLog::GetInstance()->printf("writing to socket:%d\n", length);
-#endif // _DEBUG
+//#ifdef _DEBUG
+//	mythLog::GetInstance()->printf("writing to socket:%d\n", length);
+//#endif // _DEBUG
 	if (length == -1)
 		length = strlen((char*) data);
 	int tmplength = 0;
 	
 	if (mpeople){
 		tmplength = mpeople->socket_SendStr((char*) data, length);
+		if (tmplength < 0){
+#ifdef _DEBUG
+			mythLog::GetInstance()->printf("socket %d send error:%d\n", mpeople, tmplength);
+#endif // _DEBUG
+		}
 	}
 	return tmplength;
 }

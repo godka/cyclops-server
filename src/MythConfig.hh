@@ -35,7 +35,7 @@
 #define RTSPLINK "rtsp://%s:%s%s"
 #define FINDCAMERA "select a.ip,a.username,a.password,a.httpport,b.FullSize,a.vstypeid,c.port,c.subname from videoserver as a,vstype as b,camera as c where a.vstypeid = b.vstypeid and a.videoserverid = c.videoserverid and c.cameraid = %d"
 #define firstrequest "HTTP/1.1 200 OK\r\nServer: WWeb/2.0\r\nConnection: Close\r\nContent-Type: multipart/x-mixed-replace;boundary=--myboundary\r\n\r\n \n\n--myboundary\n"
-#define flvfirstrequest "HTTP/1.1 200 OK\r\nServer: MythHLSClient\r\nConnection: keep-alive\r\nContent-Type: video/flv\r\nAccept-Ranges: bytes\r\n\r\n"
+#define flvfirstrequest "HTTP/1.1 200 OK\r\nServer: MythMultiKast\r\nConnection: Keep-Alive\r\nAccess-Control-Allow-Origin: *\r\nContent-Type: video/x-flv\r\n\r\n"
 #define STREAMSERVERMAX 100
 #ifdef ANDROID
 #include <android/log.h>
