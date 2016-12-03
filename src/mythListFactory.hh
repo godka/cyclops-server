@@ -1,9 +1,8 @@
 #pragma once
 #include "MythConfig.hh"
 #include "mythVirtualList.hh"
+#include "mythNodeList.hh"
 #include "mythAvlist.hh"
-#include "mythRedisList.hh"
-#include "mythShareMemList.hh"
 class mythListFactory
 {
 public:

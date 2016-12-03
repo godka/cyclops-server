@@ -64,7 +64,7 @@ private:
 	int Se(BYTE *pBuff, UINT nLen, UINT &nStartBit) {
 		int UeVal = Ue(pBuff, nLen, nStartBit);
 		double k = UeVal;
-		int nValue = ceil(k / 2);
+		int nValue = (int)ceil(k / 2);
 		if (UeVal % 2 == 0)
 			nValue = -nValue;
 		return nValue;
@@ -344,7 +344,7 @@ private:
 		*offset = p;
 		return q;
 	}
-	void writespspps(uint8_t * sps, uint32_t spslen, uint8_t * pps, uint32_t ppslen, uint32_t timestamp)
+	int writespspps(uint8_t * sps, uint32_t spslen, uint8_t * pps, uint32_t ppslen, uint32_t timestamp)
 	{
 		uint32_t body_len = spslen + ppslen + 16;
 		uint32_t output_len = body_len + FLV_TAG_HEAD_LEN + FLV_PRE_TAG_LEN;
@@ -394,12 +394,18 @@ private:
 		output[offset++] = (uint8_t) (fff >> 16); //data len
 		output[offset++] = (uint8_t) (fff >> 8); //data len
 		output[offset++] = (uint8_t) (fff); //data len
-		mythSendMessage(output, output_len);
-		//RTMP Send out
-		free(output);
+		if (mythSendMessage(output, output_len) < 0){
+			//RTMP Send out
+			free(output);
+			return -1;
+		}
+		else{
+			free(output);
+		}
+		return 0;
 	}
 
-	void writeavcframe(uint8_t * nal, uint32_t nal_len, uint32_t timestamp, bool IsIframe)
+	int writeavcframe(uint8_t * nal, uint32_t nal_len, uint32_t timestamp, bool IsIframe)
 	{
 		uint32_t body_len = nal_len + 5 + 4; //flv VideoTagHeader +  NALU length
 		uint32_t output_len = body_len + FLV_TAG_HEAD_LEN + FLV_PRE_TAG_LEN;
@@ -443,15 +449,21 @@ private:
 		output[offset++] = (uint8_t) (fff >> 8); //data len
 		output[offset++] = (uint8_t) (fff); //data len
 		//fwrite(output, output_len, 1, flv_file);
-		mythSendMessage(output, output_len);
-		//RTMP Send out
-		free(output);
+		if (mythSendMessage(output, output_len) < 0){
+			free(output);
+			return -1;
+		}
+		else{
+			free(output);
+		}
+		return 0;
 	}
 	char* _sps , *_pps;
 	int _spslen; int _ppslen;
 	unsigned int width, height, fps;
 	long long timestart;
 	bool _hassendIframe;
+	void CloseClient();
 	//void OnFlvFrame(unsigned char* data, int len);
 protected:
 	mythBaseClient(MythSocket* people, const char* CameraType);

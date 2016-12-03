@@ -7,13 +7,10 @@ mythListFactory::mythListFactory()
 	switch (list_type)
 	{
 	case 0:
-		vlist = mythAvlist::CreateNew();
+		vlist = mythNodeList::CreateNew();
 		break;
 	case 1:
-		vlist = mythRedisList::CreateNew();
-		break;
-	case 2:
-		vlist = mythShareMemList::CreateNew();
+		vlist = mythAvlist::CreateNew();
 		break;
 	default:
 		vlist = NULL;

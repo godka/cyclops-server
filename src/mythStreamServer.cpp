@@ -46,6 +46,7 @@ void mythStreamServer::connect()
 		switch (list_type)
 		{
 		case 0:
+		case 1:
 			sprintf(sqltmp, FINDCAMERA, m_cameraid);
 			result = mythVirtualSqlite::GetInstance()->doSQLFromStream(sqltmp);
 			if (result){
@@ -98,20 +99,6 @@ void mythStreamServer::connect()
 			}
 			//if (result)
 			break;
-		case 1:
-			decoder = mythRedisDecoder::CreateNew(m_cameraid);
-			if (decoder){
-				decoder->SetMagic((void*) m_cameraid);	//set magic
-				decoder->start();
-			}
-			break;
-		case 2:
-			this->decoder = mythRedisDecoder::CreateNew(m_cameraid);
-			if (decoder){
-				decoder->SetMagic((void*) m_cameraid);	//set magic
-				decoder->start();
-			}
-			break;
 		default:
 			break;
 		}
@@ -138,7 +125,7 @@ bool mythStreamServer::FindClient(mythBaseClient* ival){
 
 
 int mythStreamServer::AppendClient(mythBaseClient* client){
-	mythLog::GetInstance()->printf("Appending Client,%d\n", client);
+	mythLog::GetInstance()->printf("Appending Client,%u\n", client);
 	if (!FindClient(client)){
 		for (int i = 0; i < STREAMSERVERMAX; i++){
 			if (_baselist[i] == NULL){
@@ -180,17 +167,21 @@ int mythStreamServer::mainthread()
 							streamcount++;
 							if (tmpclient->isfirst){
 								if (tmp->isIframe)
-									tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
+									if (tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength) < 0){
+										DropClient(tmpclient);
+									}
 							}
 							else{
-								tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength);
+								if (tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength) < 0){
+									DropClient(tmpclient);
+								}
 							}
 						}
 					}
 					if (streamcount == 0){
 						//add ticks
-						if (CheckTime(closetick, 5000))
-							break;
+						if (CheckTime(closetick, 5000));
+							//break;
 					}
 					else{
 						//refresh ticks
@@ -264,7 +255,7 @@ int mythStreamServer::getClientNumber()
 
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
-	mythLog::GetInstance()->printf("Dropping Client,%d\n", client);
+	mythLog::GetInstance()->printf("Dropping Client,%u\n", client);
 	for (int i = 0; i < STREAMSERVERMAX; i++){
 		if (_baselist[i] == client){
 			_baselist[i] = NULL;

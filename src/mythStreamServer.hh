@@ -2,7 +2,6 @@
 #include "MythConfig.hh"
 #include "mythVirtualDecoder.hh"
 #include "mythLive555Decoder.hh"
-#include "mythRedisDecoder.hh"
 #include "mythProxyDecoder.hh"
 #include "mythStreamDecoder.hh"
 #include "mythBaseClient.hh"

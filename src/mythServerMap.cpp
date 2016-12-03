@@ -70,6 +70,7 @@ void mythServerMap::DropClient(MythSocket* people)
 		server->DropClient(client);
 		delete client;
 		client = nullptr;
+		people->socket_CloseSocket();
 		mapmutex.unlock();
 	}
 

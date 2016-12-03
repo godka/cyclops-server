@@ -83,8 +83,22 @@ int MythSocket::socket_SendStr(const char* data, int length){
 		mythLog::GetInstance()->printf("Error: timeout.\n");
 		return 1;
 	}
-	int len = send(_sockfd, data, length, 0);
-	return len - length;
+	int index = 0;
+	int sendlen = length;
+	do{
+		int len = send(_sockfd, data + index, sendlen, 0);
+		if (len < 0){
+			break;
+		}
+		index += len;
+		sendlen -= len;
+	} while (sendlen > 0);
+	if (sendlen == 0){
+		return sendlen;
+	}
+	else{
+		return -1;
+	}
 }
 
 MythSocket::~MythSocket()

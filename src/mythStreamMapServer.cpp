@@ -59,10 +59,10 @@ int initalsocket(int port)
 			}
 		}, NULL, [](struct bufferevent *bev, short events, void *ctx){
 			MythSocket* people = (MythSocket*) ctx;
-			servermap->DropClient(people);
 			if (events & BEV_EVENT_ERROR)
 				perror("Error from bufferevent");
 			if (events & (BEV_EVENT_EOF | BEV_EVENT_ERROR)) {
+				//servermap->DropClient(people);
 				bufferevent_free(bev);
 			}
 		},people);

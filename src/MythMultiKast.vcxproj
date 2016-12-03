@@ -209,11 +209,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="async.c" />
-    <ClCompile Include="dict.c" />
     <ClCompile Include="H264or5VideoStreamSink.cpp" />
     <ClCompile Include="H264VideoStreamSink.cpp" />
-    <ClCompile Include="hiredis.c" />
     <ClCompile Include="IniFile.c" />
     <ClCompile Include="AC3AudioFileServerMediaSubsession.cpp" />
     <ClCompile Include="AC3AudioRTPSink.cpp" />
@@ -348,6 +345,7 @@
     <ClCompile Include="MultiFramedRTPSink.cpp" />
     <ClCompile Include="MultiFramedRTPSource.cpp" />
     <ClCompile Include="mythLog.cpp" />
+    <ClCompile Include="mythNodeList.cpp" />
     <ClCompile Include="NetAddress.cpp" />
     <ClCompile Include="NetInterface.cpp" />
     <ClCompile Include="OggDemuxedTrack.cpp" />
@@ -409,12 +407,8 @@
     <ClCompile Include="mythLive555Decoder.cpp" />
     <ClCompile Include="mythMediaPipeline.cpp" />
     <ClCompile Include="mythProxyDecoder.cpp" />
-    <ClCompile Include="mythRedisClient.cpp" />
-    <ClCompile Include="mythRedisDecoder.cpp" />
-    <ClCompile Include="mythRedisList.cpp" />
     <ClCompile Include="mythRTSP.cpp" />
     <ClCompile Include="mythServerMap.cpp" />
-    <ClCompile Include="mythShareMemList.cpp" />
     <ClCompile Include="mythStreamMapServer.cpp" />
     <ClCompile Include="mythStreamServer.cpp" />
     <ClCompile Include="mythStreamSQLresult.cpp" />
@@ -423,11 +417,8 @@
     <ClCompile Include="mythVirtualList.cpp" />
     <ClCompile Include="mythVirtualSqlite.cpp" />
     <ClCompile Include="mythStreamDecoder.cpp" />
-    <ClCompile Include="net.c" />
     <ClCompile Include="OurRTSPClient.cpp" />
     <ClCompile Include="MythSocket.cpp" />
-    <ClCompile Include="sds.c" />
-    <ClCompile Include="ShareMemory.cpp" />
     <ClCompile Include="SingleMain.cpp" />
     <ClCompile Include="StreamClientState.cpp" />
     <ClCompile Include="StreamSink.cpp" />
@@ -437,13 +428,8 @@
     <ClCompile Include="tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="async.h" />
-    <ClInclude Include="config.h" />
-    <ClInclude Include="dict.h" />
-    <ClInclude Include="fmacros.h" />
     <ClInclude Include="H264or5VideoStreamSink.hh" />
     <ClInclude Include="H264VideoStreamSink.hh" />
-    <ClInclude Include="hiredis.h" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="mythAvlist.hh" />
     <ClInclude Include="mythBaseClient.hh" />
@@ -455,13 +441,10 @@
     <ClInclude Include="mythListFactory.hh" />
     <ClInclude Include="mythLog.hh" />
     <ClInclude Include="mythMediaPipeline.hh" />
+    <ClInclude Include="mythNodeList.hh" />
     <ClInclude Include="mythProxyDecoder.hh" />
-    <ClInclude Include="mythRedisClient.hh" />
-    <ClInclude Include="mythRedisDecoder.hh" />
-    <ClInclude Include="mythRedisList.hh" />
     <ClInclude Include="mythRTSP.hh" />
     <ClInclude Include="mythServerMap.hh" />
-    <ClInclude Include="mythShareMemList.hh" />
     <ClInclude Include="mythStreamMapServer.hh" />
     <ClInclude Include="mythStreamServer.hh" />
     <ClInclude Include="mythStreamSQLresult.hh" />
@@ -470,11 +453,8 @@
     <ClInclude Include="mythVirtualList.hh" />
     <ClInclude Include="mythVirtualSqlite.hh" />
     <ClInclude Include="mythStreamDecoder.hh" />
-    <ClInclude Include="net.h" />
     <ClInclude Include="OurRTSPClient.hh" />
     <ClInclude Include="MythSocket.hh" />
-    <ClInclude Include="sds.h" />
-    <ClInclude Include="ShareMemory.hh" />
     <ClInclude Include="StreamClientState.hh" />
     <ClInclude Include="StreamSink.hh" />
     <ClInclude Include="tinystr.h" />

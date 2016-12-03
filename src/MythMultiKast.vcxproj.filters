@@ -49,20 +49,8 @@
     <Filter Include="Source Files\kernel\list">
       <UniqueIdentifier>{18e4aa57-2a0a-4ab9-b7d6-eac7e75f68a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\decoder\redis">
-      <UniqueIdentifier>{3f5a4c70-2ad9-494f-8282-26b058212ea2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\redis">
-      <UniqueIdentifier>{9f271f8a-5b9e-42c9-955f-baf0937aa5af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\kernel\redis">
-      <UniqueIdentifier>{e28f75dd-efe8-4a1a-88d8-4b08450158da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\kernel\live555">
       <UniqueIdentifier>{36437114-ec84-4344-b398-a519fcb7c342}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\kernel\memory">
-      <UniqueIdentifier>{c54bcbdd-405a-4232-adb2-5fff1b615ae4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\tinyxml">
       <UniqueIdentifier>{b3670980-68a9-4273-b673-3d591e139ad2}</UniqueIdentifier>
@@ -144,9 +132,6 @@
     <ClCompile Include="mythAvlist.cpp">
       <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
-    <ClCompile Include="mythRedisList.cpp">
-      <Filter>Source Files\kernel\list</Filter>
-    </ClCompile>
     <ClCompile Include="mythVirtualList.cpp">
       <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
@@ -156,29 +141,8 @@
     <ClCompile Include="mythListFactory.cpp">
       <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
-    <ClCompile Include="mythRedisDecoder.cpp">
-      <Filter>Source Files\decoder\redis</Filter>
-    </ClCompile>
-    <ClCompile Include="hiredis.c">
-      <Filter>Source Files\kernel\redis</Filter>
-    </ClCompile>
-    <ClCompile Include="dict.c">
-      <Filter>Source Files\kernel\redis</Filter>
-    </ClCompile>
-    <ClCompile Include="net.c">
-      <Filter>Source Files\kernel\redis</Filter>
-    </ClCompile>
-    <ClCompile Include="sds.c">
-      <Filter>Source Files\kernel\redis</Filter>
-    </ClCompile>
-    <ClCompile Include="async.c">
-      <Filter>Source Files\kernel\redis</Filter>
-    </ClCompile>
     <ClCompile Include="mythGlobal.cpp">
       <Filter>Source Files\kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="mythRedisClient.cpp">
-      <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="inet.c">
       <Filter>Source Files\kernel\live555</Filter>
@@ -723,12 +687,6 @@
     <ClCompile Include="WAVAudioFileServerMediaSubsession.cpp">
       <Filter>Source Files\kernel\live555</Filter>
     </ClCompile>
-    <ClCompile Include="mythShareMemList.cpp">
-      <Filter>Source Files\kernel\list</Filter>
-    </ClCompile>
-    <ClCompile Include="ShareMemory.cpp">
-      <Filter>Source Files\kernel\memory</Filter>
-    </ClCompile>
     <ClCompile Include="SingleMain.cpp">
       <Filter>Source Files\main</Filter>
     </ClCompile>
@@ -752,6 +710,9 @@
     </ClCompile>
     <ClCompile Include="mythLog.cpp">
       <Filter>Source Files\kernel\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="mythNodeList.cpp">
+      <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -791,9 +752,6 @@
     <ClInclude Include="mythVirtualList.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythRedisList.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="H264or5VideoStreamSink.hh">
       <Filter>Header Files\live555</Filter>
     </ClInclude>
@@ -821,41 +779,8 @@
     <ClInclude Include="MythSocket.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mythRedisDecoder.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mythGlobal.hh">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mythRedisClient.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="async.h">
-      <Filter>Header Files\redis</Filter>
-    </ClInclude>
-    <ClInclude Include="config.h">
-      <Filter>Header Files\redis</Filter>
-    </ClInclude>
-    <ClInclude Include="dict.h">
-      <Filter>Header Files\redis</Filter>
-    </ClInclude>
-    <ClInclude Include="fmacros.h">
-      <Filter>Header Files\redis</Filter>
-    </ClInclude>
-    <ClInclude Include="hiredis.h">
-      <Filter>Header Files\redis</Filter>
-    </ClInclude>
-    <ClInclude Include="mythShareMemList.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShareMemory.hh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sds.h">
-      <Filter>Header Files\redis</Filter>
-    </ClInclude>
-    <ClInclude Include="net.h">
-      <Filter>Header Files\redis</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml.h">
       <Filter>Header Files\tinyxml</Filter>
@@ -879,6 +804,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythLog.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythNodeList.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

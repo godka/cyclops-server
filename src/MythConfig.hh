@@ -47,6 +47,7 @@
 #define LOGE printf
 #endif
 
+#include "List.h"
 //magic is a fucking rubbish recently,
 typedef struct PacketQueue {
 	unsigned char* h264Packet;
@@ -54,9 +55,11 @@ typedef struct PacketQueue {
 	unsigned char* yuvPacket[3];
 	unsigned int yuvPacketLength[3];
 	unsigned int stream_type;
-	unsigned int tickcount;
+	unsigned int TimeStamp;
+	unsigned int PacketCount;
 	void* magic;
 	bool isIframe;
+	struct list_head list;
 } PacketQueue;
 
 //char* global_filename = NULL;
