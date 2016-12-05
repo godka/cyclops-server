@@ -346,6 +346,7 @@
     <ClCompile Include="MultiFramedRTPSource.cpp" />
     <ClCompile Include="mythLog.cpp" />
     <ClCompile Include="mythNodeList.cpp" />
+    <ClCompile Include="mythRequestParser.cpp" />
     <ClCompile Include="NetAddress.cpp" />
     <ClCompile Include="NetInterface.cpp" />
     <ClCompile Include="OggDemuxedTrack.cpp" />
@@ -443,6 +444,7 @@
     <ClInclude Include="mythMediaPipeline.hh" />
     <ClInclude Include="mythNodeList.hh" />
     <ClInclude Include="mythProxyDecoder.hh" />
+    <ClInclude Include="mythRequestParser.hh" />
     <ClInclude Include="mythRTSP.hh" />
     <ClInclude Include="mythServerMap.hh" />
     <ClInclude Include="mythStreamMapServer.hh" />

@@ -714,6 +714,9 @@
     <ClCompile Include="mythNodeList.cpp">
       <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
+    <ClCompile Include="mythRequestParser.cpp">
+      <Filter>Source Files\kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -807,6 +810,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythNodeList.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythRequestParser.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

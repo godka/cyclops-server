@@ -1,4 +1,5 @@
 ﻿#include "mythStreamMapServer.hh"
+#include "mythRequestParser.hh"
 mythServerMap* servermap = nullptr;
 
 int initalsocket(int port)
@@ -40,22 +41,35 @@ int initalsocket(int port)
 			char inputstr[512] = { 0 };
 			int len = bufferevent_read(bev, inputstr, 512);
 			if (len > 2){
-				int cameraid = -1;
-				char cameratype[20] = { 0 };
-				sscanf(inputstr, "GET /CameraID=%d&Type=%s ", &cameraid, cameratype);
-				if (cameraid != -1){
-					servermap->AppendClient(cameraid, people, cameratype);
-				}
-				else {
-					sscanf(inputstr, "PUT /CameraID=%d", &cameraid);
-					if (cameraid != -1){
-						servermap->AppendClient(cameraid, people);
+				mythRequestParser* header = mythRequestParser::CreateNew(inputstr);
+				if (header->Success){
+					std::string request_header = header->GetHeader();
+					if (request_header == "GET"){
+						//GET Method
+						auto cameraid = header->ParseInt("CameraID");
+						auto cameratype = header->Parse("Type");
+						if (cameraid > 0){
+							servermap->AppendClient(cameraid, people, cameratype.c_str());
+						}else{
+							people->socket_SendStr("404");
+							bufferevent_free(bev);
+						}
+					}else if (request_header == "PUT"){
+						auto cameraid = header->ParseInt("CameraID");
+						if (cameraid > 0){
+							servermap->AppendClient(cameraid, people);
+						}
+						else{
+							people->socket_SendStr("404");
+							bufferevent_free(bev);
+						}
 					}
 					else{
 						people->socket_SendStr("404");
 						bufferevent_free(bev);
 					}
 				}
+				delete header;
 			}
 		}, NULL, [](struct bufferevent *bev, short events, void *ctx){
 			MythSocket* people = (MythSocket*) ctx;
