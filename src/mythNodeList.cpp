@@ -19,7 +19,7 @@ mythNodeList::~mythNodeList(void)
 
 PacketQueue *mythNodeList::get(int freepacket){
 	PacketQueue *tmp;
-	_mutex.lock();
+	//_mutex.lock();
 	if (header.next == header.prev){
 		tmp = nullptr;
 	}
@@ -27,7 +27,7 @@ PacketQueue *mythNodeList::get(int freepacket){
 		tmp = list_entry(header.next, struct PacketQueue, list);
 		list_del(&tmp->list);
 	}
-	_mutex.unlock();
+	//_mutex.unlock();
 	return tmp;
 }
 int mythNodeList::put(unsigned char* data, unsigned int length){
@@ -44,9 +44,9 @@ int mythNodeList::put(unsigned char* data, unsigned int length){
 	memcpy(tmp->h264Packet, data, length);
 	tmp->h264PacketLength = length;
 	tmp->PacketCount++;
-	_mutex.lock();
+	//_mutex.lock();
 	list_add_tail(&tmp->list, &header);
-	_mutex.unlock();
+	//_mutex.unlock();
 	return 0;
 }
 unsigned char* mythNodeList::putcore(unsigned char* data, unsigned int datasize){
@@ -84,7 +84,7 @@ int mythNodeList::release(PacketQueue *pack)
 }
 
 int mythNodeList::freeMemory(){
-	_mutex.lock();
+	//_mutex.lock();
 	for (;;){
 		if (header.next == header.prev){
 			break;
@@ -92,6 +92,6 @@ int mythNodeList::freeMemory(){
 		PacketQueue *tmp = list_entry(header.next, struct PacketQueue, list);
 		list_del(&tmp->list);
 	}
-	_mutex.unlock();
+	//_mutex.unlock();
 	return 0;
 }

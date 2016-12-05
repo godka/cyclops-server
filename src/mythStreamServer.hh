@@ -57,4 +57,3 @@ protected:
 	void* additionalargs;
 	bool _hasstart;
 };
-

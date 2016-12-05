@@ -82,7 +82,7 @@ int initalsocket(int port)
 		event_base_loopexit(base, NULL);
 	});
 	mythLog::GetInstance()->printf("Server IP: %d.%d.%d.%d ---  %d\n", 0, 0, 0, 0, port);
-	mythLog::GetInstance()->printf("MythMultiKast in libevent: stable version.");
+	mythLog::GetInstance()->printf("MythMultiKast in libevent: stable version.\n");
 	event_base_dispatch(base);
 #ifdef WIN32
 	WSACleanup();

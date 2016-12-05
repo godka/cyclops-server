@@ -165,22 +165,14 @@ int mythStreamServer::mainthread()
 						mythBaseClient* tmpclient = _baselist[i];
 						if (tmpclient){
 							streamcount++;
-							if (tmpclient->isfirst){
-								if (tmp->isIframe)
-									if (tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength) < 0){
-										DropClient(tmpclient);
-									}
-							}
-							else{
-								if (tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength) < 0){
-									DropClient(tmpclient);
-								}
+							if (tmpclient->DataCallBack(tmp->h264Packet, tmp->h264PacketLength) < 0){
+								DropClient(tmpclient);
 							}
 						}
 					}
 					if (streamcount == 0){
 						//add ticks
-						if (CheckTime(closetick, 5000));
+						//if (CheckTime(closetick, 5000));
 							//break;
 					}
 					else{
@@ -252,7 +244,6 @@ int mythStreamServer::getClientNumber()
 	}
 	return ret_size;
 }
-
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
 	mythLog::GetInstance()->printf("Dropping Client,%u\n", client);

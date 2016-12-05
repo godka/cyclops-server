@@ -25,6 +25,12 @@ mythBaseClient::mythBaseClient(MythSocket* people, const char* CameraType)
 
 mythBaseClient::~mythBaseClient(void)
 {
+	if (_sps){
+		delete [] _sps;
+	}
+	if (_pps){
+		delete [] _pps;
+	}
 }
 
 int mythBaseClient::DataCallBack(void* data, int len)
@@ -34,6 +40,7 @@ int mythBaseClient::DataCallBack(void* data, int len)
 	uint32_t nal_len;
 	uint8_t *nal;
 	if (m_cameratype == 2){
+
 		if (isfirst){
 			if (mythSendMessage((void*) flvfirstrequest) < 0){
 				return -1;
@@ -47,7 +54,7 @@ int mythBaseClient::DataCallBack(void* data, int len)
 			isfirst = false;
 		}
 		while (1) {
-			nal = get_nal(&nal_len, &buf_offset, (uint8_t*)data, len);
+			nal = get_nal(&nal_len, &buf_offset, (uint8_t*) data, len);
 			if (nal_len <= 3) break;
 			int nalu = nal[0] & 0x1f;
 			switch (nalu)
@@ -133,9 +140,6 @@ mythBaseClient* mythBaseClient::CreateNew(MythSocket* people, const char* Camera
 
 int mythBaseClient::mythSendMessage(void* data, int length)
 {
-//#ifdef _DEBUG
-//	mythLog::GetInstance()->printf("writing to socket:%d\n", length);
-//#endif // _DEBUG
 	if (length == -1)
 		length = strlen((char*) data);
 	int tmplength = 0;
@@ -143,9 +147,9 @@ int mythBaseClient::mythSendMessage(void* data, int length)
 	if (mpeople){
 		tmplength = mpeople->socket_SendStr((char*) data, length);
 		if (tmplength < 0){
-#ifdef _DEBUG
+//#ifdef _DEBUG
 			mythLog::GetInstance()->printf("socket %d send error:%d\n", mpeople, tmplength);
-#endif // _DEBUG
+//#endif // _DEBUG
 		}
 	}
 	return tmplength;

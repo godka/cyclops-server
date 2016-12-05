@@ -455,8 +455,8 @@ private:
 		}
 		else{
 			free(output);
+			return 0;
 		}
-		return 0;
 	}
 	char* _sps , *_pps;
 	int _spslen; int _ppslen;

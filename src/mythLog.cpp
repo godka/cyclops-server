@@ -3,7 +3,6 @@
 #include <stdarg.h>
 #include <chrono>
 #include <fstream>
-#include <iostream>
 mythLog*  mythLog::mmythLog = nullptr;
 
 void mythLog::printf(const char * format, ...)
@@ -27,19 +26,22 @@ void mythLog::printf(const char * format, ...)
 	sprintf(timenow, "%04d-%02d-%02d %02d:%02d:%02d",
 		1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
-	std::ofstream fout(timefile, std::ios::app);
+	//std::ofstream fout(timefile, std::ios::app);
+	FILE* file = fopen(timefile, "a+");
 	if (len > 0){
-#ifdef _DEBUG
-		std::cout << "[" << timenow << "]" << str;
-#endif
-		fout << "[" << timenow << "]" << str;
+//#ifdef _DEBUG
+		fprintf(stderr, "[%s]%s", timenow, str);
+//#endif
+		fprintf(file, "[%s]%s", timenow, str);
+		//fout << "[" << timenow << "]" << str;
 		if (str[len - 1] != '\n'){
-#ifdef _DEBUG
-			std::cout << std::endl;
-#endif
-			fout << std::endl;
+//#ifdef _DEBUG
+			fprintf(stderr, "\n");
+//#endif
+			fprintf(file, "\n");
 		}
 	}
+	fclose(file);
 	_mutex.unlock();
 
 }

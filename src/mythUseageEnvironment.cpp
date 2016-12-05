@@ -54,37 +54,37 @@ int mythUseageEnvironment::getErrno() const {
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(char const* str) {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (str == NULL) str = "(NULL)"; // sanity check
 	fprintf(stderr, "%s", str);
-#endif
+//#endif
 	return *this;
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(int i) {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	fprintf(stderr, "%d", i);
-#endif
+//#endif
 	return *this;
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(unsigned u) {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	fprintf(stderr, "%u", u);
-#endif
+//#endif
 	return *this;
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(double d) {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	fprintf(stderr, "%f", d);
-#endif
+//#endif
 	return *this;
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(void* p) {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	fprintf(stderr, "%p", p);
-#endif
+//#endif
 	return *this;
 }
