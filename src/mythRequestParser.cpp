@@ -24,7 +24,7 @@ void mythRequestParser::parseCore(const char* str)
 		std::string tmpstr = &t[1];
 		std::vector<std::string> spstr;
 		split(tmpstr, "&", spstr);
-		for each (auto& t in spstr){
+		for(auto& t : spstr){
 			std::vector<std::string> sp;
 			split(t, "=", sp);
 			if (sp.size() > 1){
