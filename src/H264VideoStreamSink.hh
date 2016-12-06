@@ -4,7 +4,7 @@
 class H264VideoStreamSink : public H264or5VideoStreamSink {
 public:
 	static H264VideoStreamSink* createNew(UsageEnvironment& env,
-		live555responseHandler* handler = NULL,void* live555responseData = NULL,
+		live555responseHandler* handler = NULL, void* live555responseData = NULL,
 		char const* sPropParameterSetsStr = NULL,
 		// "sPropParameterSetsStr" is an optional 'SDP format' string
 		// (comma-separated Base64-encoded) representing SPS and/or PPS NAL-units

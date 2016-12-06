@@ -15,11 +15,11 @@ int mythAvlist::InitalList(){
 	totalbuffer = new unsigned char[mBufferSize * 1024 * 1024];
 	ListPacket = new PacketQueue[AVFRAMECOUNT];
 	for (int i = 0; i < AVFRAMECOUNT; i++){
-		ListPacket[i].h264Packet = NULL;
-		ListPacket[i].h264PacketLength = 0;
+		ListPacket[i].Packet = nullptr;
+		ListPacket[i].PacketLength = 0;
 
 		for (int j = 0; j < 3; j++){
-			ListPacket[i].yuvPacket[j] = NULL;
+			ListPacket[i].yuvPacket[j] = nullptr;
 			ListPacket[i].yuvPacketLength[j] = 0;
 		}
 	}
@@ -55,7 +55,7 @@ PacketQueue *mythAvlist::get(int freePacket){
 	}
 	else{
 		tmp = &this->ListPacket[this->listread];
-		if (tmp->h264Packet == NULL && tmp->yuvPacket[0] == NULL){
+		if (tmp->Packet == NULL && tmp->yuvPacket[0] == NULL){
 			tmp = NULL;
 		}
 		else{
@@ -85,7 +85,7 @@ unsigned char* mythAvlist::putcore(unsigned char* data,unsigned int datasize){
 int mythAvlist::put(unsigned char** dataline,unsigned int *datasize,int width,int height){
 	if(listwrite >= AVFRAMECOUNT)listwrite = 0;
 	PacketQueue *tmp = &ListPacket[listwrite];
-	tmp->h264Packet = NULL;
+	tmp->Packet = NULL;
 	unsigned char* YY = (unsigned char*)putcore(dataline[0],datasize[0] * height);
 	unsigned int Ydatasize = datasize[0];
 	unsigned char* UU = (unsigned char*)this->putcore(dataline[1], datasize[1] * height / 2);
@@ -106,8 +106,8 @@ int mythAvlist::release(PacketQueue *pack)
 int mythAvlist::put(unsigned char* data,unsigned int length){	
 	if(listwrite >= AVFRAMECOUNT)listwrite = 0;
 	PacketQueue *tmp = &ListPacket[listwrite];
-	tmp->h264PacketLength = length;
-	tmp->h264Packet = putcore(data, length);
+	tmp->PacketLength = length;
+	tmp->Packet = putcore(data, length);
 	tmp->isIframe = IsIframe(tmp);
 	listwrite++;
 	return 0;

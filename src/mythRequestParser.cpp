@@ -62,7 +62,12 @@ std::string& mythRequestParser::Parse(std::string key)
 int mythRequestParser::ParseInt(std::string key)
 {
 	auto ret = Parse(key);
-	return atoi(ret.c_str());
+	if (ret == ""){
+		return -1;
+	}
+	else{
+		return atoi(ret.c_str());
+	}
 	//return _mapcore[key];
 }
 std::string mythRequestParser::GetHeader()

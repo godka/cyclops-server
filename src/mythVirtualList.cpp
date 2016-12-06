@@ -24,8 +24,8 @@ int mythVirtualList::release(PacketQueue *pack)
 bool mythVirtualList::IsIframe(PacketQueue *pack)
 {
 	if (pack){
-		if (pack->h264PacketLength > 4){
-			unsigned char* tmp = pack->h264Packet;
+		if (pack->PacketLength > 4){
+			unsigned char* tmp = pack->Packet;
 			int Nalu = 0;
 			if (tmp[0] == 0 && tmp[1] == 0 && tmp[2] == 0 && tmp[3] == 1){
 				Nalu = tmp[4];

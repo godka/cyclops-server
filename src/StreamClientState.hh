@@ -3,11 +3,12 @@
 #include "BasicUsageEnvironment.hh"
 class StreamClientState {
 public:
-	typedef void (live555responseHandler)(void *myth, unsigned char* data, unsigned int length);
+	typedef void (live555responseHandler)(void *myth, unsigned char* data, unsigned int length, unsigned int timestamp);
 	StreamClientState();
 	virtual ~StreamClientState();
 
 public:
+	bool usetcp;
 	Authenticator* authenticator;	//add
 	MediaSubsessionIterator* iter;
 	MediaSession* session;

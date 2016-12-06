@@ -32,7 +32,7 @@ class mythBaseClient
 public:
 	bool isfirst;
 	static mythBaseClient* CreateNew(MythSocket* people,const char* CameraType = NULL);
-	int DataCallBack(void* data, int len);
+	int DataCallBack(PacketQueue* pkt);
 	~mythBaseClient(void);
 private:
 	MythSocket* mpeople;
@@ -64,7 +64,7 @@ private:
 	int Se(BYTE *pBuff, UINT nLen, UINT &nStartBit) {
 		int UeVal = Ue(pBuff, nLen, nStartBit);
 		double k = UeVal;
-		int nValue = (int)ceil(k / 2);
+		int nValue = (int) floor(k / 2);
 		if (UeVal % 2 == 0)
 			nValue = -nValue;
 		return nValue;

@@ -4,10 +4,10 @@
 #endif
 class StreamSink : public MediaSink {
 public:
-	typedef void (live555responseHandler)(void *myth, unsigned char* data, unsigned int length);
+	typedef void (live555responseHandler)(void *myth, unsigned char* data, unsigned int length, unsigned int timestamp);
 	live555responseHandler* live555response;
 	void* phwnd;
-	static StreamSink* createNew(UsageEnvironment& env,unsigned bufferSize = 20000);
+	static StreamSink* createNew(UsageEnvironment& env, unsigned bufferSize = 20000);
 	// "bufferSize" should be at least as large as the largest expected
 	//   input frame.
 	// "oneFilePerFrame" - if True - specifies that each input frame will
@@ -43,5 +43,7 @@ protected:
 	unsigned fTotalBufferSize;
 	struct timeval fPrevPresentationTime;
 	unsigned fSamePresentationTimeCounter;
+private:
+	unsigned long fTimeStamp;
 };
 

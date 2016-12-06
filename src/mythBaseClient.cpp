@@ -33,10 +33,12 @@ mythBaseClient::~mythBaseClient(void)
 	}
 }
 
-int mythBaseClient::DataCallBack(void* data, int len)
+int mythBaseClient::DataCallBack(PacketQueue* pkt)
 {
+	auto data = pkt->Packet;
+	auto len = pkt->PacketLength;
 	long long ts = 0;
-	uint8_t *buf_offset = (uint8_t*) data;
+	uint8_t *buf_offset = (uint8_t*) pkt->Packet;
 	uint32_t nal_len;
 	uint8_t *nal;
 	if (m_cameratype == 2){

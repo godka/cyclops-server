@@ -40,13 +40,13 @@ UsageEnvironment& operator<<(UsageEnvironment& env, const MediaSubsession& subse
 // In this example code, however, we define a simple 'dummy' sink that receives incoming data, but does nothing with it.
 
 
-#define RTSP_CLIENT_VERBOSITY_LEVEL 1 // by default, print verbose output from each "RTSPClient"
+#define RTSP_CLIENT_VERBOSITY_LEVEL 0 // by default, print verbose output from each "RTSPClient"
 
 
-RTSPClient* mythRTSP::openURL(char const* rtspURL, char const *username, char const *password, live555responseHandler* responsehandler, void* live555responseData) {
+RTSPClient* mythRTSP::openURL(char const* rtspURL, char const *username, char const *password, bool usetcp, live555responseHandler* responsehandler, void* live555responseData) {
 	// Begin by creating a "RTSPClient" object.  Note that there is a separate "RTSPClient" object for each stream that we wish
 	// to receive (even if more than stream uses the same "rtsp://" URL).
-	RTSPClient* rtspClient = ourRTSPClient::createNew(*env, rtspURL, username, password, RTSP_CLIENT_VERBOSITY_LEVEL, "godka", this,responsehandler,live555responseData);
+	RTSPClient* rtspClient = ourRTSPClient::createNew(*env, rtspURL, username, password, usetcp, RTSP_CLIENT_VERBOSITY_LEVEL, "godka", this, responsehandler, live555responseData);
 	if (rtspClient == NULL) {
 		*env << "Failed to create a RTSP client for URL \"" << rtspURL << "\": " << env->getResultMsg() << "\n";
 		return 0;
@@ -122,7 +122,7 @@ void mythRTSP::setupNextSubsession(RTSPClient* rtspClient) {
 			env << ")\n";
 
 			// Continue setting up this subsession, by sending a RTSP "SETUP" command:
-			rtspClient->sendSetupCommand(*scs.subsession, continueAfterSETUP, False, REQUEST_STREAMING_OVER_TCP, false, scs.authenticator);
+			rtspClient->sendSetupCommand(*scs.subsession, continueAfterSETUP, False, scs.usetcp, false, scs.authenticator);
 		}
 		return;
 	}
@@ -161,7 +161,7 @@ void mythRTSP::continueAfterSETUP(RTSPClient* rtspClient, int resultCode, char* 
 		// (This will prepare the data sink to receive data; the actual flow of data from the client won't start happening until later,
 		// after we've sent a RTSP "PLAY" command.)
 		if (strcmp(scs.subsession->mediumName(), "video") == 0){
-			scs.subsession->sink = H264VideoStreamSink::createNew(env,scs.responsehandler,scs.responseData);
+			scs.subsession->sink = H264VideoStreamSink::createNew(env, scs.responsehandler, scs.responseData);
 		}
 		//scs.subsession->sink = DummySink::createNew(env, *scs.subsession, rtspClient->url());
 		// perhaps use your own custom "MediaSink" subclass instead
@@ -300,7 +300,7 @@ void mythRTSP::shutdownStream(RTSPClient* rtspClient, int exitCode) {
 
 	env << *rtspClient << "Closing the stream.\n";
 	// Note that this will also cause this stream's "StreamClientState" structure to get reclaimed.
-	
+
 	mythRTSP* tmp = (mythRTSP*) scs.handle;
 	if (--tmp->rtspClientCount == 0) {
 		tmp->Stop(rtspClient);

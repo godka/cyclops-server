@@ -1,7 +1,7 @@
 #pragma once
 #include "liveMedia.hh"
 #include "mythUseageEnvironment.hh"
-#include "DummySink.hh"
+//#include "DummySink.hh"
 #include "StreamClientState.hh"
 #include "OurRTSPClient.hh"
 class mythRTSP
@@ -12,7 +12,7 @@ public:
 	}
 	int Start(RTSPClient* rtspclient);
 	int Stop(RTSPClient* rtspClient);
-	typedef void (live555responseHandler)(void *handle, unsigned char* data, unsigned int length);
+	typedef void (live555responseHandler)(void *handle, unsigned char* data, unsigned int length, unsigned int timestamp);
 	// RTSP 'response handlers':
 	static void continueAfterDESCRIBE(RTSPClient* rtspClient, int resultCode, char* resultString);
 	static void continueAfterSETUP(RTSPClient* rtspClient, int resultCode, char* resultString);
@@ -28,7 +28,7 @@ public:
 	// Used to iterate through each stream's 'subsessions', setting up each one:
 	static void setupNextSubsession(RTSPClient* rtspClient);
 
-	RTSPClient* openURL(char const* rtspURL, char const *username = NULL, char const *password = NULL,live555responseHandler* responsehandler = NULL,void* live555responseData = NULL);
+	RTSPClient* openURL(char const* rtspURL, char const *username, char const *password, bool usetcp, live555responseHandler* responsehandler = NULL, void* live555responseData = NULL);
 	// Used to shut down and close a stream (including its "RTSPClient" object):
 	static void shutdownStream(RTSPClient* rtspClient, int exitCode = 1);
 

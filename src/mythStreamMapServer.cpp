@@ -7,7 +7,6 @@ int initalsocket(int port)
 	struct event_base *base;
 	struct evconnlistener *listener;
 	struct sockaddr_in sin;
-
 #ifdef _WIN32
 	WSADATA wsaData;
 	WORD wVersionRequested;
@@ -47,14 +46,21 @@ int initalsocket(int port)
 					if (request_header == "GET"){
 						//GET Method
 						auto cameraid = header->ParseInt("CameraID");
-						auto cameratype = header->Parse("Type");
 						if (cameraid > 0){
+							auto cameratype = header->Parse("Type");
 							servermap->AppendClient(cameraid, people, cameratype.c_str());
 						}else{
-							people->socket_SendStr("404");
-							bufferevent_free(bev);
+							auto url = header->Parse("url");
+							if (url != ""){
+								
+							}
+							else{
+								people->socket_SendStr("404");
+								bufferevent_free(bev);
+							}
 						}
 					}else if (request_header == "PUT"){
+						//Put Method
 						auto cameraid = header->ParseInt("CameraID");
 						if (cameraid > 0){
 							servermap->AppendClient(cameraid, people);

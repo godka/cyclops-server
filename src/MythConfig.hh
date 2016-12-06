@@ -50,8 +50,8 @@
 #include "List.h"
 //magic is a fucking rubbish recently,
 typedef struct PacketQueue {
-	unsigned char* h264Packet;
-	unsigned int h264PacketLength;
+	unsigned char* Packet;
+	unsigned int PacketLength;
 	unsigned char* yuvPacket[3];
 	unsigned int yuvPacketLength[3];
 	unsigned int stream_type;

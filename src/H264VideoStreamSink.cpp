@@ -37,6 +37,6 @@ H264VideoStreamSink::~H264VideoStreamSink() {
 H264VideoStreamSink*
 H264VideoStreamSink::createNew(UsageEnvironment& env,
 live555responseHandler* handle, void* live555responseData,
-char const* sPropParameterSetsStr,unsigned bufferSize) {
-	return new H264VideoStreamSink(env, handle,live555responseData,sPropParameterSetsStr, bufferSize);
+char const* sPropParameterSetsStr, unsigned bufferSize) {
+	return new H264VideoStreamSink(env, handle, live555responseData, sPropParameterSetsStr, bufferSize);
 }

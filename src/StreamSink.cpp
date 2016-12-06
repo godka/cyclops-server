@@ -9,6 +9,7 @@ StreamSink::StreamSink(UsageEnvironment& env, unsigned bufferSize)
 	fTotalBuffer = new unsigned char[fTotalBufferSize];
 	fBufferIndex = 0;
 	fPrevPresentationTime.tv_sec = ~0; fPrevPresentationTime.tv_usec = 0;
+	fTimeStamp = ~0;
 }
 
 StreamSink::~StreamSink() {
@@ -16,7 +17,7 @@ StreamSink::~StreamSink() {
 	delete [] fTotalBuffer;
 }
 
-StreamSink* StreamSink::createNew(UsageEnvironment& env,unsigned bufferSize) {
+StreamSink* StreamSink::createNew(UsageEnvironment& env, unsigned bufferSize) {
 
 	return NULL;
 }
@@ -41,13 +42,14 @@ struct timeval presentationTime,
 
 void StreamSink::addData(unsigned char const* data, unsigned dataSize,
 struct timeval presentationTime) {
-//hey man
+	//hey man
 	memcpy(fTotalBuffer + fBufferIndex, data, dataSize);
 	fBufferIndex += dataSize;
 }
 
 void StreamSink::afterGettingFrame(unsigned frameSize,
-	unsigned numTruncatedBytes,struct timeval presentationTime) {
+	unsigned numTruncatedBytes, struct timeval presentationTime) {
+
 	if (numTruncatedBytes > 0) {
 		envir() << "FileSink::afterGettingFrame(): The input frame data was too large for our buffer size ("
 			<< fBufferSize << ").  "
@@ -56,9 +58,14 @@ void StreamSink::afterGettingFrame(unsigned frameSize,
 	}
 	addData(fBuffer, frameSize, presentationTime);
 	// Then try getting the next frame:
-	if (live555response){
-		live555response(this->phwnd, (unsigned char*) fTotalBuffer, fBufferIndex);
+	unsigned long TimeStamp = presentationTime.tv_sec * 1000 + presentationTime.tv_usec / 1000;
+	if (fTimeStamp == ~0){
+		fTimeStamp = presentationTime.tv_sec * 1000 + presentationTime.tv_usec / 1000;
 	}
+	if (live555response){
+		live555response(this->phwnd, (unsigned char*) fTotalBuffer, fBufferIndex, TimeStamp - fTimeStamp);
+	}
+	//fTimeStamp = TimeStamp;
 	fBufferIndex = 0;
 	continuePlaying();
 }
