@@ -51,7 +51,7 @@ unsigned int mythVirtualDecoder::GetTimeCount(){
 	return 0;
 }
 
-int mythVirtualDecoder::put(unsigned char* data, unsigned int length)
+int mythVirtualDecoder::put(unsigned char* data, unsigned int length,unsigned int timestamp)
 {
 #ifdef USEPIPELINE
 	if (m_pipeline){
@@ -59,9 +59,9 @@ int mythVirtualDecoder::put(unsigned char* data, unsigned int length)
 		return 0;
 	}
 	else
-		return mythListFactory::put(data, length);
+		return mythListFactory::put(data, length, timestamp);
 #else
-	return mythListFactory::put(data, length);
+	return mythListFactory::put(data, length, timestamp);
 #endif
 }
 

@@ -82,7 +82,7 @@ unsigned char* mythAvlist::putcore(unsigned char* data,unsigned int datasize){
 	return (totalbuffer + totalptr - datasize);
 }
 
-int mythAvlist::put(unsigned char** dataline,unsigned int *datasize,int width,int height){
+int mythAvlist::put(unsigned char** dataline, unsigned int *datasize, int width, int height, unsigned int timestamp){
 	if(listwrite >= AVFRAMECOUNT)listwrite = 0;
 	PacketQueue *tmp = &ListPacket[listwrite];
 	tmp->Packet = NULL;
@@ -94,6 +94,12 @@ int mythAvlist::put(unsigned char** dataline,unsigned int *datasize,int width,in
 	unsigned int Vdatasize = datasize[2];
 	tmp->yuvPacket[0] = YY; tmp->yuvPacket[1] = UU; tmp->yuvPacket[2] = VV;
 	tmp->yuvPacketLength[0] = Ydatasize; tmp->yuvPacketLength[1] = Udatasize; tmp->yuvPacketLength[2] = Vdatasize;
+	if (timestamp == ~0){
+		tmp->TimeStamp = (unsigned int) mythTickCount();
+	}
+	else{
+		tmp->TimeStamp = timestamp;
+	}
 	listwrite++;
 	return 0;
 }
@@ -103,12 +109,18 @@ int mythAvlist::release(PacketQueue *pack)
 	return 0;
 }
 
-int mythAvlist::put(unsigned char* data,unsigned int length){	
+int mythAvlist::put(unsigned char* data, unsigned int length, unsigned int timestamp){
 	if(listwrite >= AVFRAMECOUNT)listwrite = 0;
 	PacketQueue *tmp = &ListPacket[listwrite];
 	tmp->PacketLength = length;
 	tmp->Packet = putcore(data, length);
 	tmp->isIframe = IsIframe(tmp);
+	if (timestamp == ~0){
+		tmp->TimeStamp = (unsigned int) mythTickCount();
+	}
+	else{
+		tmp->TimeStamp = timestamp;
+	}
 	listwrite++;
 	return 0;
 }

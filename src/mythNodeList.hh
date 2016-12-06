@@ -8,8 +8,8 @@ public:
 	static mythNodeList* CreateNew(int BufferSize = 0);
 	~mythNodeList();
 	PacketQueue *get(int freePacket = 0);
-	int put(unsigned char* data, unsigned int length);
-	int put(unsigned char** dataline, unsigned int *datasize, int width, int height);
+	int put(unsigned char* data, unsigned int length, unsigned int timestamp = ~0);
+	int put(unsigned char** dataline, unsigned int *datasize, int width, int height, unsigned int timestamp = ~0);
 	unsigned char* putcore(unsigned char* data, unsigned int datasize);
 	int release(PacketQueue *pack);
 	int freeMemory();

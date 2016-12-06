@@ -19,7 +19,7 @@ mythNodeList::~mythNodeList(void)
 
 PacketQueue *mythNodeList::get(int freepacket){
 	PacketQueue *tmp;
-	//_mutex.lock();
+	_mutex.lock();
 	if (header.next == header.prev){
 		tmp = nullptr;
 	}
@@ -27,10 +27,10 @@ PacketQueue *mythNodeList::get(int freepacket){
 		tmp = list_entry(header.next, struct PacketQueue, list);
 		list_del(&tmp->list);
 	}
-	//_mutex.unlock();
+	_mutex.unlock();
 	return tmp;
 }
-int mythNodeList::put(unsigned char* data, unsigned int length){
+int mythNodeList::put(unsigned char* data, unsigned int length, unsigned int timestamp){
 	PacketQueue *tmp = (PacketQueue*) malloc(sizeof(PacketQueue));
 	tmp->Packet = (unsigned char*) malloc(length);
 	for (int i = 0; i < 3; i++){
@@ -44,9 +44,15 @@ int mythNodeList::put(unsigned char* data, unsigned int length){
 	memcpy(tmp->Packet, data, length);
 	tmp->PacketLength = length;
 	tmp->PacketCount++;
-	//_mutex.lock();
+	if (timestamp == ~0){
+		tmp->TimeStamp = (unsigned int) mythTickCount();
+	}
+	else{
+		tmp->TimeStamp = timestamp;
+	}
+	_mutex.lock();
 	list_add_tail(&tmp->list, &header);
-	//_mutex.unlock();
+	_mutex.unlock();
 	return 0;
 }
 unsigned char* mythNodeList::putcore(unsigned char* data, unsigned int datasize){
@@ -59,7 +65,7 @@ unsigned char* mythNodeList::putcore(unsigned char* data, unsigned int datasize)
 	memcpy(tmpbuf, data, datasize);
 	return tmpbuf;
 }
-int mythNodeList::put(unsigned char** dataline, unsigned int *datasize, int width, int height)
+int mythNodeList::put(unsigned char** dataline, unsigned int *datasize, int width, int height, unsigned int timestamp)
 {
 	PacketQueue *tmp = (PacketQueue*) malloc(sizeof(PacketQueue));
 	tmp->Packet = nullptr;
@@ -70,6 +76,12 @@ int mythNodeList::put(unsigned char** dataline, unsigned int *datasize, int widt
 	unsigned char* VV = (unsigned char*)putcore(dataline[2], datasize[2] * height / 2);
 	unsigned int Vdatasize = datasize[2];
 	tmp->yuvPacket[0] = YY; tmp->yuvPacket[1] = UU; tmp->yuvPacket[2] = VV;
+	if (timestamp == ~0){
+		tmp->TimeStamp = (unsigned int) mythTickCount();
+	}
+	else{
+		tmp->TimeStamp = timestamp;
+	}
 	tmp->yuvPacketLength[0] = Ydatasize; tmp->yuvPacketLength[1] = Udatasize; tmp->yuvPacketLength[2] = Vdatasize;
 	return 0;
 }
@@ -78,13 +90,21 @@ int mythNodeList::release(PacketQueue *pack)
 {
 	if (pack->Packet)
 		free(pack->Packet);
+	pack->Packet = nullptr;
+	for (int i = 0; i < 3; i++){
+		if (pack->yuvPacket[i]){
+			free(pack->yuvPacket[i]);
+			pack->yuvPacket[i] = nullptr;
+		}
+	}
 	if (pack)
 		free(pack);
+	pack = nullptr;
 	return 0;
 }
 
 int mythNodeList::freeMemory(){
-	//_mutex.lock();
+	_mutex.lock();
 	for (;;){
 		if (header.next == header.prev){
 			break;
@@ -92,6 +112,6 @@ int mythNodeList::freeMemory(){
 		PacketQueue *tmp = list_entry(header.next, struct PacketQueue, list);
 		list_del(&tmp->list);
 	}
-	//_mutex.unlock();
+	_mutex.unlock();
 	return 0;
 }

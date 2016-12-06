@@ -16,7 +16,7 @@ public:
 	virtual int MainLoop();
 	virtual ~mythVirtualDecoder(void);
 	unsigned int GetTimeCount();
-	virtual int put(unsigned char* data, unsigned int length);
+	virtual int put(unsigned char* data, unsigned int length, unsigned int timestamp = ~0);
 	virtual PacketQueue *get(int freePacket = 0);
 protected:
 	mythVirtualDecoder(void);

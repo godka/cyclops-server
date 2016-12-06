@@ -37,6 +37,7 @@ int mythBaseClient::DataCallBack(PacketQueue* pkt)
 {
 	auto data = pkt->Packet;
 	auto len = pkt->PacketLength;
+	auto timestamp = pkt->TimeStamp;
 	long long ts = 0;
 	uint8_t *buf_offset = (uint8_t*) pkt->Packet;
 	uint32_t nal_len;
@@ -51,8 +52,6 @@ int mythBaseClient::DataCallBack(PacketQueue* pkt)
 			if (mythSendMessage(flv_header, 13) < 0){
 				return -1;
 			}
-			timestart = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-			//ts = timestart;
 			isfirst = false;
 		}
 		while (1) {
@@ -75,30 +74,26 @@ int mythBaseClient::DataCallBack(PacketQueue* pkt)
 					_ppslen = nal_len;
 				}
 				if (_spslen > 0 && _ppslen > 0){
-					if (writespspps((uint8_t*) _sps, _spslen, (uint8_t*) _pps, _ppslen, (uint32_t) ts) < 0)
+					if (writespspps((uint8_t*) _sps, _spslen, (uint8_t*) _pps, _ppslen, timestamp) < 0)
 						return -1;
 				}
 				break;
 			case 5:
-				ts = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - timestart;
 				if (!_hassendIframe){
 					if (_spslen > 0 && _ppslen > 0){
-						if (writespspps((uint8_t*) _sps, _spslen, (uint8_t*) _pps, _ppslen, (uint32_t) ts) < 0)
+						if (writespspps((uint8_t*) _sps, _spslen, (uint8_t*) _pps, _ppslen, timestamp) < 0)
 							return -1;
 					}
 				}
 				if (writeavcframe(nal, nal_len, (uint32_t) ts, true) < 0)
 					return -1;
 				_hassendIframe = true;
-				//std::cout << ts << "ms" << std::endl;
 				break;
 			default:
 				if (_hassendIframe){
-					ts = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - timestart;
-					if (writeavcframe(nal, nal_len, (uint32_t) ts, false) < 0)
+					if (writeavcframe(nal, nal_len, timestamp, false) < 0)
 						return -1;
 				}
-				//std::cout << ts << "ms" << std::endl;
 				break;
 			}
 
@@ -119,7 +114,7 @@ int mythBaseClient::DataCallBack(PacketQueue* pkt)
 		sprintf(tempbuf,
 			"Content-Type: image/h264\r\nContent_Length: %06d Stamp:%04x%02x%02x %04x%02x%02x %02d %08x\n\n", len,
 			1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec,
-			std::chrono::duration_cast<std::chrono::milliseconds>(t.time_since_epoch()).count() % 100, iFrameCount++);
+			timestamp % 100, iFrameCount++);
 		if (m_cameratype == 0)
 			if (mythSendMessage(tempbuf) < 0){
 				return -1;

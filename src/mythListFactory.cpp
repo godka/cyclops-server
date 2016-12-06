@@ -36,7 +36,7 @@ PacketQueue * mythListFactory::get(int freePacket /*= 0*/)
 		return NULL;
 }
 
-int mythListFactory::put(unsigned char* data, unsigned int length)
+int mythListFactory::put(unsigned char* data, unsigned int length, unsigned int timestamp)
 {
 	if (vlist)
 		return vlist->put(data, length);
