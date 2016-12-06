@@ -5,32 +5,68 @@
 mythStreamServer* mythStreamServer::CreateNew(int cameraid,void* args){
 	return new mythStreamServer(cameraid,args);
 }
-
+mythStreamServer* mythStreamServer::CreateNew(mythRequestParser* parser){
+	return new mythStreamServer(parser);
+}
 mythStreamServer::mythStreamServer(int cameraid, void* args)
-	//:mythVirtualSqlite()
 {
 	streamserverthread = nullptr;
-	decoder = NULL;
-	ClientNumber = 0;
+	decoder = nullptr;
 	m_cameraid = cameraid;
-	PeopleAdd = 0;
-	//baselist.reserve(100);
 	additionalargs = args;
-	_handler = NULL;
-	_handlerdata = NULL;
-	//_hasstart = false;
-	//open("myth.db");
-
+	_baselist = new mythBaseClient*[STREAMSERVERMAX];
 	SetStart(false);
 	memset(_baselist, 0, sizeof(mythBaseClient*) * STREAMSERVERMAX);
+	connect();
 }
 
+mythStreamServer::mythStreamServer(mythRequestParser* parser)
+{
+	streamserverthread = nullptr;
+	decoder = nullptr;
+	_baselist = new mythBaseClient*[STREAMSERVERMAX];
+	SetStart(false);
+	memset(_baselist, 0, sizeof(mythBaseClient*) * STREAMSERVERMAX);
+	connectViaUrl(parser);
+}
 
 mythStreamServer::~mythStreamServer(void)
 {
-
+	delete [] _baselist;
 }
 
+void mythStreamServer::connectViaUrl(mythRequestParser* parser)
+{
+	auto url = parser->Parse("url");
+	if (url == "")
+		return;
+	auto urlheader = parseUrlHeader(url.c_str());
+	if (strcmp(urlheader, "rtsp") == 0){
+		auto rtsptransport = parser->Parse("in_transport");
+		decoder = mythLive555Decoder::CreateNew((char*) url.c_str(), rtsptransport == "tcp" ? true : false);
+	}
+	else if (strcmp(urlheader, "stream") == 0){
+		decoder = mythStreamDecoder::CreateNew((char*) url.c_str());
+	}
+	else if (strcmp(urlheader, "file") == 0){
+		decoder = mythH264Decoder::CreateNew(url.c_str());
+	}
+	delete [] urlheader;
+	if (decoder)
+		decoder->start();
+}
+char* mythStreamServer::parseUrlHeader(const char* url){
+	unsigned int i = 0;
+	for (i = 0; i < strlen(url); i++){
+		if (url[i] == ':'){
+			break;
+		}
+	}
+	char* ret = new char[i + 1];
+	memcpy(ret, url, i);
+	ret[i] = '\0';
+	return ret;
+}
 void mythStreamServer::connect()
 {
 	char sqltmp[4096] = {0};
@@ -65,32 +101,24 @@ void mythStreamServer::connect()
 							//ziyadecoder
 							this->decoder = mythStreamDecoder::CreateNew((char*) ip.c_str(), atoi(realcameraid.c_str()));
 							break;
-#ifdef CAMERADECODER
-						case 15:
-							this->decoder = mythCameraDecoder::CreateNew();
-							break;
-#endif
 						default:
 							std::string strRecordUrl = "rtsp://" + ip + ":" + httpport + FullSize;
 							int iFind = strRecordUrl.find("$camera");
 							if (iFind >= 0)
 								strRecordUrl.replace(iFind, iFind + strlen("$camera"), realcameraid);
-							//strcpy(url, strRecordUrl.c_str());
 							this->decoder = mythLive555Decoder::CreateNew((char*) strRecordUrl.c_str(), (char*) username.c_str(), (char*) password.c_str());
 							break;
 						}
-						//SDL_LockMutex(decodemutex);
 						if (decoder){
 							decoder->SetMagic((void*) m_cameraid);	//set magic
 							decoder->start();
 						}
-						//SDL_UnlockMutex(decodemutex);
 					}
 				}
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("120.204.70.218", 1017);
+				this->decoder = mythStreamDecoder::CreateNew("192.168.1.130", 1017);
 				//this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic
@@ -151,7 +179,6 @@ bool mythStreamServer::CheckTime(long long &foo,int timeout){
 int mythStreamServer::mainthread()
 {
 	PacketQueue* tmp = NULL;
-	connect();
 	long long closetick = 0;
 	long long recvtick = 0;
 	while (isrunning == 0){
@@ -224,14 +251,7 @@ int mythStreamServer::stop()
 	if (streamserverthread)
 		streamserverthread->join();
 	streamserverthread = nullptr;
-	//delete this;
 	return 0;
-}
-
-void mythStreamServer::SetOnCloseHandler(OnCloseHandler* handler,void* handlerdata)
-{
-	_handler = handler;
-	_handlerdata = handlerdata;
 }
 
 int mythStreamServer::getClientNumber()

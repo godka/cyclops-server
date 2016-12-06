@@ -40,6 +40,7 @@ private:
 	int iFrameCount;
 	int m_cameratype;
 	int _mode;
+	long long _basictick;
 	UINT Ue(BYTE *pBuff, UINT nLen, UINT &nStartBit) {
 		UINT nZeroNum = 0;
 		while (nStartBit < nLen * 8) {

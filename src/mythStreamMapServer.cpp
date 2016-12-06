@@ -49,17 +49,19 @@ int initalsocket(int port)
 						if (cameraid > 0){
 							auto cameratype = header->Parse("Type");
 							servermap->AppendClient(cameraid, people, cameratype.c_str());
-						}else{
+						}
+						else{
 							auto url = header->Parse("url");
 							if (url != ""){
-								
+								servermap->AppendClient(header, people);
 							}
 							else{
 								people->socket_SendStr("404");
 								bufferevent_free(bev);
 							}
 						}
-					}else if (request_header == "PUT"){
+					}
+					else if (request_header == "PUT"){
 						//Put Method
 						auto cameraid = header->ParseInt("CameraID");
 						if (cameraid > 0){
@@ -85,7 +87,7 @@ int initalsocket(int port)
 				//servermap->DropClient(people);
 				bufferevent_free(bev);
 			}
-		},people);
+		}, people);
 		bufferevent_enable(bev, EV_READ | EV_WRITE);
 	},
 		NULL, LEV_OPT_THREADSAFE | LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE, -1, (struct sockaddr*)&sin, sizeof(sin));

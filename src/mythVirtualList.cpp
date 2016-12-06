@@ -42,10 +42,6 @@ bool mythVirtualList::IsIframe(PacketQueue *pack)
 	return false;
 }
 
-long long mythVirtualList::mythTickCount(){
-	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-}
-
 int mythVirtualList::put(unsigned char** dataline, unsigned int *datasize, unsigned int width, unsigned int height, unsigned int timestamp)
 {
 	return 0;

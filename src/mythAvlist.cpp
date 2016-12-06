@@ -94,12 +94,7 @@ int mythAvlist::put(unsigned char** dataline, unsigned int *datasize, int width,
 	unsigned int Vdatasize = datasize[2];
 	tmp->yuvPacket[0] = YY; tmp->yuvPacket[1] = UU; tmp->yuvPacket[2] = VV;
 	tmp->yuvPacketLength[0] = Ydatasize; tmp->yuvPacketLength[1] = Udatasize; tmp->yuvPacketLength[2] = Vdatasize;
-	if (timestamp == ~0){
-		tmp->TimeStamp = (unsigned int) mythTickCount();
-	}
-	else{
-		tmp->TimeStamp = timestamp;
-	}
+	tmp->TimeStamp = timestamp;
 	listwrite++;
 	return 0;
 }
@@ -115,12 +110,7 @@ int mythAvlist::put(unsigned char* data, unsigned int length, unsigned int times
 	tmp->PacketLength = length;
 	tmp->Packet = putcore(data, length);
 	tmp->isIframe = IsIframe(tmp);
-	if (timestamp == ~0){
-		tmp->TimeStamp = (unsigned int) mythTickCount();
-	}
-	else{
-		tmp->TimeStamp = timestamp;
-	}
+	tmp->TimeStamp = timestamp;
 	listwrite++;
 	return 0;
 }

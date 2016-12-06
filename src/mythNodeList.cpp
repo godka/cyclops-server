@@ -44,12 +44,7 @@ int mythNodeList::put(unsigned char* data, unsigned int length, unsigned int tim
 	memcpy(tmp->Packet, data, length);
 	tmp->PacketLength = length;
 	tmp->PacketCount++;
-	if (timestamp == ~0){
-		tmp->TimeStamp = (unsigned int) mythTickCount();
-	}
-	else{
-		tmp->TimeStamp = timestamp;
-	}
+	tmp->TimeStamp = timestamp;
 	_mutex.lock();
 	list_add_tail(&tmp->list, &header);
 	_mutex.unlock();
@@ -76,12 +71,7 @@ int mythNodeList::put(unsigned char** dataline, unsigned int *datasize, int widt
 	unsigned char* VV = (unsigned char*)putcore(dataline[2], datasize[2] * height / 2);
 	unsigned int Vdatasize = datasize[2];
 	tmp->yuvPacket[0] = YY; tmp->yuvPacket[1] = UU; tmp->yuvPacket[2] = VV;
-	if (timestamp == ~0){
-		tmp->TimeStamp = (unsigned int) mythTickCount();
-	}
-	else{
-		tmp->TimeStamp = timestamp;
-	}
+	tmp->TimeStamp = timestamp;
 	tmp->yuvPacketLength[0] = Ydatasize; tmp->yuvPacketLength[1] = Udatasize; tmp->yuvPacketLength[2] = Vdatasize;
 	return 0;
 }

@@ -38,6 +38,21 @@ int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
 	}
 	return 1;
 }
+mythStreamDecoder* mythStreamDecoder::CreateNew(const char* url)
+{
+	int ip1, ip2, ip3, ip4, port, cameraid;
+	char ip[20] = { 0 };
+	if (sscanf(url, "stream://%d.%d.%d.%d:%d/%d", &ip1, &ip2, &ip3, &ip4, &port, &cameraid) == 6){
+		sprintf(ip, "%d.%d.%d.%d", ip1, ip2, ip3, ip4);
+		return new mythStreamDecoder(ip, port, cameraid);
+	}
+	else if (sscanf(url, "stream://%d.%d.%d.%d/%d", &ip1, &ip2, &ip3, &ip4, &cameraid) == 5){
+		sprintf(ip, "%d.%d.%d.%d", ip1, ip2, ip3, ip4);
+		port = 5834;
+		return new mythStreamDecoder(ip, port, cameraid);
+	}
+	return NULL;
+}
 int mythStreamDecoder::MainLoop(){
 #define BUFF_COUNT 1024*1024	
 	char* buf = new char[BUFF_COUNT];

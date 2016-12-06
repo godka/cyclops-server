@@ -10,6 +10,7 @@ class mythStreamDecoder :
 public:
 	static mythStreamDecoder* CreateNew(char* ip, int port, int CameraID);
 	static mythStreamDecoder* CreateNew(char* ip, int CameraID);
+	static mythStreamDecoder* CreateNew(const char* url);
 	//void start();
 	void stop();
 	~mythStreamDecoder(void);

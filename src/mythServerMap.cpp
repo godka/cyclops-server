@@ -3,6 +3,29 @@
 
 mythServerMap::mythServerMap()
 {
+	mythLog::GetInstance()->printf("Initalizing Servermap\n");
+}
+
+void mythServerMap::AppendClient(mythRequestParser* parser, MythSocket* people){
+	auto url = parser->Parse("url");
+	mythStreamServer* server = nullptr;
+	mapmutex.lock();
+	if (tempservermap[url] == NULL){
+		server = mythStreamServer::CreateNew(parser);
+		tempservermap[url] = server;
+	}
+	else{
+		server = tempservermap[url];
+	}
+
+	auto client = mythBaseClient::CreateNew(people, parser->Parse("Type").c_str());
+	people->data = server;
+	people->addtionaldata = client;
+	if (server){
+		server->AppendClient(client);
+		server->start();
+	}
+	mapmutex.unlock();
 }
 
 void mythServerMap::AppendClient(int cameraid, MythSocket* people){

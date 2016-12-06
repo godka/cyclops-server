@@ -61,6 +61,9 @@
     <Filter Include="Source Files\kernel\mediapipeline">
       <UniqueIdentifier>{33be486f-2ccb-43e3-811a-0e75424279ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\decoder\h264">
+      <UniqueIdentifier>{bbccc547-6a8f-4f5e-bd93-6e9f48032c61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -717,6 +720,9 @@
     <ClCompile Include="mythRequestParser.cpp">
       <Filter>Source Files\kernel</Filter>
     </ClCompile>
+    <ClCompile Include="mythH264Decoder.cpp">
+      <Filter>Source Files\decoder\h264</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -813,6 +819,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythRequestParser.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythH264Decoder.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

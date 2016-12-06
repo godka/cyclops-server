@@ -3,6 +3,7 @@
 
 mythBaseClient::mythBaseClient(MythSocket* people, const char* CameraType)
 {
+	_basictick = ~0;
 	_hassendIframe = false;
 	_sps = nullptr; _pps = nullptr;
 	_spslen = 0; _ppslen = 0;
@@ -38,7 +39,12 @@ int mythBaseClient::DataCallBack(PacketQueue* pkt)
 	auto data = pkt->Packet;
 	auto len = pkt->PacketLength;
 	auto timestamp = pkt->TimeStamp;
-	long long ts = 0;
+	if (_basictick == ~0){
+		_basictick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	}
+	if (timestamp == ~0){
+		timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - _basictick;
+	}
 	uint8_t *buf_offset = (uint8_t*) pkt->Packet;
 	uint32_t nal_len;
 	uint8_t *nal;
@@ -85,7 +91,7 @@ int mythBaseClient::DataCallBack(PacketQueue* pkt)
 							return -1;
 					}
 				}
-				if (writeavcframe(nal, nal_len, (uint32_t) ts, true) < 0)
+				if (writeavcframe(nal, nal_len, timestamp, true) < 0)
 					return -1;
 				_hassendIframe = true;
 				break;

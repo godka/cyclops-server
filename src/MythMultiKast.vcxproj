@@ -344,6 +344,7 @@
     <ClCompile Include="MPEGVideoStreamParser.cpp" />
     <ClCompile Include="MultiFramedRTPSink.cpp" />
     <ClCompile Include="MultiFramedRTPSource.cpp" />
+    <ClCompile Include="mythH264Decoder.cpp" />
     <ClCompile Include="mythLog.cpp" />
     <ClCompile Include="mythNodeList.cpp" />
     <ClCompile Include="mythRequestParser.cpp" />
@@ -438,6 +439,7 @@
     <ClInclude Include="mythFFmpeg.hh" />
     <ClInclude Include="mythFFmpegEncoder.hh" />
     <ClInclude Include="mythGlobal.hh" />
+    <ClInclude Include="mythH264Decoder.hh" />
     <ClInclude Include="mythIniFile.hh" />
     <ClInclude Include="mythListFactory.hh" />
     <ClInclude Include="mythLog.hh" />
