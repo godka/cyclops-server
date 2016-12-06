@@ -256,6 +256,7 @@ mythH264Decoder::~mythH264Decoder()
 #define BUFFLEN 512
 int mythH264Decoder::MainLoop()
 {
+	long long lastpushtime = ~0;
 	int delay = 1000 / 25;
 	bool hasfps = false;
 	char* tmp = new char[1024 * 1024 * 4];
@@ -292,8 +293,17 @@ int mythH264Decoder::MainLoop()
 							}
 						}
 						put((unsigned char*)tmp, tmplen, timestamp);
+						if (lastpushtime == ~0){
+							lastpushtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+						}
 						timestamp += delay;
-						std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+						auto nowtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+						auto timespan = nowtime - lastpushtime;
+						auto correctdelay = delay - timespan;
+						mythLog::GetInstance()->printf("delay = %d\n", correctdelay);
+						if (correctdelay > 0)
+							std::this_thread::sleep_for(std::chrono::milliseconds(correctdelay - 1));
+						lastpushtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 						tmplen = 0;
 					}
 				}

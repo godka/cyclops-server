@@ -1,7 +1,6 @@
 ﻿#include "mythStreamServer.hh"
-#include <string>
 #include "mythVirtualSqlite.hh"
-//#include <omp.h>
+
 mythStreamServer* mythStreamServer::CreateNew(int cameraid,void* args){
 	return new mythStreamServer(cameraid,args);
 }
