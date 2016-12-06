@@ -44,6 +44,7 @@ private:
 	//char* downbuffer;
 	int downlength;
 	int maxlength;
+	bool _isconnected;
 protected:
 	MythSocket(const char* ip, int port);
 	MythSocket();

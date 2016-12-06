@@ -5,6 +5,7 @@ MythSocket::MythSocket(int sockfd){
 	_sockfd = sockfd;
 	downlength = 0;
 	isPush = 0;
+	_isconnected = false;
 }
 MythSocket::MythSocket(const char* ip, int port)
 {
@@ -33,9 +34,14 @@ MythSocket::MythSocket(const char* ip, int port)
 	ioctl(_sockfd, FIONBIO, &ul);
 #endif
 	if (connect(_sockfd, (sockaddr *) (&addrSrv), sizeof(addrSrv)) == -1){
+		_isconnected = false;
 		int ret = wait_on_socket(_sockfd, 0, 1000L);
-		if (ret == 0)
+		if (ret == 0){
 			mythLog::GetInstance()->printf("Connect Failed!,%d\n", _sockfd);
+		}
+	}
+	else{
+		_isconnected = true;
 	}
 	ul = 0;
 #ifdef WIN32
@@ -75,7 +81,8 @@ int MythSocket::wait_on_socket(int sockfd, int for_recv, long timeout_ms)
 	return res;
 }
 int MythSocket::socket_SendStr(const char* data, int length){
-
+	if (!_isconnected)
+		return -1;
 	if (length == -2){
 		length = strlen(data);
 	}
@@ -107,6 +114,8 @@ MythSocket::~MythSocket()
 
 int MythSocket::socket_ReceiveData(char* recvBuf, int recvLength, int timeout)
 {
+	if (!_isconnected)
+		return -1;
 	if (!wait_on_socket(_sockfd, 1, 1000L)){
 		return -1;
 	}
