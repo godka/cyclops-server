@@ -72,7 +72,7 @@ mythVirtualSqlite::mythVirtualSqlite()
 {
 	//m_ip = "127.0.0.1";
 	this->mVirtualSqllite = this;
-	m_ip = mythIniFile::GetInstance()->GetStr("config","ip");
+	m_ip = mythIniFile::GetInstance()->GetStr("config","ip","127.0.0.1");
 	//result = (SQLresult*)malloc(sizeof(SQLresult));
 }
 
