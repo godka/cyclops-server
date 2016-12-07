@@ -211,7 +211,9 @@ int mythStreamServer::mainthread()
 				}
 				decoder->release(tmp);
 			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			else{
+				std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			}
 		}
 	}
 	if (decoder)

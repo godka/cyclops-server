@@ -300,7 +300,7 @@ int mythH264Decoder::MainLoop()
 						auto nowtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 						auto timespan = nowtime - lastpushtime;
 						auto correctdelay = delay - timespan;
-						mythLog::GetInstance()->printf("delay = %d\n", correctdelay);
+						//mythLog::GetInstance()->printf("delay = %d\n", correctdelay);
 						if (correctdelay > 0)
 							std::this_thread::sleep_for(std::chrono::milliseconds(correctdelay - 1));
 						lastpushtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();

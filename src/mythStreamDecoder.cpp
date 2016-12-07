@@ -77,7 +77,9 @@ int mythStreamDecoder::MainLoop(){
 				SendBufferBlock(tmpsendstr);
 				mythLog::GetInstance()->printf("reconnecting:ip=%s,port=%d\n", m_ip.c_str(), m_port);
 			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			else{
+				std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			}
 		}
 		msocket->socket_CloseSocket();
 	}
