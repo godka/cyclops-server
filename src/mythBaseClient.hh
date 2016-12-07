@@ -60,6 +60,7 @@ private:
 
 		return info;
 	}
+
 	static uint32_t find_start_code(uint8_t *buf)
 	{
 		if (find_start_code_core(buf, 2) > 0){
@@ -72,6 +73,7 @@ private:
 			return 0;
 		}
 	}
+
 	uint8_t * get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total)
 	{
 		uint32_t info;
@@ -104,6 +106,7 @@ private:
 		*offset = p;
 		return q;
 	}
+
 	int writespspps(uint8_t * sps, uint32_t spslen, uint8_t * pps, uint32_t ppslen, uint32_t timestamp)
 	{
 		uint32_t body_len = spslen + ppslen + 16;

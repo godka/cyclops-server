@@ -1,4 +1,8 @@
 #include "mythH264Decoder.hh"
+#include <memory.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 
 mythH264Decoder::mythH264Decoder(const char* filename)
@@ -8,6 +12,71 @@ mythH264Decoder::mythH264Decoder(const char* filename)
 	int len = strlen(filename);
 	memcpy(tmp, &filename[7], len - 7);
 	_filename = tmp;
+}
+
+uint32_t mythH264Decoder::find_start_code_core(uint8_t *buf, uint32_t zeros_in_startcode)
+{
+	uint32_t info;
+	uint32_t i;
+
+	info = 1;
+	if ((info = (buf[zeros_in_startcode] != 1) ? 0 : 1) == 0)
+		return 0;
+
+	for (i = 0; i < zeros_in_startcode; i++)
+		if (buf[i] != 0)
+		{
+			info = 0;
+			break;
+		};
+
+	return info;
+}
+
+uint32_t mythH264Decoder::find_start_code(uint8_t *buf)
+{
+	if (find_start_code_core(buf, 2) > 0){
+		return 3;
+	}
+	else if (find_start_code_core(buf, 3) > 0){
+		return 4;
+	}
+	else{
+		return 0;
+	}
+}
+
+uint8_t * mythH264Decoder::get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total)
+{
+	uint32_t info;
+	uint8_t *q;
+	uint8_t *p = *offset;
+	*len = 0;
+
+	while (1) {
+		info = find_start_code(p);
+		if (info > 0)
+			break;
+		p++;
+		if ((p - start) >= total)
+			return NULL;
+	}
+	q = p + info;
+	p = q;
+	while (1) {
+		info = find_start_code(p);
+		if (info > 0)
+			break;
+		p++;
+		if ((p - start) >= total){
+			//maybe cause error
+			break;
+		}
+	}
+
+	*len = (p - q);
+	*offset = p;
+	return q;
 }
 
 int mythH264Decoder::h264_decode_sps(BYTE * buf, unsigned int nLen, unsigned &width, unsigned &height, unsigned &fps) {

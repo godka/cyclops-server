@@ -1,10 +1,7 @@
 #pragma once
 #include "mythVirtualDecoder.hh"
-#include <math.h>
 #include <string>
-#include <stdlib.h>
-#include <string.h>
-#include <memory.h>
+
 typedef unsigned int UINT;
 typedef unsigned char BYTE;
 typedef unsigned long DWORD;
@@ -20,12 +17,13 @@ public:
 protected:
 	mythH264Decoder(const char* filename);
 	int h264_decode_sps(BYTE * buf, unsigned int nLen, unsigned &width, unsigned &height, unsigned &fps);
-
-
 	UINT Ue(BYTE *pBuff, UINT nLen, UINT &nStartBit);
 	int Se(BYTE *pBuff, UINT nLen, UINT &nStartBit);
 	DWORD u(UINT BitCount, BYTE * buf, UINT &nStartBit);
 	void de_emulation_prevention(BYTE* buf, unsigned int* buf_size);
 private:
 	std::string _filename;
+	uint32_t find_start_code_core(uint8_t *buf, uint32_t zeros_in_startcode);
+	uint32_t find_start_code(uint8_t *buf);
+	uint8_t * get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total);
 };
