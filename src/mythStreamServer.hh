@@ -17,11 +17,14 @@ public:
 	int AppendClient(mythBaseClient* client);
 	int DropClient(mythBaseClient* client);
 	static mythStreamServer* CreateNew(int cameraid,void* args = NULL);
-	static mythStreamServer* CreateNew(mythRequestParser* parser);
+	static mythStreamServer* CreateNew(mythRequestParser* parser,int cameraid = -1);
 	//mythStreamServer* CreateNew(int cameraid, void* args);
 	~mythStreamServer(void);
 	mythVirtualDecoder* GetDecoder(){
 		return decoder;
+	}
+	void SetID(int cameraid){
+		m_cameraid = cameraid;
 	}
 	int GetID(){
 		return m_cameraid;
@@ -49,7 +52,7 @@ protected:
 	std::string ip;
 	std::string realcameraid;
 	mythStreamServer(int cameraid, void* args = NULL);
-	mythStreamServer(mythRequestParser* parser);
+	mythStreamServer(mythRequestParser* parser, int cameraid = -1);
 	bool FindClient(mythBaseClient* ival);
 	std::thread* streamserverthread;
 	int isrunning;

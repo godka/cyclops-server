@@ -20,6 +20,8 @@ public:
 protected:
 	mythServerMap();
 private:
+	int FreeCameraID(mythStreamServer* server);
+	mythStreamServer** cameraid_pool;
 	std::map<int, mythStreamServer*> servermap;
 	std::map<std::string, mythStreamServer*> tempservermap;
 	std::mutex mapmutex;

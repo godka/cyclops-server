@@ -4,8 +4,8 @@
 mythStreamServer* mythStreamServer::CreateNew(int cameraid,void* args){
 	return new mythStreamServer(cameraid,args);
 }
-mythStreamServer* mythStreamServer::CreateNew(mythRequestParser* parser){
-	return new mythStreamServer(parser);
+mythStreamServer* mythStreamServer::CreateNew(mythRequestParser* parser, int cameraid){
+	return new mythStreamServer(parser,cameraid);
 }
 mythStreamServer::mythStreamServer(int cameraid, void* args)
 {
@@ -19,8 +19,9 @@ mythStreamServer::mythStreamServer(int cameraid, void* args)
 	connect();
 }
 
-mythStreamServer::mythStreamServer(mythRequestParser* parser)
+mythStreamServer::mythStreamServer(mythRequestParser* parser, int cameraid)
 {
+	m_cameraid = cameraid;
 	streamserverthread = nullptr;
 	decoder = nullptr;
 	_baselist = new mythBaseClient*[STREAMSERVERMAX];
@@ -177,6 +178,7 @@ bool mythStreamServer::CheckTime(long long &foo,int timeout){
 }
 int mythStreamServer::mainthread()
 {
+	mythLog::GetInstance()->printf("Work start,ID:%d\n", m_cameraid);
 	PacketQueue* tmp = NULL;
 	long long closetick = 0;
 	long long recvtick = 0;
