@@ -732,17 +732,17 @@
     <ClCompile Include="DummySink.cpp">
       <Filter>Source Files\decoder\live555</Filter>
     </ClCompile>
-    <ClCompile Include="mythFLVClient.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="mythClientFactory.cpp">
+      <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="mythStreamClient.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="mythFLVClient.cpp">
+      <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="mythH264Client.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="mythClientFactory.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="mythStreamClient.cpp">
+      <Filter>Source Files\client</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
