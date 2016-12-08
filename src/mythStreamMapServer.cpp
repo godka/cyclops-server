@@ -16,8 +16,18 @@ int initalsocket(int port)
 		return 1;
 	}
 #endif
+	auto cfg = event_config_new();
+	event_config_avoid_method(cfg, "select");   //避免使用低效率select
+	//event_config_require_features(cfg, EV_FEATURE_ET);  //使用边沿触发类型
 	servermap = mythServerMap::CreateNew();
-	base = event_base_new();
+	base = event_base_new_with_config(cfg);
+	event_config_free(cfg);
+	//显示当前使用的异步类型
+	mythLog::GetInstance()->printf("Current Using Method: %s\n", event_base_get_method(base)); // epoll
+
+	//可选设置优先级数目，然后通过event_priority_set设置事件的优先级
+	//0为最高，n_priority-1为最低，此后创建的事件默认优先级为中间优先级
+	event_base_priority_init(base, 3);
 	if (!base) {
 		puts("Couldn't open event base");
 		return 1;
@@ -80,12 +90,14 @@ int initalsocket(int port)
 				delete header;
 			}
 		}, NULL, [](struct bufferevent *bev, short events, void *ctx){
+			mythLog::GetInstance()->printf("event on %d\n", events);
 			MythSocket* people = (MythSocket*) ctx;
 			if (events & BEV_EVENT_ERROR)
 				perror("Error from bufferevent");
 			if (events & (BEV_EVENT_EOF | BEV_EVENT_ERROR)) {
-				//servermap->DropClient(people);
 				bufferevent_free(bev);
+				//servermap->DropClient(people);
+				//delete people;
 			}
 		}, people);
 		bufferevent_enable(bev, EV_READ | EV_WRITE);

@@ -121,6 +121,7 @@ void mythServerMap::DropClient(MythSocket* people)
 		delete client;
 		client = nullptr;
 		people->socket_CloseSocket();
+		delete people;
 		mapmutex.unlock();
 	}
 

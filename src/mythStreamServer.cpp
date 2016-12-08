@@ -198,18 +198,6 @@ int mythStreamServer::mainthread()
 							}
 						}
 					}
-					if (streamcount == 0){
-						//add ticks
-						//if (CheckTime(closetick, 5000));
-							//break;
-					}
-					else{
-						//refresh ticks
-						closetick = mythTickCount();
-					}
-					if (CheckTime(recvtick, 1000)){
-						
-					}
 				}
 				decoder->release(tmp);
 			}
@@ -271,6 +259,7 @@ int mythStreamServer::getClientNumber()
 	}
 	return ret_size;
 }
+
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
 	mythLog::GetInstance()->printf("Dropping Client,%u\n", client);
