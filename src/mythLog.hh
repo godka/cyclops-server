@@ -15,5 +15,6 @@ public:
 	~mythLog();
 private:
 	std::mutex _mutex;
+	bool _writedate;
 };
 

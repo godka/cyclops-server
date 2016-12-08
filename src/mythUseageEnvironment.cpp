@@ -18,6 +18,7 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
 // Implementation
 
 #include "mythUseageEnvironment.hh"
+#include "mythLog.hh"
 #include <stdio.h>
 
 ////////// BasicUsageEnvironment //////////
@@ -54,37 +55,29 @@ int mythUseageEnvironment::getErrno() const {
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(char const* str) {
-//#ifdef _DEBUG
 	if (str == NULL) str = "(NULL)"; // sanity check
-	fprintf(stderr, "%s", str);
-//#endif
+	mythLog::GetInstance()->printf("%s", str);
 	return *this;
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(int i) {
-//#ifdef _DEBUG
+	mythLog::GetInstance()->printf("%d", i);
 	fprintf(stderr, "%d", i);
-//#endif
 	return *this;
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(unsigned u) {
-//#ifdef _DEBUG
-	fprintf(stderr, "%u", u);
-//#endif
+	mythLog::GetInstance()->printf("%u", u);
 	return *this;
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(double d) {
-//#ifdef _DEBUG
+	mythLog::GetInstance()->printf("%f", d);
 	fprintf(stderr, "%f", d);
-//#endif
 	return *this;
 }
 
 UsageEnvironment& mythUseageEnvironment::operator<<(void* p) {
-//#ifdef _DEBUG
-	fprintf(stderr, "%p", p);
-//#endif
+	mythLog::GetInstance()->printf("%p", p);
 	return *this;
 }

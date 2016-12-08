@@ -70,7 +70,7 @@ uint8_t * mythH264Decoder::get_nal(uint32_t *len, uint8_t **offset, uint8_t *sta
 		p++;
 		if ((p - start) >= total){
 			//maybe cause error
-			break;
+			return NULL;
 		}
 	}
 
@@ -322,8 +322,26 @@ void mythH264Decoder::de_emulation_prevention(BYTE* buf, unsigned int* buf_size)
 mythH264Decoder::~mythH264Decoder()
 {
 }
-#define BUFFLEN 512
+#define BUFFLEN 1024
 int mythH264Decoder::MainLoop()
+{
+	FILE *fp = fopen(_filename.c_str(), "rb");
+	if (!fp) return -1;
+	fseek(fp, 0L, SEEK_END);
+	auto size = ftell(fp);
+	fclose(fp);
+	//file_size < 100M
+	if (size < 100 * 1024 * 1024){
+		mythLog::GetInstance()->printf("filename: %s found :size = %u,concerning in memory mode\n", _filename.c_str());
+		return H264ReadinMemory();
+	}
+	else{
+		mythLog::GetInstance()->printf("filename: %s found :size = %u,concerning in file/io mode\n", _filename.c_str());
+		return H264ReadinFile();
+	}
+}
+
+int mythH264Decoder::H264ReadinFile()
 {
 	long long lastpushtime = ~0;
 	int delay = 1000 / 25;
@@ -332,52 +350,40 @@ int mythH264Decoder::MainLoop()
 	int timestamp = 0;
 	while (flag == 0){
 		hasfps = false;
-		unsigned int width = 0, height = 0, fps = 25;
 		FILE* file = fopen(_filename.c_str(), "rb");
 		if (!file)
 			return 1;
 		int tmplen = 0;
 		char buf[BUFFLEN] = { 0 };
-		while(flag == 0){
+		while (flag == 0){
 			unsigned int len = fread(buf, 1, BUFFLEN, file);
 			for (int i = 0; i < len; i++){
 				if (buf[i] == 0 && buf[i + 1] == 0 && buf[i + 2] == 0 && buf[i + 3] == 1){
 					//int nowindex = i + index;
 					if (tmplen > 0){
-						if (!hasfps){
-							int nalu = tmp[4] & 0x1f;
-							if (nalu == 7){
-								if (h264_decode_sps((unsigned char*) &tmp[4], tmplen - 4, width, height, fps)){
-									printf("width = %d,height = %d,fps = %d\n", width, height, fps);
-									if (fps == 0)
-										fps = 25;
-									delay = 1000 / fps;
-									hasfps = true;
-								}
-								else{
-									if (fps == 0)
-										fps = 25;
-									delay = 1000 / fps;
-								}
-							}
-						}
-						put((unsigned char*)tmp, tmplen, timestamp);
-						if (lastpushtime == ~0){
-							lastpushtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-						}
-						timestamp += delay;
-						auto nowtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-						auto timespan = nowtime - lastpushtime;
-						auto correctdelay = delay - timespan;
-						//mythLog::GetInstance()->printf("delay = %d\n", correctdelay);
-						if (correctdelay > 0)
-							std::this_thread::sleep_for(std::chrono::milliseconds(correctdelay));
-						lastpushtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-						tmplen = 0;
+						pushavcFrame(hasfps, tmp, tmplen, delay, timestamp, lastpushtime);
+					}
+					else{
+						tmp[tmplen] = 0; tmp[tmplen + 1] = 0; tmp[tmplen + 2] = 0; tmp[tmplen + 3] = 1;
+						tmplen += 4;
+						i += 3;
 					}
 				}
-				tmp[tmplen] = buf[i];
-				tmplen++;
+				else if (buf[i] == 0 && buf[i + 1] == 0 && buf[i + 2] == 1){
+					//int nowindex = i + index;
+					if (tmplen > 0){
+						pushavcFrame(hasfps, tmp, tmplen, delay, timestamp, lastpushtime);
+					}
+					else{
+						tmp[tmplen] = 0; tmp[tmplen + 1] = 0; tmp[tmplen + 2] = 1;
+						tmplen += 3;
+						i += 2;
+					}
+				}
+				else{
+					tmp[tmplen] = buf[i];
+					tmplen++;
+				}
 			}
 			if (len < BUFFLEN)
 				break;
@@ -386,4 +392,101 @@ int mythH264Decoder::MainLoop()
 	}
 	delete [] tmp;
 	return 0;
+}
+
+int mythH264Decoder::H264ReadinMemory()
+{
+	long long lastpushtime = ~0;
+	int timestamp = 0;
+
+	FILE *fp = fopen(_filename.c_str(), "rb");
+	if (!fp) return -1;
+	fseek(fp, 0L, SEEK_END);
+	auto len = ftell(fp);
+	fseek(fp, 0L, SEEK_SET);
+
+	uint8_t* data = new uint8_t[len];
+	uint32_t nal_len;
+	uint8_t *nal;
+	fread(data, 1, len, fp);
+	fclose(fp);
+	char* tmp = new char[1024 * 1024];
+	tmp[0] = 0; tmp[1] = 0; tmp[2] = 0; tmp[3] = 1;
+	auto hasfps = false;
+	int delay = 1000 / 25;
+	while (flag == 0){
+		uint8_t *buf_offset = data;
+		while (1) {
+			nal = get_nal(&nal_len, &buf_offset, (uint8_t*) data, len);
+			if (nal == NULL) break;
+			if (!hasfps){
+				int nalu = nal[0] & 0x1f;
+				if (nalu == 7){
+					unsigned int width = 0, height = 0, fps = 25;
+					if (h264_decode_sps(nal, nal_len, width, height, fps)){
+						mythLog::GetInstance()->printf("filename: %s found sps and pps:width = %d,height = %d,fps = %d\n", _filename.c_str(), width, height, fps);
+						if (fps == 0)
+							fps = 25;
+						delay = 1000 / fps;
+						hasfps = true;
+					}
+					else{
+						if (fps == 0)
+							fps = 25;
+						delay = 1000 / fps;
+					}
+				}
+			}
+			memcpy(tmp + 4, nal, nal_len);
+			put((unsigned char*) tmp, nal_len + 4, timestamp);
+			if (lastpushtime == ~0){
+				lastpushtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+			}
+			timestamp += delay;
+			auto nowtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+			auto timespan = nowtime - lastpushtime;
+			auto correctdelay = delay - timespan;
+			//mythLog::GetInstance()->printf("delay = %d\n", correctdelay);
+			if (correctdelay > 0)
+				std::this_thread::sleep_for(std::chrono::milliseconds(correctdelay));
+			lastpushtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+		}
+	}
+	delete [] tmp;
+	delete []data;
+}
+
+void mythH264Decoder::pushavcFrame(bool &hasfps, char* tmp, int &tmplen, int &delay, int &timestamp, long long &lastpushtime)
+{
+	if (!hasfps){
+		int nalu = tmp[4] & 0x1f;
+		if (nalu == 7){
+			unsigned int width = 0, height = 0, fps = 25;
+			if (h264_decode_sps((unsigned char*) &tmp[4], tmplen - 4, width, height, fps)){
+				mythLog::GetInstance()->printf("filename: %s found sps and pps:width = %d,height = %d,fps = %d\n", _filename.c_str(), width, height, fps);
+				if (fps == 0)
+					fps = 25;
+				delay = 1000 / fps;
+				hasfps = true;
+			}
+			else{
+				if (fps == 0)
+					fps = 25;
+				delay = 1000 / fps;
+			}
+		}
+	}
+	put((unsigned char*) tmp, tmplen, timestamp);
+	if (lastpushtime == ~0){
+		lastpushtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	}
+	timestamp += delay;
+	auto nowtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	auto timespan = nowtime - lastpushtime;
+	auto correctdelay = delay - timespan;
+	//mythLog::GetInstance()->printf("delay = %d\n", correctdelay);
+	if (correctdelay > 0)
+		std::this_thread::sleep_for(std::chrono::milliseconds(correctdelay));
+	lastpushtime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	tmplen = 0;
 }

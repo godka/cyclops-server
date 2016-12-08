@@ -14,6 +14,7 @@ public:
 	}
 	~mythH264Decoder();
 	int MainLoop();
+
 protected:
 	mythH264Decoder(const char* filename);
 	int h264_decode_sps(BYTE * buf, unsigned int nLen, unsigned &width, unsigned &height, unsigned &fps);
@@ -26,4 +27,7 @@ private:
 	uint32_t find_start_code_core(uint8_t *buf, uint32_t zeros_in_startcode);
 	uint32_t find_start_code(uint8_t *buf);
 	uint8_t * get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total);
+	void pushavcFrame(bool &hasfps, char* tmp, int &tmplen, int &delay, int &timestamp, long long &lastpushtime);
+	int H264ReadinFile();
+	int H264ReadinMemory();
 };

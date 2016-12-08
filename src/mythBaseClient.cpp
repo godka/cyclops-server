@@ -79,10 +79,10 @@ int mythBaseClient::DataCallBack(PacketQueue* pkt)
 					memcpy(_pps, nal, nal_len);
 					_ppslen = nal_len;
 				}
-				if (_spslen > 0 && _ppslen > 0){
-					if (writespspps((uint8_t*) _sps, _spslen, (uint8_t*) _pps, _ppslen, timestamp) < 0)
-						return -1;
-				}
+				//if (_spslen > 0 && _ppslen > 0){
+				//	if (writespspps((uint8_t*) _sps, _spslen, (uint8_t*) _pps, _ppslen, timestamp) < 0)
+				//		return -1;
+				//}
 				break;
 			case 5:
 				if (!_hassendIframe){
