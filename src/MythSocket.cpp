@@ -91,18 +91,22 @@ int MythSocket::socket_SendStr(const char* data, int length){
 		return -1;
 	}
 	int index = 0;
-	int sendlen = length;
+	int left = length;
+	//using in SDL_net I don't know how to do
+	int sent = 0;
+	int len = length;
 	do{
-		int len = send(_sockfd, data + index, sendlen, 0);
+		len = send(_sockfd, data + index, left, 0);
 		if (len < 0){
 			mythLog::GetInstance()->printf("Socketid:%d send Failed,Error: send len = %d.\n", _sockfd, len);
 			return -1;
 		}
+		sent += len;
 		index += len;
-		sendlen -= len;
-	} while (sendlen > 0);
+		left -= len;
+	} while ((left) > 0 && (len > 0));
 	
-	return 0;
+	return sent;
 }
 
 MythSocket::~MythSocket()
