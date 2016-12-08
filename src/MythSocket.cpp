@@ -79,31 +79,30 @@ int MythSocket::wait_on_socket(int sockfd, int for_recv, long timeout_ms)
 	return res;
 }
 int MythSocket::socket_SendStr(const char* data, int length){
-	if (!_isconnected)
+	if (!_isconnected){
+		mythLog::GetInstance()->printf("Socketid:%d connect Failed,Error: not connected.\n", _sockfd);
 		return -1;
+	}
 	if (length == -2){
 		length = strlen(data);
 	}
 	if (!wait_on_socket(_sockfd, 0, 1000L)) {
-		mythLog::GetInstance()->printf("Error: timeout.\n");
-		return 1;
+		mythLog::GetInstance()->printf("Socketid:%d connect Failed,Error: timeout.\n", _sockfd);
+		return -1;
 	}
 	int index = 0;
 	int sendlen = length;
 	do{
 		int len = send(_sockfd, data + index, sendlen, 0);
 		if (len < 0){
-			break;
+			mythLog::GetInstance()->printf("Socketid:%d send Failed,Error: send len = %d.\n", _sockfd, len);
+			return -1;
 		}
 		index += len;
 		sendlen -= len;
 	} while (sendlen > 0);
-	if (sendlen == 0){
-		return sendlen;
-	}
-	else{
-		return -1;
-	}
+	
+	return 0;
 }
 
 MythSocket::~MythSocket()

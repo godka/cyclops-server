@@ -91,38 +91,6 @@ mythFLVClient::mythFLVClient(MythSocket* people)
 	width = 0; height = 0; fps = 0;
 }
 
-uint32_t mythFLVClient::find_start_code_core(uint8_t *buf, uint32_t zeros_in_startcode)
-{
-	uint32_t info;
-	uint32_t i;
-
-	info = 1;
-	if ((info = (buf[zeros_in_startcode] != 1) ? 0 : 1) == 0)
-		return 0;
-
-	for (i = 0; i < zeros_in_startcode; i++)
-		if (buf[i] != 0)
-		{
-			info = 0;
-			break;
-		};
-
-	return info;
-}
-
-uint32_t mythFLVClient::find_start_code(uint8_t *buf)
-{
-	if (find_start_code_core(buf, 2) > 0){
-		return 3;
-	}
-	else if (find_start_code_core(buf, 3) > 0){
-		return 4;
-	}
-	else{
-		return 0;
-	}
-}
-
 uint8_t * mythFLVClient::get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total)
 {
 	uint32_t info;

@@ -12,8 +12,18 @@ public:
 protected:
 	mythFLVClient(MythSocket* people);
 private:
-	inline uint32_t find_start_code_core(uint8_t *buf, uint32_t zeros_in_startcode);
-	inline uint32_t find_start_code(uint8_t *buf);
+	inline uint32_t find_start_code(uint8_t *buf){
+		auto nal = *(unsigned int*) &buf[0];
+		if ((nal & 0x00ffffff) == 0x00010000){
+			return 3;
+		}
+		else if (nal == 0x01000000){
+			return 4;
+		}
+		else{
+			return 0;
+		}
+	}
 	uint8_t * get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total);
 	int writespspps(uint8_t * sps, uint32_t spslen, uint8_t * pps, uint32_t ppslen, uint32_t timestamp);
 	int writeavcframe(uint8_t * nal, uint32_t nal_len, uint32_t timestamp, bool IsIframe);

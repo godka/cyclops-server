@@ -24,8 +24,7 @@ protected:
 	void de_emulation_prevention(BYTE* buf, unsigned int* buf_size);
 private:
 	std::string _filename;
-	uint32_t find_start_code_core(uint8_t *buf, uint32_t zeros_in_startcode);
-	uint32_t find_start_code(uint8_t *buf);
+	inline uint32_t find_start_code(uint8_t *buf);
 	uint8_t * get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total);
 	void pushavcFrame(bool &hasfps, char* tmp, int &tmplen, int &delay, int &timestamp, long long &lastpushtime);
 	int H264ReadinFile();

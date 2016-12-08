@@ -22,7 +22,7 @@ int mythStreamClient::DataCallBack(PacketQueue* pkt)
 	char tempbuf[256] = { 0 };
 
 	if (isfirst){
-		if (mythSendMessage((void*) firstrequest) < 0){
+		if (mythSendMessage(firstrequest) < 0){
 			return -1;
 		}
 		isfirst = false;
@@ -40,7 +40,7 @@ int mythStreamClient::DataCallBack(PacketQueue* pkt)
 	if (mythSendMessage(data, len) < 0){
 		return -1;
 	}
-	if (mythSendMessage((void*)" \n\n--myboundary\n") < 0){
+	if (mythSendMessage(" \n\n--myboundary\n") < 0){
 		return -1;
 	}
 	return 0;

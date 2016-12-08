@@ -13,31 +13,13 @@ mythH264Decoder::mythH264Decoder(const char* filename)
 	_filename = tmp;
 }
 
-uint32_t mythH264Decoder::find_start_code_core(uint8_t *buf, uint32_t zeros_in_startcode)
-{
-	uint32_t info;
-	uint32_t i;
-
-	info = 1;
-	if ((info = (buf[zeros_in_startcode] != 1) ? 0 : 1) == 0)
-		return 0;
-
-	for (i = 0; i < zeros_in_startcode; i++)
-		if (buf[i] != 0)
-		{
-			info = 0;
-			break;
-		};
-
-	return info;
-}
-
 uint32_t mythH264Decoder::find_start_code(uint8_t *buf)
 {
-	if (find_start_code_core(buf, 2) > 0){
+	auto nal = *(unsigned int*) &buf[0];
+	if ((nal & 0x00ffffff) == 0x00010000){
 		return 3;
 	}
-	else if (find_start_code_core(buf, 3) > 0){
+	else if (nal == 0x01000000){
 		return 4;
 	}
 	else{
@@ -330,11 +312,11 @@ int mythH264Decoder::MainLoop()
 	fclose(fp);
 	//file_size < 100M
 	if (size < 10 * 1024 * 1024){
-		mythLog::GetInstance()->printf("filename: %s found :size = %u,concerning in memory mode\n", _filename.c_str());
+		mythLog::GetInstance()->printf("filename: %s found :size = %u,concerning in memory mode\n", _filename.c_str(),size);
 		return H264ReadinMemory();
 	}
 	else{
-		mythLog::GetInstance()->printf("filename: %s found :size = %u,concerning in file/io mode\n", _filename.c_str());
+		mythLog::GetInstance()->printf("filename: %s found :size = %u,concerning in file/io mode\n", _filename.c_str(),size);
 		return H264ReadinFile();
 	}
 }
