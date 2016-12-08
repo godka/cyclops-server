@@ -78,6 +78,8 @@ int MythSocket::wait_on_socket(int sockfd, int for_recv, long timeout_ms)
 	res = select(sockfd + 1, &infd, &outfd, &errfd, &tv);
 	return res;
 }
+
+#define SOCKET_LEN 512
 int MythSocket::socket_SendStr(const char* data, int length){
 	if (!_isconnected){
 		mythLog::GetInstance()->printf("Socketid:%d connect Failed,Error: not connected.\n", _sockfd);
@@ -92,11 +94,15 @@ int MythSocket::socket_SendStr(const char* data, int length){
 	}
 	const char* sdata = data;
 	int left = length;
+	int pleft = SOCKET_LEN;
 	//using in SDL_net I don't know how to do
 	int sent = 0;
 	int len = length;
 	do{
-		len = send(_sockfd, sdata, left, 0);
+		if (left < SOCKET_LEN){
+			pleft = left;
+		}
+		len = send(_sockfd, sdata, pleft, 0);
 		if (len > 0){
 			sent += len;
 			left -= len;
