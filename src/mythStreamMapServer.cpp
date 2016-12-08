@@ -18,6 +18,11 @@ int initalsocket(int port)
 #endif
 	auto cfg = event_config_new();
 	event_config_avoid_method(cfg, "select");   //避免使用低效率select
+	auto t = event_get_supported_methods();
+	int i = 0;
+	while (t[i]){
+		printf("%s\n", t[i]);
+	}
 	//event_config_require_features(cfg, EV_FEATURE_ET);  //使用边沿触发类型
 	servermap = mythServerMap::CreateNew();
 	base = event_base_new_with_config(cfg);
