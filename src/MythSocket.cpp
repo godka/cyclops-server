@@ -88,10 +88,10 @@ int MythSocket::socket_SendStr(const char* data, int length){
 	if (length == -2){
 		length = strlen(data);
 	}
-	if (!wait_on_socket(_sockfd, 0, 1000L)) {
-		mythLog::GetInstance()->printf("Socketid:%d connect Failed,Error: timeout.\n", _sockfd);
-		return -1;
-	}
+	//if (!wait_on_socket(_sockfd, 0, 1000L)) {
+	//	mythLog::GetInstance()->printf("Socketid:%d connect Failed,Error: timeout.\n", _sockfd);
+	//	return -1;
+	//}
 	const char* sdata = data;
 	int left = length;
 	int pleft = SOCKET_LEN;
