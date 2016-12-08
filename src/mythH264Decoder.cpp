@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 mythH264Decoder::mythH264Decoder(const char* filename)
 	:mythVirtualDecoder()
 {
@@ -58,7 +57,7 @@ uint8_t * mythH264Decoder::get_nal(uint32_t *len, uint8_t **offset, uint8_t *sta
 		if (info > 0)
 			break;
 		p++;
-		if ((p - start) >= total)
+		if ((uint32_t)(p - start) >= total)
 			return NULL;
 	}
 	q = p + info;
@@ -68,7 +67,7 @@ uint8_t * mythH264Decoder::get_nal(uint32_t *len, uint8_t **offset, uint8_t *sta
 		if (info > 0)
 			break;
 		p++;
-		if ((p - start) >= total){
+		if ((uint32_t)(p - start) >= total){
 			//maybe cause error
 			return NULL;
 		}
@@ -285,7 +284,7 @@ UINT mythH264Decoder::Ue(BYTE *pBuff, UINT nLen, UINT &nStartBit) {
 int mythH264Decoder::Se(BYTE *pBuff, UINT nLen, UINT &nStartBit) {
 	int UeVal = Ue(pBuff, nLen, nStartBit);
 	double k = UeVal;
-	int nValue = ceil(k / 2);
+	int nValue = (int)ceil(k / 2);
 	if (UeVal % 2 == 0)
 		nValue = -nValue;
 	return nValue;
@@ -322,7 +321,6 @@ void mythH264Decoder::de_emulation_prevention(BYTE* buf, unsigned int* buf_size)
 mythH264Decoder::~mythH264Decoder()
 {
 }
-#define BUFFLEN 1024
 int mythH264Decoder::MainLoop()
 {
 	FILE *fp = fopen(_filename.c_str(), "rb");
@@ -331,7 +329,7 @@ int mythH264Decoder::MainLoop()
 	auto size = ftell(fp);
 	fclose(fp);
 	//file_size < 100M
-	if (size < 100 * 1024 * 1024){
+	if (size < 10 * 1024 * 1024){
 		mythLog::GetInstance()->printf("filename: %s found :size = %u,concerning in memory mode\n", _filename.c_str());
 		return H264ReadinMemory();
 	}
@@ -341,6 +339,7 @@ int mythH264Decoder::MainLoop()
 	}
 }
 
+#define BUFFLEN 1024
 int mythH264Decoder::H264ReadinFile()
 {
 	long long lastpushtime = ~0;
@@ -356,10 +355,20 @@ int mythH264Decoder::H264ReadinFile()
 		int tmplen = 0;
 		char buf[BUFFLEN] = { 0 };
 		while (flag == 0){
-			unsigned int len = fread(buf, 1, BUFFLEN, file);
-			for (int i = 0; i < len; i++){
+			auto len = fread(buf, 1, BUFFLEN, file);
+			unsigned int i = 0;
+			while (i < len){
 				if (buf[i] == 0 && buf[i + 1] == 0 && buf[i + 2] == 0 && buf[i + 3] == 1){
-					//int nowindex = i + index;
+					if (tmplen > 0){
+						pushavcFrame(hasfps, tmp, tmplen, delay, timestamp, lastpushtime);
+					}
+					else{
+						tmp[tmplen] = 0; tmp[tmplen + 1] = 0; tmp[tmplen + 2] = 0; tmp[tmplen + 3] = 1;
+						tmplen += 4;
+						i += 4;
+					}
+				}
+				else if (buf[i] == 0 && buf[i + 1] == 0 && buf[i + 2] == 1){
 					if (tmplen > 0){
 						pushavcFrame(hasfps, tmp, tmplen, delay, timestamp, lastpushtime);
 					}
@@ -369,20 +378,10 @@ int mythH264Decoder::H264ReadinFile()
 						i += 3;
 					}
 				}
-				else if (buf[i] == 0 && buf[i + 1] == 0 && buf[i + 2] == 1){
-					//int nowindex = i + index;
-					if (tmplen > 0){
-						pushavcFrame(hasfps, tmp, tmplen, delay, timestamp, lastpushtime);
-					}
-					else{
-						tmp[tmplen] = 0; tmp[tmplen + 1] = 0; tmp[tmplen + 2] = 1;
-						tmplen += 3;
-						i += 2;
-					}
-				}
 				else{
 					tmp[tmplen] = buf[i];
 					tmplen++;
+					i++;
 				}
 			}
 			if (len < BUFFLEN)
@@ -454,6 +453,7 @@ int mythH264Decoder::H264ReadinMemory()
 	}
 	delete [] tmp;
 	delete []data;
+	return 0;
 }
 
 void mythH264Decoder::pushavcFrame(bool &hasfps, char* tmp, int &tmplen, int &delay, int &timestamp, long long &lastpushtime)

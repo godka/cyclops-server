@@ -209,6 +209,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DummySink.cpp" />
     <ClCompile Include="H264or5VideoStreamSink.cpp" />
     <ClCompile Include="H264VideoStreamSink.cpp" />
     <ClCompile Include="IniFile.c" />
@@ -344,10 +345,14 @@
     <ClCompile Include="MPEGVideoStreamParser.cpp" />
     <ClCompile Include="MultiFramedRTPSink.cpp" />
     <ClCompile Include="MultiFramedRTPSource.cpp" />
+    <ClCompile Include="mythClientFactory.cpp" />
+    <ClCompile Include="mythFLVClient.cpp" />
+    <ClCompile Include="mythH264Client.cpp" />
     <ClCompile Include="mythH264Decoder.cpp" />
     <ClCompile Include="mythLog.cpp" />
     <ClCompile Include="mythNodeList.cpp" />
     <ClCompile Include="mythRequestParser.cpp" />
+    <ClCompile Include="mythStreamClient.cpp" />
     <ClCompile Include="NetAddress.cpp" />
     <ClCompile Include="NetInterface.cpp" />
     <ClCompile Include="OggDemuxedTrack.cpp" />
@@ -430,15 +435,19 @@
     <ClCompile Include="tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DummySink.hh" />
     <ClInclude Include="H264or5VideoStreamSink.hh" />
     <ClInclude Include="H264VideoStreamSink.hh" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="mythAvlist.hh" />
     <ClInclude Include="mythBaseClient.hh" />
+    <ClInclude Include="mythClientFactory.hh" />
     <ClInclude Include="MythConfig.hh" />
     <ClInclude Include="mythFFmpeg.hh" />
     <ClInclude Include="mythFFmpegEncoder.hh" />
+    <ClInclude Include="mythFLVClient.hh" />
     <ClInclude Include="mythGlobal.hh" />
+    <ClInclude Include="mythH264Client.hh" />
     <ClInclude Include="mythH264Decoder.hh" />
     <ClInclude Include="mythIniFile.hh" />
     <ClInclude Include="mythListFactory.hh" />
@@ -449,6 +458,7 @@
     <ClInclude Include="mythRequestParser.hh" />
     <ClInclude Include="mythRTSP.hh" />
     <ClInclude Include="mythServerMap.hh" />
+    <ClInclude Include="mythStreamClient.hh" />
     <ClInclude Include="mythStreamMapServer.hh" />
     <ClInclude Include="mythStreamServer.hh" />
     <ClInclude Include="mythStreamSQLresult.hh" />

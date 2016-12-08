@@ -64,6 +64,12 @@
     <Filter Include="Source Files\decoder\h264">
       <UniqueIdentifier>{bbccc547-6a8f-4f5e-bd93-6e9f48032c61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\kernel\log">
+      <UniqueIdentifier>{ef6e9e3c-182f-480a-899f-12b223cf232d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\parser">
+      <UniqueIdentifier>{256add16-6c63-4d74-8293-72b879f32293}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -711,17 +717,32 @@
     <ClCompile Include="mythServerMap.cpp">
       <Filter>Source Files\kernel</Filter>
     </ClCompile>
-    <ClCompile Include="mythLog.cpp">
-      <Filter>Source Files\kernel\ini</Filter>
-    </ClCompile>
     <ClCompile Include="mythNodeList.cpp">
       <Filter>Source Files\kernel\list</Filter>
     </ClCompile>
-    <ClCompile Include="mythRequestParser.cpp">
-      <Filter>Source Files\kernel</Filter>
-    </ClCompile>
     <ClCompile Include="mythH264Decoder.cpp">
       <Filter>Source Files\decoder\h264</Filter>
+    </ClCompile>
+    <ClCompile Include="mythLog.cpp">
+      <Filter>Source Files\kernel\log</Filter>
+    </ClCompile>
+    <ClCompile Include="mythRequestParser.cpp">
+      <Filter>Source Files\kernel\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="DummySink.cpp">
+      <Filter>Source Files\decoder\live555</Filter>
+    </ClCompile>
+    <ClCompile Include="mythFLVClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mythStreamClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mythH264Client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mythClientFactory.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -822,6 +843,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythH264Decoder.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DummySink.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythFLVClient.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythStreamClient.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythH264Client.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythClientFactory.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

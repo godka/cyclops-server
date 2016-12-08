@@ -2,6 +2,7 @@
 #include <map>
 #include <mutex>
 #include "MythSocket.hh"
+#include "mythClientFactory.hh"
 #include "mythBaseClient.hh"
 #include "mythStreamServer.hh"
 #include "mythRequestParser.hh"
