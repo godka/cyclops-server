@@ -90,20 +90,18 @@ int MythSocket::socket_SendStr(const char* data, int length){
 		mythLog::GetInstance()->printf("Socketid:%d connect Failed,Error: timeout.\n", _sockfd);
 		return -1;
 	}
-	int index = 0;
+	const char* sdata = data;
 	int left = length;
 	//using in SDL_net I don't know how to do
 	int sent = 0;
 	int len = length;
 	do{
-		len = send(_sockfd, data + index, left, 0);
-		if (len < 0){
-			mythLog::GetInstance()->printf("Socketid:%d send Failed,Error: send len = %d.\n", _sockfd, len);
-			return -1;
+		len = send(_sockfd, sdata, left, 0);
+		if (len > 0){
+			sent += len;
+			left -= len;
+			sdata += len;
 		}
-		sent += len;
-		index += len;
-		left -= len;
 	} while ((left) > 0 && (len > 0));
 	
 	return sent;
