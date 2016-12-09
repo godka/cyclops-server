@@ -116,6 +116,9 @@ int MythSocket::socket_SendStr(const char* data, int length){
 			left -= len;
 			sdata += len;
 		}
+		else{
+			mythLog::GetInstance()->printf("socket error :%d,%s\n", errno, strerror(errno));
+		}
 	} while ((left > 0) && ((len > 0) || (errno == EINTR) || (errno == 0)));
 	return sent;
 }
