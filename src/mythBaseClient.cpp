@@ -31,7 +31,7 @@ int mythBaseClient::mythSendMessage(void* data, int length)
 	if (mpeople){
 		tmplength = mpeople->socket_SendStr((char*) data, length);
 		if (tmplength < length){
-			mythLog::GetInstance()->printf("socket %d send error:%d\n", mpeople, tmplength);
+			mythLog::GetInstance()->printf("socket %d send error:len=%d,size=%d\n", mpeople, tmplength, length);
 			return -1;
 		}
 	}

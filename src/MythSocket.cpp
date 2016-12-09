@@ -106,28 +106,24 @@ int MythSocket::socket_SendStr(const char* data, int length){
 	}
 	const char* sdata = data;
 	int left = length;
-	int pleft = SOCKET_LEN;
 	//using in SDL_net I don't know how to do
 	int len = length;
 	int sent = 0;
 	do{
-		if (left < SOCKET_LEN){
-			pleft = left;
-		}
-		len = socket_SendStrCore(sdata, pleft);
+		len = socket_SendStrCore(sdata, left);
 		if (len > 0){
 			sent += len;
 			left -= len;
 			sdata += len;
 		}
-	} while ((left) > 0 && (len > 0));
+	} while ((left > 0) && ((len > 0) || (errno == EINTR) || (errno == 0)));
 	return sent;
 }
 
 int MythSocket::socket_SendStrCore(const char* data, int length){
-	if (wait_on_socket(_sockfd, 0, 100L) < 0){
-		return -1;
-	}
+	//if (wait_on_socket(_sockfd, 0, 100L) < 0){
+	//	return -1;
+	//}
 	return send(_sockfd, data, length, 0);
 }
 
