@@ -4,7 +4,6 @@
 #include <chrono>
 #include <fstream>
 mythLog*  mythLog::mmythLog = nullptr;
-
 void mythLog::printf(const char * format, ...)
 {
 	_mutex.lock();
@@ -18,6 +17,8 @@ void mythLog::printf(const char * format, ...)
 	auto t = std::chrono::system_clock::now();
 	auto tt = std::chrono::system_clock::to_time_t(t);
 	struct tm * timeinfo = localtime(&tt);
+	auto duration_in_ms = std::chrono::duration_cast< std::chrono::milliseconds>(t.time_since_epoch());
+	auto ms_part = duration_in_ms - std::chrono::duration_cast< std::chrono::seconds>(duration_in_ms);
 
 	sprintf(timefile, "%04d-%02d-%02d.log",
 		1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday);
@@ -27,8 +28,8 @@ void mythLog::printf(const char * format, ...)
 	if (len > 0){
 		if (_writedate){
 			static char timenow[64] = { 0 };
-			sprintf(timenow, "%04d-%02d-%02d %02d:%02d:%02d",
-				1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+			sprintf(timenow, "%04d-%02d-%02d %02d:%02d:%02d.%03d",
+				1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, ms_part.count());
 
 			fprintf(stderr, "[%s]%s", timenow, str);
 			fprintf(file, "[%s]%s", timenow, str);

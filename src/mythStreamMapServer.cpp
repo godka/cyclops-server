@@ -18,17 +18,12 @@ int initalsocket(int port)
 #endif
 	auto cfg = event_config_new();
 	event_config_avoid_method(cfg, "select");   //避免使用低效率select
-	auto t = event_get_supported_methods();
-	int i = 0;
-	while (t[i]){
-		printf("%s\n", t[i++]);
-	}
 	//event_config_require_features(cfg, EV_FEATURE_ET);  //使用边沿触发类型
 	servermap = mythServerMap::CreateNew();
 	base = event_base_new_with_config(cfg);
 	event_config_free(cfg);
 	//显示当前使用的异步类型
-	mythLog::GetInstance()->printf("Current Using Method: %s\n", event_base_get_method(base)); // epoll
+	mythLog::GetInstance()->printf("Libevent Current Using Method: %s\n", event_base_get_method(base)); // epoll
 
 	//可选设置优先级数目，然后通过event_priority_set设置事件的优先级
 	//0为最高，n_priority-1为最低，此后创建的事件默认优先级为中间优先级

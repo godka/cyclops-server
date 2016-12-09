@@ -1,6 +1,6 @@
 ﻿#include "MythSocket.hh"
 #include <memory.h>
-
+#include <thread>
 MythSocket::MythSocket(int sockfd){
 	_sockfd = sockfd;
 	downlength = 0;
@@ -109,7 +109,7 @@ int MythSocket::socket_SendStr(const char* data, int length){
 	//using in SDL_net I don't know how to do
 	int len = length;
 	int sent = 0;
-	do{
+	while (left > 0){
 		len = socket_SendStrCore(sdata, left);
 		if (len > 0){
 			sent += len;
@@ -117,9 +117,25 @@ int MythSocket::socket_SendStr(const char* data, int length){
 			sdata += len;
 		}
 		else{
-			mythLog::GetInstance()->printf("socket error :%d,%s\n", errno, strerror(errno));
+			if ((errno == EINTR) || (errno == NULL)){
+				//mythLog::GetInstance()->printf("socket error :%d,%s,continue\n", errno, strerror(errno));
+				continue;
+			}
+			else if (errno == EAGAIN){
+				mythLog::GetInstance()->printf("socket error :%d,%s,continue\n", errno, strerror(errno));
+#ifdef WIN32
+				Sleep(1);
+#else
+				std::this_thread::sleep_for(std::chrono::milliseconds(1));
+#endif
+				continue;
+			}
+			else{
+				mythLog::GetInstance()->printf("socket error :%d,%s,strong error\n", errno, strerror(errno));
+				break;
+			}
 		}
-	} while ((left > 0) && ((len > 0) || (errno == EINTR) || (errno == 0)));
+	}
 	return sent;
 }
 
