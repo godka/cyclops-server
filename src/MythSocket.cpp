@@ -122,7 +122,7 @@ int MythSocket::socket_SendStr(const char* data, int length){
 				continue;
 			}
 			else if (errno == EAGAIN){
-				mythLog::GetInstance()->printf("socket error :%d,%s,continue\n", errno, strerror(errno));
+				//mythLog::GetInstance()->printf("socket error :%d,%s,continue\n", errno, strerror(errno));
 #ifdef WIN32
 				Sleep(1);
 #else
@@ -154,10 +154,10 @@ int MythSocket::socket_ReceiveData(char* recvBuf, int recvLength, int timeout)
 {
 	if (!_isconnected)
 		return -1;
-	if (wait_on_socket(_sockfd, 1, 1000L) < 0){
-		return -1;
-	}
-	return recv(_sockfd, recvBuf, recvLength, 0);
+	//if (wait_on_socket(_sockfd, 1, 1000L) < 0){
+	//	return -1;
+	//}
+	return recv(_sockfd, recvBuf, recvLength,0);
 }
 
 int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr)
@@ -195,7 +195,12 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 								return 0;
 							}
 							else{
-								return -1;
+								if (len == EAGAIN || EINTR || EWOULDBLOCK){
+									continue;
+								}
+								else{
+									return -1;
+								}
 							}
 						}
 						return returnvalue;
@@ -207,7 +212,12 @@ int MythSocket::socket_ReceiveDataLn2(char* recvBuf, int recvLength, char* lnstr
 			return 0;
 		}
 		else{
-			return -1;
+			if (len == EAGAIN || EINTR || EWOULDBLOCK){
+				continue;
+			}
+			else{
+				return -1;
+			}
 		}
 	}
 }

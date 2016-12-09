@@ -23,7 +23,8 @@ void mythStreamDecoder::stop(){
 int mythStreamDecoder::SendBufferBlock(const char* tmpsendstr){
 	while (flag == 0){
 		if (msocket){
-			if (msocket->socket_SendStr(tmpsendstr) == 0){
+			int len = strlen(tmpsendstr);
+			if (msocket->socket_SendStr(tmpsendstr, len) == len){
 				return 0;
 				break;
 			}
