@@ -36,7 +36,7 @@ MythSocket::MythSocket(const char* ip, int port)
 	if (connect(_sockfd, (sockaddr *) (&addrSrv), sizeof(addrSrv)) == -1){
 		_isconnected = true;
 		int ret = wait_on_socket(_sockfd, 0, 1000L);
-		if (ret == 0){
+		if (ret < 0){
 			//mythLog::GetInstance()->printf("Connect Failed!,%d\n", _sockfd);
 			_isconnected = false;
 		}
@@ -75,8 +75,24 @@ int MythSocket::wait_on_socket(int sockfd, int for_recv, long timeout_ms)
 	}
 
 	/* select() returns the number of signalled sockets or -1 */
-	res = select(sockfd + 1, &infd, &outfd, &errfd, &tv);
-	return res;
+	while (1){
+		res = select(sockfd + 1, &infd, &outfd, &errfd, &tv);
+		switch (res)
+		{
+		case 0:
+			mythLog::GetInstance()->printf("Socketid:%d connect Failed,Error: timeout.\n", _sockfd);
+			continue;
+			break;
+		case -1:
+			mythLog::GetInstance()->printf("Socketid:%d connect Failed,Error: select.\n", _sockfd);
+			return -1;
+			break;
+		default:
+			return res;
+			break;
+		}
+	}
+	return 0;
 }
 
 #define SOCKET_LEN 512
@@ -88,15 +104,14 @@ int MythSocket::socket_SendStr(const char* data, int length){
 	if (length == -2){
 		length = strlen(data);
 	}
-	//if (!wait_on_socket(_sockfd, 0, 1000L)) {
-	//	mythLog::GetInstance()->printf("Socketid:%d connect Failed,Error: timeout.\n", _sockfd);
-	//	return -1;
-	//}
+	int sent = 0;
+	if (wait_on_socket(_sockfd, 0, 1000L) < 0){
+		return -1;
+	}
 	const char* sdata = data;
 	int left = length;
 	int pleft = SOCKET_LEN;
 	//using in SDL_net I don't know how to do
-	int sent = 0;
 	int len = length;
 	do{
 		if (left < SOCKET_LEN){
@@ -109,7 +124,6 @@ int MythSocket::socket_SendStr(const char* data, int length){
 			sdata += len;
 		}
 	} while ((left) > 0 && (len > 0));
-	
 	return sent;
 }
 
@@ -121,7 +135,7 @@ int MythSocket::socket_ReceiveData(char* recvBuf, int recvLength, int timeout)
 {
 	if (!_isconnected)
 		return -1;
-	if (!wait_on_socket(_sockfd, 1, 1000L)){
+	if (wait_on_socket(_sockfd, 1, 1000L) < 0){
 		return -1;
 	}
 	return recv(_sockfd, recvBuf, recvLength, 0);

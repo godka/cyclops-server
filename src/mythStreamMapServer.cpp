@@ -21,7 +21,7 @@ int initalsocket(int port)
 	auto t = event_get_supported_methods();
 	int i = 0;
 	while (t[i]){
-		printf("%s\n", t[i]);
+		printf("%s\n", t[i++]);
 	}
 	//event_config_require_features(cfg, EV_FEATURE_ET);  //使用边沿触发类型
 	servermap = mythServerMap::CreateNew();
