@@ -300,9 +300,11 @@ void mythH264Decoder::de_emulation_prevention(BYTE* buf, unsigned int* buf_size)
 		}
 	}
 }
+
 mythH264Decoder::~mythH264Decoder()
 {
 }
+
 int mythH264Decoder::MainLoop()
 {
 	FILE *fp = fopen(_filename.c_str(), "rb");
@@ -330,7 +332,6 @@ int mythH264Decoder::H264ReadinFile()
 	char* tmp = new char[1024 * 1024 * 4];
 	int timestamp = 0;
 	while (flag == 0){
-		hasfps = false;
 		FILE* file = fopen(_filename.c_str(), "rb");
 		if (!file)
 			return 1;

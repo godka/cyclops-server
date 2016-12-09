@@ -45,6 +45,7 @@ private:
 	int downlength;
 	int maxlength;
 	bool _isconnected;
+	int socket_SendStrCore(const char* data, int length);
 protected:
 	MythSocket(const char* ip, int port);
 	MythSocket();
