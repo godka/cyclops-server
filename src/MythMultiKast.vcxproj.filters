@@ -49,9 +49,6 @@
     <Filter Include="Source Files\kernel\list">
       <UniqueIdentifier>{18e4aa57-2a0a-4ab9-b7d6-eac7e75f68a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\kernel\live555">
-      <UniqueIdentifier>{36437114-ec84-4344-b398-a519fcb7c342}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\tinyxml">
       <UniqueIdentifier>{b3670980-68a9-4273-b673-3d591e139ad2}</UniqueIdentifier>
     </Filter>
@@ -69,6 +66,21 @@
     </Filter>
     <Filter Include="Source Files\kernel\parser">
       <UniqueIdentifier>{256add16-6c63-4d74-8293-72b879f32293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\live555-core">
+      <UniqueIdentifier>{dd15b403-c1fa-4fc9-a5fb-cb0e8768cd78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\live555-core\BasicUsageEnvironment">
+      <UniqueIdentifier>{26de2061-9d89-4130-8dd8-22a925f5223b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\live555-core\groupsock">
+      <UniqueIdentifier>{ab3d1833-7c9d-4a72-8b85-59e3191c107f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\live555-core\liveMedia">
+      <UniqueIdentifier>{1f184628-ce1f-49fc-86e0-ac505e730762}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\kernel\live555-core\UsageEnvironment">
+      <UniqueIdentifier>{3c25aab4-1772-4c9f-8e67-24f2d6e5b579}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,549 +165,6 @@
     <ClCompile Include="mythGlobal.cpp">
       <Filter>Source Files\kernel</Filter>
     </ClCompile>
-    <ClCompile Include="inet.c">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="rtcp_from_spec.c">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="WAVAudioFileSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AC3AudioFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AC3AudioRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AC3AudioRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AC3AudioStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="ADTSAudioFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="ADTSAudioFileSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AMRAudioFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AMRAudioFileSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AMRAudioFileSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AMRAudioRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AMRAudioRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AMRAudioSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioInputDevice.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="AVIFileSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="Base64.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicHashTable.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicTaskScheduler.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicTaskScheduler0.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicUDPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicUDPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicUsageEnvironment.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicUsageEnvironment0.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="BitVector.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteStreamFileSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteStreamMemoryBufferSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteStreamMultiFileSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="DelayQueue.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="DeviceSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="DigestAuthentication.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="DVVideoFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="DVVideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="DVVideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="DVVideoStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="EBMLNumber.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="FileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="FileSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="FramedFileSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="FramedFilter.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="FramedSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="GenericMediaServer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="GroupEId.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="Groupsock.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="GroupsockHelper.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="GSMAudioRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H261VideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H263plusVideoFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H263plusVideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H263plusVideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H263plusVideoStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H263plusVideoStreamParser.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264or5VideoFileSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264or5VideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264or5VideoStreamDiscreteFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264or5VideoStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264VideoFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264VideoFileSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264VideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264VideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264VideoStreamDiscreteFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H264VideoStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H265VideoFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H265VideoFileSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H265VideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H265VideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H265VideoStreamDiscreteFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="H265VideoStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="HashTable.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="InputFile.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="IOHandlers.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="JPEGVideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="JPEGVideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="JPEGVideoSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="Locale.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MatroskaDemuxedTrack.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MatroskaFile.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MatroskaFileParser.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MatroskaFileServerDemux.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MatroskaFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="Media.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MediaSession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MediaSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MediaSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3ADU.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3ADUdescriptor.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3ADUinterleaving.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3ADURTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3ADURTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3ADUTranscoder.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3AudioFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3AudioMatroskaFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3FileSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3Internals.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3InternalsHuffman.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3InternalsHuffmanTable.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3StreamState.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MP3Transcoder.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2AudioRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2AudioRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2AudioStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2Demux.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2DemuxedElementaryStream.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2DemuxedServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2FileServerDemux.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2VideoFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2VideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2VideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2VideoStreamDiscreteFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG1or2VideoStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG2IndexFromTransportStream.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG2TransportFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG2TransportStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG2TransportStreamFromESSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG2TransportStreamFromPESSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG2TransportStreamIndexFile.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG2TransportStreamMultiplexor.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG2TransportStreamTrickModeFilter.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG2TransportUDPServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG4ESVideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG4ESVideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG4GenericRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG4GenericRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG4LATMAudioRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG4LATMAudioRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG4VideoFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG4VideoStreamDiscreteFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEG4VideoStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEGVideoStreamFramer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MPEGVideoStreamParser.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MultiFramedRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="MultiFramedRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="NetAddress.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="NetInterface.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="OggDemuxedTrack.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="OggFile.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="OggFileParser.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="OggFileServerDemux.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="OggFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="OggFileSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="OnDemandServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="ourMD5.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="OutputFile.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="PassiveServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="ProxyServerMediaSession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="QCELPAudioRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="QuickTimeFileSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="QuickTimeGenericRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="RTCP.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="RTPInterface.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="RTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="RTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="RTSPClient.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="RTSPCommon.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="RTSPRegisterSender.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="RTSPServer.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="RTSPServerSupportingHTTPStreaming.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerMediaSession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="SIPClient.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="strDup.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="StreamParser.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="StreamReplicator.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="T140TextRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPStreamSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="TextRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="TheoraVideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="TheoraVideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="uLawAudioFilter.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="UsageEnvironment.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="VideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="VorbisAudioRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="VorbisAudioRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="VP8VideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="VP8VideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="VP9VideoRTPSink.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="VP9VideoRTPSource.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
-    <ClCompile Include="WAVAudioFileServerMediaSubsession.cpp">
-      <Filter>Source Files\kernel\live555</Filter>
-    </ClCompile>
     <ClCompile Include="SingleMain.cpp">
       <Filter>Source Files\main</Filter>
     </ClCompile>
@@ -743,6 +212,549 @@
     </ClCompile>
     <ClCompile Include="mythStreamClient.cpp">
       <Filter>Source Files\client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\BasicUsageEnvironment\BasicHashTable.cpp">
+      <Filter>Source Files\kernel\live555-core\BasicUsageEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\BasicUsageEnvironment\BasicTaskScheduler.cpp">
+      <Filter>Source Files\kernel\live555-core\BasicUsageEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\BasicUsageEnvironment\BasicTaskScheduler0.cpp">
+      <Filter>Source Files\kernel\live555-core\BasicUsageEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\BasicUsageEnvironment\BasicUsageEnvironment.cpp">
+      <Filter>Source Files\kernel\live555-core\BasicUsageEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\BasicUsageEnvironment\BasicUsageEnvironment0.cpp">
+      <Filter>Source Files\kernel\live555-core\BasicUsageEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\BasicUsageEnvironment\DelayQueue.cpp">
+      <Filter>Source Files\kernel\live555-core\BasicUsageEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\groupsock\GroupEId.cpp">
+      <Filter>Source Files\kernel\live555-core\groupsock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\groupsock\Groupsock.cpp">
+      <Filter>Source Files\kernel\live555-core\groupsock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\groupsock\GroupsockHelper.cpp">
+      <Filter>Source Files\kernel\live555-core\groupsock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\groupsock\inet.c">
+      <Filter>Source Files\kernel\live555-core\groupsock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\groupsock\IOHandlers.cpp">
+      <Filter>Source Files\kernel\live555-core\groupsock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\groupsock\NetAddress.cpp">
+      <Filter>Source Files\kernel\live555-core\groupsock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\groupsock\NetInterface.cpp">
+      <Filter>Source Files\kernel\live555-core\groupsock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AC3AudioFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AC3AudioRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AC3AudioRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AC3AudioStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\ADTSAudioFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\ADTSAudioFileSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AMRAudioFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AMRAudioFileSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AMRAudioFileSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AMRAudioRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AMRAudioRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AMRAudioSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AudioInputDevice.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AudioRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\AVIFileSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\Base64.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\BasicUDPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\BasicUDPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\BitVector.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\ByteStreamFileSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\ByteStreamMemoryBufferSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\ByteStreamMultiFileSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\DeviceSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\DigestAuthentication.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\DVVideoFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\DVVideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\DVVideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\DVVideoStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\EBMLNumber.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\FileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\FileSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\FramedFileSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\FramedFilter.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\FramedSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\GenericMediaServer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\GSMAudioRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H261VideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H263plusVideoFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H263plusVideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H263plusVideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H263plusVideoStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H263plusVideoStreamParser.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264or5VideoFileSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264or5VideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264or5VideoStreamDiscreteFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264or5VideoStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264VideoFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264VideoFileSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264VideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264VideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264VideoStreamDiscreteFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H264VideoStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H265VideoFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H265VideoFileSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H265VideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H265VideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H265VideoStreamDiscreteFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\H265VideoStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\InputFile.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\JPEGVideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\JPEGVideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\JPEGVideoSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\Locale.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MatroskaDemuxedTrack.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MatroskaFile.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MatroskaFileParser.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MatroskaFileServerDemux.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MatroskaFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\Media.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MediaSession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MediaSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MediaSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3ADU.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3ADUdescriptor.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3ADUinterleaving.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3ADURTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3ADURTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3ADUTranscoder.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3AudioFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3AudioMatroskaFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3FileSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3Internals.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3InternalsHuffman.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3InternalsHuffmanTable.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3StreamState.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MP3Transcoder.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2AudioRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2AudioRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2AudioStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2Demux.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2DemuxedElementaryStream.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2DemuxedServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2FileServerDemux.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2VideoFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2VideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2VideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2VideoStreamDiscreteFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG1or2VideoStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG2IndexFromTransportStream.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG2TransportFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG2TransportStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG2TransportStreamFromESSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG2TransportStreamFromPESSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG2TransportStreamIndexFile.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG2TransportStreamMultiplexor.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG2TransportStreamTrickModeFilter.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG2TransportUDPServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG4ESVideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG4ESVideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG4GenericRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG4GenericRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG4LATMAudioRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG4LATMAudioRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG4VideoFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG4VideoStreamDiscreteFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEG4VideoStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEGVideoStreamFramer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MPEGVideoStreamParser.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MultiFramedRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\MultiFramedRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\OggDemuxedTrack.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\OggFile.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\OggFileParser.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\OggFileServerDemux.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\OggFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\OggFileSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\OnDemandServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\ourMD5.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\OutputFile.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\PassiveServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\ProxyServerMediaSession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\QCELPAudioRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\QuickTimeFileSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\QuickTimeGenericRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\RTCP.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\rtcp_from_spec.c">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\RTPInterface.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\RTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\RTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\RTSPClient.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\RTSPCommon.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\RTSPRegisterSender.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\RTSPServer.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\RTSPServerSupportingHTTPStreaming.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\ServerMediaSession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\SimpleRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\SimpleRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\SIPClient.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\StreamParser.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\StreamReplicator.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\T140TextRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\TCPStreamSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\TextRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\TheoraVideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\TheoraVideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\uLawAudioFilter.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\VideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\VorbisAudioRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\VorbisAudioRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\VP8VideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\VP8VideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\VP9VideoRTPSink.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\VP9VideoRTPSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\WAVAudioFileServerMediaSubsession.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\liveMedia\WAVAudioFileSource.cpp">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\UsageEnvironment\HashTable.cpp">
+      <Filter>Source Files\kernel\live555-core\UsageEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\UsageEnvironment\strDup.cpp">
+      <Filter>Source Files\kernel\live555-core\UsageEnvironment</Filter>
+    </ClCompile>
+    <ClCompile Include="..\live555\UsageEnvironment\UsageEnvironment.cpp">
+      <Filter>Source Files\kernel\live555-core\UsageEnvironment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -859,6 +871,9 @@
     </ClInclude>
     <ClInclude Include="mythClientFactory.hh">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\live555\liveMedia\rtcp_from_spec.h">
+      <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

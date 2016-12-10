@@ -117,12 +117,12 @@ int MythSocket::socket_SendStr(const char* data, int length){
 			sdata += len;
 		}
 		else{
-			if ((errno == EINTR) || (errno == NULL)){
-				//mythLog::GetInstance()->printf("socket error :%d,%s,continue\n", errno, strerror(errno));
+			if ((errno == EINTR)){
+				mythLog::GetInstance()->printf("socket error :%d,%s,continue\n", errno, strerror(errno));
 				continue;
 			}
 			else if (errno == EAGAIN){
-				//mythLog::GetInstance()->printf("socket error :%d,%s,continue\n", errno, strerror(errno));
+				mythLog::GetInstance()->printf("socket error :%d,%s,continue\n", errno, strerror(errno));
 #ifdef WIN32
 				Sleep(1);
 #else

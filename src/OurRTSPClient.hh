@@ -8,7 +8,7 @@ public:
 	static ourRTSPClient* createNew(UsageEnvironment& env, char const* rtspURL, const char* username, const char* password,
 		bool usetcp = true,
 		int verbosityLevel = 0,
-		char const* applicationName = NULL, void* handle = NULL, live555responseHandler* reponsehandler = NULL, void* live555responseData = NULL,
+		char const* applicationName = NULL, void* handle = NULL, live555responseHandler* reponsehandler = NULL, void* live555responseData= NULL,
 		portNumBits tunnelOverHTTPPortNum = 0);
 
 protected:

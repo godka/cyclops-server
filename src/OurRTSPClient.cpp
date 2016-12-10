@@ -1,8 +1,8 @@
 #include "OurRTSPClient.hh"
 
 ourRTSPClient* ourRTSPClient::createNew(UsageEnvironment& env, char const* rtspURL, const char* username, const char* password, bool usetcp,
-	int verbosityLevel, char const* applicationName, void* handle, live555responseHandler* reponsehandler, void* live555responseData, portNumBits tunnelOverHTTPPortNum) {
-	return new ourRTSPClient(env, rtspURL, username, password, usetcp, verbosityLevel, applicationName, handle, reponsehandler, live555responseData, tunnelOverHTTPPortNum);
+	int verbosityLevel, char const* applicationName,void* handle,live555responseHandler* reponsehandler,void* live555responseData,portNumBits tunnelOverHTTPPortNum) {
+	return new ourRTSPClient(env, rtspURL, username, password, usetcp,verbosityLevel,applicationName, handle,reponsehandler,live555responseData,tunnelOverHTTPPortNum);
 }
 
 ourRTSPClient::ourRTSPClient(UsageEnvironment& env, char const* rtspURL, const char* username, const char* password, bool usetcp,
