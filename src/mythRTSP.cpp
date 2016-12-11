@@ -24,10 +24,7 @@ UsageEnvironment& operator<<(UsageEnvironment& env, const RTSPClient& rtspClient
 // A function that outputs a string that identifies each subsession (for debugging output).  Modify this if you wish:
 UsageEnvironment& operator<<(UsageEnvironment& env, const MediaSubsession& subsession) {
 	return env << subsession.mediumName() << "/" << subsession.codecName();
-}
-// Define a class to hold per-stream state that we maintain throughout each stream's lifetime:
-
-
+}                                              
 // If you're streaming just a single stream (i.e., just from a single URL, once), then you can define and use just a single
 // "StreamClientState" structure, as a global variable in your application.  However, because - in this demo application - we're
 // showing how to play multiple streams, concurrently, we can't do that.  Instead, we have to have a separate "StreamClientState"

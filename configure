@@ -6,6 +6,12 @@ cd libevent-2.0.22-stable
 ./configure && make && sudo make install
 cd ../
 
+cd live555
+chmod 755 genMakefiles
+./genMakefiles linux
+make && sudo make install
+cd ../
+
 for arg in "$@"
 do
 	if [ "$arg" = "--enable-pipeline" ]; then
