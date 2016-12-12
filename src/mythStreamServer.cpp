@@ -49,7 +49,11 @@ void mythStreamServer::connectViaUrl(mythRequestParser* parser)
 		decoder = mythStreamDecoder::CreateNew((char*) url.c_str());
 	}
 	else if (strcmp(urlheader, "file") == 0){
+#ifdef USEPIPELINE
+		decoder = mythFFmpegDecoder::CreateNew(url.c_str());
+#else
 		decoder = mythH264Decoder::CreateNew(url.c_str());
+#endif
 	}
 	delete [] urlheader;
 	if (decoder)
@@ -118,7 +122,8 @@ void mythStreamServer::connect()
 				delete result;
 			}
 			else{
-				this->decoder = mythStreamDecoder::CreateNew("192.168.1.130", 1017);
+				//only for test
+				this->decoder = mythStreamDecoder::CreateNew("120.204.70.218", 1017);
 				//this->decoder = mythLive555Decoder::CreateNew("rtsp://192.168.31.128:554/tcp/av0_0", "admin", "888888");
 				if (decoder){
 					decoder->SetMagic((void*) m_cameraid);	//set magic

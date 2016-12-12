@@ -37,6 +37,7 @@ public:
 	int isPush;
 	void* addtionaldata;
 	void* data;
+	std::string ip;
 private:
 	struct sockaddr_in addrSrv;
 	int _sockfd;

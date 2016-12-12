@@ -395,6 +395,7 @@
     <ClCompile Include="H264VideoStreamSink.cpp" />
     <ClCompile Include="IniFile.c" />
     <ClCompile Include="mythClientFactory.cpp" />
+    <ClCompile Include="mythFFmpegDecoder.cpp" />
     <ClCompile Include="mythFLVClient.cpp" />
     <ClCompile Include="mythH264Client.cpp" />
     <ClCompile Include="mythH264Decoder.cpp" />
@@ -445,6 +446,7 @@
     <ClInclude Include="mythClientFactory.hh" />
     <ClInclude Include="MythConfig.hh" />
     <ClInclude Include="mythFFmpeg.hh" />
+    <ClInclude Include="mythFFmpegDecoder.hh" />
     <ClInclude Include="mythFFmpegEncoder.hh" />
     <ClInclude Include="mythFLVClient.hh" />
     <ClInclude Include="mythGlobal.hh" />

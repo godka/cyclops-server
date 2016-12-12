@@ -1,4 +1,5 @@
 #pragma once
+#include "MythConfig.hh"
 #include <string>
 #include "tinyxml.h"
 class mythStreamSQLresult

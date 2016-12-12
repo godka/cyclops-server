@@ -17,5 +17,7 @@ protected:
 	mythNodeList();
 	struct list_head header;
 	std::mutex _mutex;
+private:
+	int _size;
 };
 

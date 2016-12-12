@@ -4,6 +4,7 @@
 #include "mythLive555Decoder.hh"
 #include "mythProxyDecoder.hh"
 #include "mythStreamDecoder.hh"
+#include "mythFFmpegDecoder.hh"
 #include "mythBaseClient.hh"
 #include "mythH264Decoder.hh"
 #include "mythStreamSQLresult.hh"

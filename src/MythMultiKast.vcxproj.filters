@@ -756,6 +756,9 @@
     <ClCompile Include="..\live555\UsageEnvironment\UsageEnvironment.cpp">
       <Filter>Source Files\kernel\live555-core\UsageEnvironment</Filter>
     </ClCompile>
+    <ClCompile Include="mythFFmpegDecoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -874,6 +877,9 @@
     </ClInclude>
     <ClInclude Include="..\live555\liveMedia\rtcp_from_spec.h">
       <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
+    </ClInclude>
+    <ClInclude Include="mythFFmpegDecoder.hh">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

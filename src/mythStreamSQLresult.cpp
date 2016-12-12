@@ -17,6 +17,9 @@ void mythStreamSQLresult::init(){
 		if (rootElement){
 			this->tablecontent = rootElement->FirstChildElement("TableContent");
 		}
+		else{
+			mythLog::GetInstance()->printf("xml parse failed:Tablecontent\n");
+		}
 	}
 	isfirst = true;
 }
@@ -32,6 +35,9 @@ bool mythStreamSQLresult::MoveNext()
 	if (isfirst){
 		if (tablecontent){
 			this->element = tablecontent->FirstChildElement("line");
+		}
+		else{
+			mythLog::GetInstance()->printf("xml parse failed:line\n");
 		}
 		isfirst = false;
 	}

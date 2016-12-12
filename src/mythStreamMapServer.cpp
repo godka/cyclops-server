@@ -42,6 +42,13 @@ int initalsocket(int port)
 		struct bufferevent *bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
 		int sockfd = bufferevent_getfd(bev);
 		MythSocket* people = MythSocket::CreateNew(sockfd);
+		sockaddr_in sin;
+		memcpy(&sin, address, sizeof(sin));
+		// 取得ip和端口号
+		auto ip = inet_ntoa(sin.sin_addr);
+		people->ip = ip;
+		//free(ip);
+		mythLog::GetInstance()->printf("socket:Incomming data,ip=%s,sockfd=%d\n", ip, sockfd);
 		bufferevent_setcb(bev, [](struct bufferevent *bev, void *ctx){
 			MythSocket* people = (MythSocket*) ctx;
 			if (people->isPush)

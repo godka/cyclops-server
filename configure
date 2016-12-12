@@ -9,7 +9,6 @@ cd ../
 cd live555
 chmod 755 genMakefiles
 ./genMakefiles linux
-make && sudo make install
 cd ../
 
 for arg in "$@"
@@ -27,6 +26,10 @@ do
 		make && sudo make install
 		cd ../
 		cat Makefile.pipeline > Makefile
+	elif [ "$arg" = "--enable-mingw" ]; then 
+		cd live555
+		./genMakefiles mingw
+		cd ../
 	fi
 done
 cat Makefile.tail >> Makefile

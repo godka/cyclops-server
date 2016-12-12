@@ -6,6 +6,7 @@ mythNodeList::mythNodeList(void)
 {
 	header.next = &header;
 	header.prev = &header;
+	_size = 0;
 }
 
 mythNodeList *mythNodeList::CreateNew(int BufferSize){
@@ -26,6 +27,7 @@ PacketQueue *mythNodeList::get(int freepacket){
 	else{
 		tmp = list_entry(header.next, struct PacketQueue, list);
 		list_del(&tmp->list);
+		_size--;
 	}
 	_mutex.unlock();
 	return tmp;
@@ -47,6 +49,8 @@ int mythNodeList::put(unsigned char* data, unsigned int length, unsigned int tim
 	tmp->TimeStamp = timestamp;
 	_mutex.lock();
 	list_add_tail(&tmp->list, &header);
+	_size++;
+	mythLog::GetInstance()->printf("mythNodeList:add,size=%d\n", _size);
 	_mutex.unlock();
 	return 0;
 }
