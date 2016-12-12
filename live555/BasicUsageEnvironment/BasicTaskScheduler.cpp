@@ -218,6 +218,7 @@ int BasicTaskScheduler::SingleStep(unsigned maxDelayTime) {
 
 	// Also handle any delayed event that may have come due.
 	fDelayQueue.handleAlarm();
+	return 0;
 }
 
 void BasicTaskScheduler

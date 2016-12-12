@@ -82,6 +82,9 @@
     <Filter Include="Source Files\kernel\live555-core\UsageEnvironment">
       <UniqueIdentifier>{3c25aab4-1772-4c9f-8e67-24f2d6e5b579}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\decoder\ffmpeg">
+      <UniqueIdentifier>{2645b869-f201-48b6-b383-338f896b3d5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -757,7 +760,7 @@
       <Filter>Source Files\kernel\live555-core\UsageEnvironment</Filter>
     </ClCompile>
     <ClCompile Include="mythFFmpegDecoder.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\decoder\ffmpeg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

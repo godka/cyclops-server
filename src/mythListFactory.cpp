@@ -6,10 +6,10 @@ mythListFactory::mythListFactory()
 	list_type = mythIniFile::GetInstance()->GetInt("config", "list_type");
 	switch (list_type)
 	{
-	case 0:
+	case 1:
 		vlist = mythNodeList::CreateNew();
 		break;
-	case 1:
+	case 0:
 		vlist = mythAvlist::CreateNew();
 		break;
 	default:

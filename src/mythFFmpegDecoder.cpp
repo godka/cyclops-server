@@ -60,41 +60,40 @@ int mythFFmpegDecoder::MainLoop()
 		auto start_time = av_gettime();
 		while (av_read_frame(ifmt_ctx, &pkt) >= 0){
 			if (pkt.stream_index == videoindex){
-				av_bitstream_filter_filter(h264bsfc, ifmt_ctx->streams[videoindex]->codec, NULL, &pkt.data, &pkt.size, pkt.data, pkt.size, 0);
+				AVPacket new_pkt = pkt;
+				auto ret = av_bitstream_filter_filter(h264bsfc, ifmt_ctx->streams[videoindex]->codec, NULL, &new_pkt.data, &new_pkt.size, pkt.data, pkt.size, 0);
+				if (ret > 0){
+					if (new_pkt.data != pkt.data){
+						av_free_packet(&pkt);
+						pkt.data = new_pkt.data;
+						pkt.size = new_pkt.size;
+						pkt.destruct = av_destruct_packet;
+					}
+					new_pkt.destruct = av_destruct_packet;
+				}
 				if (pkt.pts == AV_NOPTS_VALUE){
-					//Write PTS
 					AVRational time_base1 = ifmt_ctx->streams[videoindex]->time_base;
-					//Duration between 2 frames (us)
 					int64_t calc_duration = (double) AV_TIME_BASE / av_q2d(ifmt_ctx->streams[videoindex]->r_frame_rate);
-					//Parameters
 					pkt.pts = (double) (frame_index*calc_duration) / (double) (av_q2d(time_base1)*AV_TIME_BASE);
 					pkt.dts = pkt.pts;
 					pkt.duration = (double) calc_duration / (double) (av_q2d(time_base1)*AV_TIME_BASE);
 				}
 
-				//Important:Delay
-				if (pkt.stream_index == videoindex){
-					AVRational time_base = ifmt_ctx->streams[videoindex]->time_base;
-					AVRational time_base_q = { 1, AV_TIME_BASE };
-					int64_t pts_time = av_rescale_q(pkt.dts, time_base, time_base_q);
-					int64_t now_time = av_gettime() - start_time;
-					if (pts_time > now_time)
-						av_usleep(pts_time - now_time);
-
-				}
-				//av_usleep(400);
+				AVRational time_base = ifmt_ctx->streams[videoindex]->time_base;
+				AVRational time_base_q = { 1, AV_TIME_BASE };
+				int64_t pts_time = av_rescale_q(pkt.dts, time_base, time_base_q);
+				int64_t now_time = av_gettime() - start_time;
+				if (pts_time > now_time)
+					av_usleep(pts_time - now_time);
+				//av_usleep(40 * 1000);
 				auto in_stream = ifmt_ctx->streams[pkt.stream_index];
 				auto out_stream = ifmt_ctx->streams[pkt.stream_index];
-				/* copy packet */
-				//Convert PTS/DTS
 				pkt.pts = av_rescale_q_rnd(pkt.pts, in_stream->time_base, out_stream->time_base, (AVRounding) (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
 				pkt.dts = av_rescale_q_rnd(pkt.dts, in_stream->time_base, out_stream->time_base, (AVRounding) (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
 				pkt.duration = av_rescale_q(pkt.duration, in_stream->time_base, out_stream->time_base);
 				pkt.pos = -1;
-				//Print to Screen
-				//printf("Send %8d video frames to output URL\n", frame_index);
 				frame_index++;
-				put(pkt.data, pkt.size, pkt.pts);
+				put(pkt.data, pkt.size, pkt.dts);
 			}
 			av_free_packet(&pkt);
 		}

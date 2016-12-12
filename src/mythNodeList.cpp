@@ -50,7 +50,7 @@ int mythNodeList::put(unsigned char* data, unsigned int length, unsigned int tim
 	_mutex.lock();
 	list_add_tail(&tmp->list, &header);
 	_size++;
-	mythLog::GetInstance()->printf("mythNodeList:add,size=%d\n", _size);
+	//mythLog::GetInstance()->printf("mythNodeList:add,size=%d\n", _size);
 	_mutex.unlock();
 	return 0;
 }
