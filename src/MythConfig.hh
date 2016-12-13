@@ -6,6 +6,7 @@
 #include "mythIniFile.hh"
 #include "mythLog.hh"
 #define USEPIPELINE 1
+#define USETHREAD 1
 #if (defined _WIN32) || (defined WIN32)
 #	
 #	pragma comment(lib,"ws2_32")

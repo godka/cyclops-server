@@ -1,5 +1,12 @@
 #pragma once
 #include "mythBaseClient.hh"
+
+typedef unsigned int UINT;
+typedef unsigned char BYTE;
+typedef unsigned long DWORD;
+
+#define FLV_TAG_HEAD_LEN 11
+#define FLV_PRE_TAG_LEN 4
 class mythFLVClient :
 	public mythBaseClient
 {

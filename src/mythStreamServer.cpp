@@ -42,7 +42,7 @@ void mythStreamServer::connectViaUrl(mythRequestParser* parser)
 		return;
 	auto urlheader = parseUrlHeader(url.c_str());
 	if (strcmp(urlheader, "rtsp") == 0){
-		auto rtsptransport = parser->Parse("in_transport");
+		auto rtsptransport = parser->Parse("transport");
 		decoder = mythLive555Decoder::CreateNew((char*) url.c_str(), rtsptransport == "tcp" ? true : false);
 	}
 	else if (strcmp(urlheader, "stream") == 0){
@@ -53,6 +53,14 @@ void mythStreamServer::connectViaUrl(mythRequestParser* parser)
 		decoder = mythFFmpegDecoder::CreateNew(url.c_str());
 #else
 		decoder = mythH264Decoder::CreateNew(url.c_str());
+#endif
+	}
+	else{
+#ifdef USEPIPELINE
+		std::string inputstr = "file://" + url;
+		decoder = mythFFmpegDecoder::CreateNew(inputstr.c_str());
+#else
+		mythLog::GetInstance()->printf("Error in Create Decoder,Please use --enable-pipeline to support:%s\n",url.c_str());
 #endif
 	}
 	delete [] urlheader;

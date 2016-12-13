@@ -27,6 +27,7 @@ int mythFFmpegDecoder::MainLoop()
 	int videoindex = -1;
 
 	av_register_all();
+	avformat_network_init();
 
 	int frame_index = 0;
 	while (flag == 0){

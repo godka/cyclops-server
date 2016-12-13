@@ -1,27 +1,13 @@
 #pragma once
 #include "MythConfig.hh"
-extern "C"{
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
-};
 #include "MythSocket.hh"
-#include <thread>
-#include <chrono>
-#include <memory.h>
-
-#include <stdint.h>
-#include <fcntl.h>
-#include <math.h>
-
-typedef unsigned int UINT;
-typedef unsigned char BYTE;
-typedef unsigned long DWORD;
-
-#define FLV_TAG_HEAD_LEN 11
-#define FLV_PRE_TAG_LEN 4
-
+#include "mythAvlist.hh"
+#ifdef USETHREAD
+	#include <thread>
+#endif
 #define MYTHPROTOCOL_TCP 0
 #define MYTHPROTOCOL_HTTP 1
 class mythBaseClient
@@ -41,5 +27,11 @@ protected:
 	mythBaseClient(MythSocket* people, char* protocol = "tcp");
 	int mythSendMessage(void* data, int length = -1);
 	int _mythprotocol;
+#ifdef USETHREAD
+	void mainthread();
+	mythAvlist* _avlist;
+	std::thread* _thread;
+	bool _isrunning;
+#endif
 };
 
