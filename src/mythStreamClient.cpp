@@ -21,11 +21,13 @@ int mythStreamClient::DataCallBack(PacketQueue* pkt)
 	}
 	char tempbuf[256] = { 0 };
 
-	if (isfirst){
-		if (mythSendMessage(firstrequest) < 0){
-			return -1;
+	if (_mythprotocol == MYTHPROTOCOL_HTTP){
+		if (isfirst){
+			if (mythSendMessage(firstrequest) < 0){
+				return -1;
+			}
+			isfirst = false;
 		}
-		isfirst = false;
 	}
 	auto t = std::chrono::system_clock::now();
 	auto tt = std::chrono::system_clock::to_time_t(t);

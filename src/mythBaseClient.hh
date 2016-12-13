@@ -22,20 +22,24 @@ typedef unsigned long DWORD;
 #define FLV_TAG_HEAD_LEN 11
 #define FLV_PRE_TAG_LEN 4
 
+#define MYTHPROTOCOL_TCP 0
+#define MYTHPROTOCOL_HTTP 1
 class mythBaseClient
 {
 public:
 	bool isfirst;
-	static mythBaseClient* CreateNew(MythSocket* people);
+	static mythBaseClient* CreateNew(MythSocket* people, char* protocol = "tcp");
 	virtual int DataCallBack(PacketQueue* pkt);
 	virtual void CloseClient();
+	int SetProtocol(const char* protocol);
 	~mythBaseClient(void);
 private:
 	MythSocket* mpeople;
 	//void OnFlvFrame(unsigned char* data, int len);
 protected:
 	long long _basictick;
-	mythBaseClient(MythSocket* people);
+	mythBaseClient(MythSocket* people, char* protocol = "tcp");
 	int mythSendMessage(void* data, int length = -1);
+	int _mythprotocol;
 };
 

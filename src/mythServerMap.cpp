@@ -35,7 +35,7 @@ void mythServerMap::AppendClient(mythRequestParser* parser, MythSocket* people){
 		server = tempservermap[url];
 	}
 	if (server){
-		auto client = mythClientFactory::CreateNew(people, parser->Parse("Type").c_str());
+		auto client = mythClientFactory::CreateNew(people, parser->Parse("Type").c_str(), parser->Parse("protocol").c_str());
 		if (client){
 			people->data = server;
 			people->addtionaldata = client;

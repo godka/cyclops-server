@@ -11,11 +11,13 @@ int mythH264Client::DataCallBack(PacketQueue* pkt)
 	auto data = pkt->Packet;
 	auto len = pkt->PacketLength;
 
-	if (isfirst){
-		if (mythSendMessage(firstrequest) < 0){
-			return -1;
+	if (_mythprotocol == MYTHPROTOCOL_HTTP){
+		if (isfirst){
+			if (mythSendMessage(firstrequest) < 0){
+				return -1;
+			}
+			isfirst = false;
 		}
-		isfirst = false;
 	}
 	if (mythSendMessage(data, len) < 0){
 		return -1;

@@ -1,7 +1,7 @@
 ﻿#include "mythBaseClient.hh"
 #include <iostream>
 
-mythBaseClient::mythBaseClient(MythSocket* people)
+mythBaseClient::mythBaseClient(MythSocket* people, char* protocol)
 {
 	_basictick = ~0;
 	mpeople = people;
@@ -17,9 +17,9 @@ int mythBaseClient::DataCallBack(PacketQueue* pkt)
 	return 0;
 }
 
-mythBaseClient* mythBaseClient::CreateNew(MythSocket* people)
+mythBaseClient* mythBaseClient::CreateNew(MythSocket* people,char* protocol)
 {
-	return new mythBaseClient(people);
+	return new mythBaseClient(people,protocol);
 }
 
 int mythBaseClient::mythSendMessage(void* data, int length)
@@ -43,4 +43,15 @@ void mythBaseClient::CloseClient()
 	if (mpeople){
 		mpeople->socket_CloseSocket();
 	}
+}
+
+int mythBaseClient::SetProtocol(const char* protocol)
+{
+	if (strcmp(protocol, "tcp") == 0){
+		_mythprotocol = MYTHPROTOCOL_TCP;
+	}
+	else{
+		_mythprotocol = MYTHPROTOCOL_HTTP;
+	}
+	return 0;
 }

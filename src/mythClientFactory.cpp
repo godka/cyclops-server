@@ -1,19 +1,24 @@
 #include "mythClientFactory.hh"
 
-mythBaseClient* mythClientFactory::CreateNew(MythSocket* people, const char* CameraType)
+mythBaseClient* mythClientFactory::CreateNew(MythSocket* people, const char* CameraType,const char* protocol)
 {
+	mythBaseClient* client = nullptr;
 	if (CameraType){
 		if (strcmp(CameraType, "zyh264") == 0){
-			return mythStreamClient::CreateNew(people);
+			client = mythStreamClient::CreateNew(people);
 		}
 		else if (strcmp(CameraType, "flv") == 0){
-			return mythFLVClient::CreateNew(people);
+			client = mythFLVClient::CreateNew(people);
 		}
 		else{
-			return mythH264Client::CreateNew(people);
+			client = mythH264Client::CreateNew(people);
 		}
 	}
 	else{
-		return nullptr;
+		client = mythH264Client::CreateNew(people);
 	}
+	if (client){
+		client->SetProtocol(protocol);
+	}
+	return client;
 }

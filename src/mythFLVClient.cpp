@@ -16,8 +16,10 @@ int mythFLVClient::DataCallBack(PacketQueue* pkt)
 	uint32_t nal_len;
 	uint8_t *nal;
 	if (isfirst){
-		if (mythSendMessage((void*) flvfirstrequest) < 0){
-			return -1;
+		if (_mythprotocol == MYTHPROTOCOL_HTTP){
+			if (mythSendMessage((void*) flvfirstrequest) < 0){
+				return -1;
+			}
 		}
 		uint8_t flv_header[13] = { 0x46, 0x4c, 0x56, 0x01, 0x01, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x00 };
 		if (mythSendMessage(flv_header, 13) < 0){

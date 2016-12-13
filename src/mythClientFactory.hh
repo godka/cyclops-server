@@ -7,6 +7,6 @@
 class mythClientFactory
 {
 public:
-	static mythBaseClient* CreateNew(MythSocket* people, const char* cameratype);
+	static mythBaseClient* CreateNew(MythSocket* people, const char* cameratype, const char* protocol = "http");
 };
 
