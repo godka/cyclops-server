@@ -1,3 +1,11 @@
+cd libevent-2.0.22-stable
+make && make install
+cd ../
+
+cd live555
+make && make install
+cd ../
+
 CXX=g++
 CC=gcc
 CPPINCLUDE += -I/usr/local/include -I./src -I/usr/local/include/groupsock -I/usr/local/include/UsageEnvironment -I/usr/local/include/BasicUsageEnvironment -I/usr/local/include/liveMedia
