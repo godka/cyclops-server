@@ -2,6 +2,8 @@
 #include <memory.h>
 #include <thread>
 MythSocket::MythSocket(int sockfd){
+	addtionaldata = nullptr;
+	data = nullptr;
 	_sockfd = sockfd;
 	downlength = 0;
 	isPush = 0;

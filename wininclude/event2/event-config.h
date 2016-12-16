@@ -125,7 +125,7 @@
 /* #undef _EVENT_HAVE_SA_FAMILY_T */
 
 /* Define to 1 if you have the `select' function. */
-/* #undef _EVENT_HAVE_SELECT */
+#define _EVENT_HAVE_SELECT 1
 
 /* Define to 1 if you have the `sendfile' function. */
 /* #undef _EVENT_HAVE_SENDFILE */

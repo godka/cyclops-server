@@ -98,12 +98,13 @@ int initalsocket(int port)
 			}
 		}, NULL, [](struct bufferevent *bev, short events, void *ctx){
 			mythLog::GetInstance()->printf("event on %d\n", events);
+			
 			MythSocket* people = (MythSocket*) ctx;
 			if (events & BEV_EVENT_ERROR)
 				perror("Error from bufferevent");
 			if (events & (BEV_EVENT_EOF | BEV_EVENT_ERROR)) {
 				bufferevent_free(bev);
-				//servermap->DropClient(people);
+				servermap->DropClient(people);
 				//delete people;
 			}
 		}, people);

@@ -120,10 +120,12 @@ void mythServerMap::DropClient(MythSocket* people)
 		server->DropClient(client);
 		delete client;
 		client = nullptr;
-		people->socket_CloseSocket();
-		delete people;
 		mapmutex.unlock();
 	}
+	/*why not close socket*/
+	/*libevent says:I wanna close it in bufferevent_free,so close it now will cause stackflow*/
+	//people->socket_CloseSocket();
+	delete people;
 
 }
 
