@@ -4,6 +4,7 @@ rm Makefile
 tar -zxvf libevent-2.0.22-stable.tar.gz
 cd libevent-2.0.22-stable
 ./configure --prefix=/usr/local
+make -j && sudo make install
 cd ../
 
 cd live555
@@ -34,8 +35,6 @@ do
 done
 
 cd live555
-make && sudo make install
+make -j && sudo make install
 cd ../
 
-cat Makefile.tail >> Makefile
-echo "All ok,Type make to build"
