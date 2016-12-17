@@ -55,8 +55,14 @@ int mythLive555Decoder::ParseRTSPlink(char* src, char* rtsplink, char* username,
 		password = "";
 	}
 	else{
-		memcpy(username, &src[7], j - 7);
-		memcpy(password, &src[j + 1], i - j - 1);
+		if (i <= j){
+			username = "";
+			password = "";
+		}
+		else{
+			memcpy(username, &src[7], j - 7);
+			memcpy(password, &src[j + 1], i - j - 1);
+		}
 	}
 	return 0;
 }
