@@ -17,7 +17,7 @@ extern "C"{
 class mythFFmpeg
 {
 public:
-	typedef void (responseHandler)(void *myth,char** pdata, int* plength,int width,int height);
+	typedef void (responseHandler)(void *myth,char** pdata, int* plength,int width,int height,char* oridata,int orilen);
 	mythFFmpeg(void* phwnd);
 	static void RGB2yuv(int width, int height, int stride, const void* src, void** dst);
 	~mythFFmpeg(void);

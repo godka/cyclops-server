@@ -5,7 +5,8 @@
 #include <stdio.h>
 #include "mythIniFile.hh"
 #include "mythLog.hh"
-//#define USEPIPELINE 1
+#define USEPIPELINE 1
+#define USEENCODER 1
 //#define USETHREAD 1
 #if (defined _WIN32) || (defined WIN32)
 #	
@@ -59,6 +60,8 @@ typedef struct PacketQueue {
 	unsigned int stream_type;
 	unsigned int TimeStamp;
 	unsigned int PacketCount;
+	unsigned int width;
+	unsigned int height;
 	void* magic;
 	bool isIframe;
 	struct list_head list;

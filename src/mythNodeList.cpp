@@ -76,6 +76,8 @@ int mythNodeList::put(unsigned char** dataline, unsigned int *datasize, int widt
 	unsigned int Vdatasize = datasize[2];
 	tmp->yuvPacket[0] = YY; tmp->yuvPacket[1] = UU; tmp->yuvPacket[2] = VV;
 	tmp->TimeStamp = timestamp;
+	tmp->width = width;
+	tmp->height = height;	
 	tmp->yuvPacketLength[0] = Ydatasize; tmp->yuvPacketLength[1] = Udatasize; tmp->yuvPacketLength[2] = Vdatasize;
 	return 0;
 }

@@ -82,7 +82,7 @@ unsigned char* mythAvlist::putcore(unsigned char* data,unsigned int datasize){
 	return (totalbuffer + totalptr - datasize);
 }
 
-int mythAvlist::put(unsigned char** dataline, unsigned int *datasize, int width, int height, unsigned int timestamp){
+int mythAvlist::put(unsigned char** dataline, unsigned int *datasize, int width, int height, unsigned int timestamp,char* oridata,int orilen){
 	if(listwrite >= AVFRAMECOUNT)listwrite = 0;
 	PacketQueue *tmp = &ListPacket[listwrite];
 	tmp->Packet = NULL;
@@ -95,6 +95,12 @@ int mythAvlist::put(unsigned char** dataline, unsigned int *datasize, int width,
 	tmp->yuvPacket[0] = YY; tmp->yuvPacket[1] = UU; tmp->yuvPacket[2] = VV;
 	tmp->yuvPacketLength[0] = Ydatasize; tmp->yuvPacketLength[1] = Udatasize; tmp->yuvPacketLength[2] = Vdatasize;
 	tmp->TimeStamp = timestamp;
+	tmp->width = width;
+	tmp->height = height;
+	if (oridata)
+		tmp->Packet = (unsigned char*)oridata;
+	if (orilen > 0)
+		tmp->PacketLength = orilen;
 	listwrite++;
 	return 0;
 }

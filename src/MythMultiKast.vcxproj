@@ -401,6 +401,7 @@
     <ClCompile Include="mythH264Decoder.cpp" />
     <ClCompile Include="mythLog.cpp" />
     <ClCompile Include="mythNodeList.cpp" />
+    <ClCompile Include="mythRec.cpp" />
     <ClCompile Include="mythRequestParser.cpp" />
     <ClCompile Include="mythStreamClient.cpp" />
     <ClCompile Include="main.cpp" />
@@ -458,6 +459,7 @@
     <ClInclude Include="mythMediaPipeline.hh" />
     <ClInclude Include="mythNodeList.hh" />
     <ClInclude Include="mythProxyDecoder.hh" />
+    <ClInclude Include="mythRec.hh" />
     <ClInclude Include="mythRequestParser.hh" />
     <ClInclude Include="mythRTSP.hh" />
     <ClInclude Include="mythServerMap.hh" />

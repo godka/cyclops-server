@@ -112,7 +112,8 @@ void mythFFmpeg::ProcessFrame(unsigned char* framePtr, int frameSize,responseHan
 			}
 			if (got_frame){
 				//callback
-				response(this->hwnd, (char**) avFrame->data, avFrame->linesize, avFrame->width, avFrame->height);
+				response(this->hwnd, (char**) avFrame->data, avFrame->linesize, avFrame->width, avFrame->height, 
+					(char*)framePtr, frameSize);
 			}
 			avpkt.size -= len;
 			avpkt.data += len;

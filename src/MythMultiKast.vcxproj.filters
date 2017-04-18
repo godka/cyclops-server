@@ -762,6 +762,9 @@
     <ClCompile Include="mythFFmpegDecoder.cpp">
       <Filter>Source Files\decoder\ffmpeg</Filter>
     </ClCompile>
+    <ClCompile Include="mythRec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mythAvlist.hh">
@@ -882,6 +885,9 @@
       <Filter>Source Files\kernel\live555-core\liveMedia</Filter>
     </ClInclude>
     <ClInclude Include="mythFFmpegDecoder.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mythRec.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

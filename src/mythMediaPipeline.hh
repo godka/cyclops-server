@@ -2,16 +2,18 @@
 #include "MythConfig.hh"
 #ifdef USEPIPELINE
 #include "mythAvlist.hh"
+#include "mythRec.hh"
 #include "mythFFmpeg.hh"
 #include "mythFFmpegEncoder.hh"
 #include <thread>
 #define mythH264 0
 #define mythH265 1
 class mythMediaPipeline :
-	public mythAvlist
+	public mythAvlist, public mythRec
 {
 public:
-	void decodecallback(char** pdata, int* plength, int width, int height);
+	//void decodecallback(char** pdata, int* plength, int width, int height);
+	void decodecallback(char** pdata, int* plength, int width, int height, char* oridata, int orilen);
 	void encodecallback(char* pdata, int plength);
 	static mythMediaPipeline* CreateNew(void* ptr,int streamtype, int level){
 		return new mythMediaPipeline(ptr,streamtype, level);
@@ -23,7 +25,9 @@ protected:
 	mythMediaPipeline(void* ptr,int streamtype, int level);
 private:
 	mythFFmpeg* m_decoder;
+#ifdef USEENCODER
 	mythFFmpegEncoder* m_encoder;
+#endif
 	void* _ptr;
 	int _streamtype;
 	int _level;
