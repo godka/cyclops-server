@@ -167,6 +167,7 @@ int mythRec::writeavcframe(uint8_t * nal, uint32_t nal_len, uint32_t timestamp, 
 	if (file)
 		fwrite(output, 1, output_len, file);
 	_mutex.unlock();
+	free(output);
 	return 0;
 }
 
