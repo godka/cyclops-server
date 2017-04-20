@@ -20,10 +20,15 @@ mythMediaPipeline::mythMediaPipeline(void* ptr,int streamtype, int level)
 
 int mythMediaPipeline::encodethread()
 {
+	static unsigned int count = 0;
 	while (isrunning){
 		PacketQueue* pkt = yuvlist->get();
 		if (pkt){
-			SingleStep(pkt);
+			count++;
+			if (count % 12 == 0){
+				SingleStep(pkt);
+				count == 0;
+			}
 			/*
 			m_encoder->ProcessFrame((unsigned char**) pkt->yuvPacket, (int*) pkt->yuvPacketLength, [](void* ptr, char* pdata, int plength){
 				if (ptr){

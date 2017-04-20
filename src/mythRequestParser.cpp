@@ -10,7 +10,7 @@ mythRequestParser::mythRequestParser(const char* str)
 
 void mythRequestParser::parseCore(const char* str)
 {
-	std::string tmp = str;
+	std::string tmp = URLDecode(str);
 	std::vector<std::string> findGet;
 	split(tmp, " ", findGet);
 	if (findGet.size() > 1){
@@ -21,14 +21,107 @@ void mythRequestParser::parseCore(const char* str)
 			Success = false;
 			return;
 		}
-		std::string tmpstr = &t[1];
-		std::vector<std::string> spstr;
-		split(tmpstr, "&", spstr);
-		for(auto& t : spstr){
-			std::vector<std::string> sp;
-			split(t, "=", sp);
-			if (sp.size() > 1){
-				_mapcore[sp[0]] = sp[1];
+		char* tmp = (char*) &t[1];
+		char key[4096] = { 0 };
+		int keyindex = 0;
+		char value[4096] = { 0 };
+		int valueindex = 0;
+		int status = 0;
+		int instring = 0;
+		for (int i = 0; i < strlen(tmp); i++){
+			switch (tmp[i])
+			{
+			case '=':
+				if (instring == 0){
+					status = 1;
+				}
+				else{
+					switch (status)
+					{
+					case 0:
+						key[keyindex] = tmp[i];
+						keyindex++;
+						break;
+					case 1:
+						value[valueindex] = tmp[i];
+						valueindex++;
+						break;
+					default:
+						break;
+					}
+				}
+				break;
+			case '&':
+				if (instring == 0){
+					status = 0;
+					_mapcore[key] = value;
+					memset(key, 0, 4096);
+					memset(value, 0, 4096);
+					keyindex = 0;
+					valueindex = 0;
+				}
+				else{
+					switch (status)
+					{
+					case 0:
+						key[keyindex] = tmp[i];
+						keyindex++;
+						break;
+					case 1:
+						value[valueindex] = tmp[i];
+						valueindex++;
+						break;
+					default:
+						break;
+					}
+				}
+				break;
+			case '"':
+				if (instring == 0){
+					instring = 1;
+				}
+				else{
+					instring = 0;
+				}
+				switch (status)
+				{
+				case 0:
+					key[keyindex] = tmp[i];
+					keyindex++;
+					break;
+				case 1:
+					//value[valueindex] = tmp[i];
+					//valueindex++;
+					break;
+				default:
+					break;
+				}
+				break;
+			default:
+				switch (status)
+				{
+				case 0:
+					key[keyindex] = tmp[i];
+					keyindex++;
+					break;
+				case 1:
+					value[valueindex] = tmp[i];
+					valueindex++;
+					break;
+				default:
+					break;
+				}
+				break;
+			}
+			if (i == (strlen(tmp) - 1)){
+				if (instring == 0){
+					status = 0;
+					_mapcore[key] = value;
+					memset(key, 0, 4096);
+					memset(value, 0, 4096);
+					keyindex = 0;
+					valueindex = 0;
+				}
 			}
 		}
 		Success = true;
@@ -61,7 +154,7 @@ std::string& mythRequestParser::Parse(std::string key)
 
 int mythRequestParser::ParseInt(std::string key)
 {
-	auto ret = Parse(key);
+	std::string ret = Parse(key);
 	if (ret == ""){
 		return -1;
 	}

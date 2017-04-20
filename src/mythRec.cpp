@@ -111,8 +111,10 @@ int mythRec::writespspps(uint8_t * sps, uint32_t spslen, uint8_t * pps, uint32_t
 	output[offset++] = (uint8_t) (fff >> 16); //data len
 	output[offset++] = (uint8_t) (fff >> 8); //data len
 	output[offset++] = (uint8_t) (fff); //data len
+	_mutex.lock();
 	if (file)
 		fwrite(output, 1, output_len, file);
+	_mutex.unlock();
 	free(output);
 	return 0;
 }
@@ -161,8 +163,10 @@ int mythRec::writeavcframe(uint8_t * nal, uint32_t nal_len, uint32_t timestamp, 
 	output[offset++] = (uint8_t) (fff >> 8); //data len
 	output[offset++] = (uint8_t) (fff); //data len
 	//fwrite(output, output_len, 1, flv_file);
+	_mutex.lock();
 	if (file)
 		fwrite(output, 1, output_len, file);
+	_mutex.unlock();
 	return 0;
 }
 
@@ -181,7 +185,11 @@ void mythRec::StartRecord()
 	sprintf(timefilename, "%04d-%02d-%02d-%02d-%02d-%02d-%03d.flv",
 		1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, ms_part.count());
 	mythLog::GetInstance()->printf("[mythrec]start record:%s\n", timefilename);
+
+	_mutex.lock();
 	file = fopen(timefilename, "wb");
+	_mutex.unlock();
+
 	isRecording = true;
 	_basictick = ~0;
 	_hassendIframe = false;
@@ -258,12 +266,14 @@ void mythRec::WriteFrame(char* data,int len)
 void mythRec::StopRecord()
 {
 	if (file){
+		_mutex.lock();
 		fclose(file);
+		file = NULL;
+		_mutex.unlock();
 		mythLog::GetInstance()->printf("[mythrec]stop record\n");
 	}
 	timenow = 0;
 	isRecording = false;
-	file = NULL;
 	isfirst = false;
 	_basictick = ~0;
 	_hassendIframe = false;
@@ -309,7 +319,7 @@ bool mythRec::IsMotion(PacketQueue* pkt)
 		double ins_d = sqrt(ins_c * ins_b);
 		ans = ins_a / ins_d;
 	}
-	record_last_pkt = pkt;
+	DeepCopy(pkt);
 	ans = abs(ans);
 	if (ans < 0.99)
 		return true;
@@ -317,6 +327,17 @@ bool mythRec::IsMotion(PacketQueue* pkt)
 		return false;
 }
 
+void mythRec::DeepCopy(PacketQueue* pkt)
+{
+	if (!record_last_pkt){
+		record_last_pkt = new PacketQueue();
+		record_last_pkt->yuvPacket[0] = new unsigned char[pkt->yuvPacketLength[0] * pkt->height];
+	}		
+	memcpy(record_last_pkt->yuvPacket[0], pkt->yuvPacket[0], pkt->yuvPacketLength[0] * pkt->height);
+	record_last_pkt->yuvPacketLength[0] = pkt->yuvPacketLength[0];
+	record_last_pkt->width = pkt->width;
+	record_last_pkt->height = pkt->height;
+}
 void mythRec::SingleStep(PacketQueue* pkt)
 {
 	if (isRecording){

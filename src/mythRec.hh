@@ -1,5 +1,6 @@
 #pragma once
 #include "MythConfig.hh"
+#include <mutex>
 class mythRec
 {
 public:
@@ -32,11 +33,13 @@ private:
 	void StartRecord();
 	void StopRecord();
 	bool IsMotion(PacketQueue* pkt);
+	void DeepCopy(PacketQueue* pkt);
 	int RECORD_DELAY_TIME;
 	int RECORD_THRESHOLD;
 	PacketQueue* record_last_pkt;
 	long long _basictick;
 	bool isfirst;
 	bool _hassendIframe;
+	std::mutex _mutex;
 };
 
