@@ -2,6 +2,25 @@
 #include "mythRequestParser.hh"
 mythServerMap* servermap = nullptr;
 
+cJSON* loadConfigFile(char const* path) {
+	FILE *f;
+	if ((f = fopen(path, "rb")) == NULL)
+		return NULL;
+
+	cJSON* json = NULL;
+	fseek(f, 0, SEEK_END);
+	long len = ftell(f);
+	fseek(f, 0, SEEK_SET);
+	char* data = (char*) malloc(len + 1);
+	if (fread(data, 1, len, f) == (size_t) len) {
+		data[len] = '\0';
+		json = cJSON_Parse(data);
+	}
+	free(data);
+	fclose(f);
+	return json;
+}
+
 int initalsocket(int port)
 {
 	struct event_base *base;
@@ -20,6 +39,9 @@ int initalsocket(int port)
 	event_config_avoid_method(cfg, "select");   //避免使用低效率select
 	//event_config_require_features(cfg, EV_FEATURE_ET);  //使用边沿触发类型
 	servermap = mythServerMap::CreateNew();
+	cJSON* in = loadConfigFile("camera.json");
+	if (in)
+		servermap->AppendClient(in);
 	base = event_base_new_with_config(cfg);
 	event_config_free(cfg);
 	//显示当前使用的异步类型

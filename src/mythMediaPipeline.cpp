@@ -28,7 +28,7 @@ int mythMediaPipeline::encodethread()
 			//get motion per second
 			if (count % 25 == 0){
 				SingleStep(pkt);
-				count == 0;
+				count = 0;
 			}
 			/*
 			m_encoder->ProcessFrame((unsigned char**) pkt->yuvPacket, (int*) pkt->yuvPacketLength, [](void* ptr, char* pdata, int plength){

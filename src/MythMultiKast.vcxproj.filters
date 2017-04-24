@@ -763,6 +763,9 @@
       <Filter>Source Files\decoder\ffmpeg</Filter>
     </ClCompile>
     <ClCompile Include="mythRec.cpp">
+      <Filter>Source Files\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -888,6 +891,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mythRec.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

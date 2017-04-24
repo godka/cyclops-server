@@ -6,6 +6,7 @@
 #include "mythBaseClient.hh"
 #include "mythStreamServer.hh"
 #include "mythRequestParser.hh"
+#include "cJSON.h"
 class mythServerMap
 {
 public:
@@ -16,6 +17,7 @@ public:
 	void AppendClient(int cameraid);
 	void AppendClient(int cameraid, MythSocket* people);
 	void AppendClient(mythRequestParser* parser, MythSocket* people);
+	void AppendClient(cJSON* parser);
 	void DropClient(MythSocket* socket);
 	~mythServerMap();
 protected:

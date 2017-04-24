@@ -19,6 +19,34 @@ int mythServerMap::FreeCameraID(mythStreamServer* server)
 	return -1;
 }
 
+void mythServerMap::AppendClient(cJSON* parser){
+	mapmutex.lock();
+	int iCount = cJSON_GetArraySize(parser);
+	for (int i = 0; i < iCount; ++i) {
+		cJSON* pItem = cJSON_GetArrayItem(parser, i);
+		if (NULL == pItem)
+			continue;
+		cJSON* cjson_url = cJSON_GetObjectItem(pItem, "url");
+		if (cjson_url){
+			auto url = cjson_url->valuestring;
+			mythStreamServer* server = nullptr;
+			if (tempservermap[url] == NULL){
+				server = mythStreamServer::CreateNew(parser);
+				auto cameraid = FreeCameraID(server);
+				if (cameraid > 0 && server){
+					server->SetID(cameraid);
+				}
+				tempservermap[url] = server;
+			}
+			else{
+				server = tempservermap[url];
+			}
+		}
+	}
+	cJSON_Delete(parser);
+	mapmutex.unlock();
+}
+
 void mythServerMap::AppendClient(mythRequestParser* parser, MythSocket* people){
 	auto url = parser->Parse("url");
 	mythStreamServer* server = nullptr;

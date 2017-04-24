@@ -11,6 +11,7 @@
 #include "mythRequestParser.hh"
 #include <string>
 #include <thread>
+#include "cJSON.h"
 class mythStreamServer 
 {
 public:
@@ -18,7 +19,8 @@ public:
 	int AppendClient(mythBaseClient* client);
 	int DropClient(mythBaseClient* client);
 	static mythStreamServer* CreateNew(int cameraid,void* args = NULL);
-	static mythStreamServer* CreateNew(mythRequestParser* parser,int cameraid = -1);
+	static mythStreamServer* CreateNew(mythRequestParser* parser, int cameraid = -1);
+	static mythStreamServer* CreateNew(cJSON* parser, int cameraid = -1);
 	//mythStreamServer* CreateNew(int cameraid, void* args);
 	~mythStreamServer(void);
 	mythVirtualDecoder* GetDecoder(){
@@ -40,6 +42,7 @@ private:
 	mythBaseClient** _baselist;
 	void connect();
 	void connectViaUrl(mythRequestParser* parser);
+	void connectViaUrl(cJSON* parser);
 	char* parseUrlHeader(const char* url);
 	void SetStart(bool foo);
 	bool GetStart();
@@ -54,6 +57,7 @@ protected:
 	std::string realcameraid;
 	mythStreamServer(int cameraid, void* args = NULL);
 	mythStreamServer(mythRequestParser* parser, int cameraid = -1);
+	mythStreamServer(cJSON* parser, int cameraid = -1);
 	bool FindClient(mythBaseClient* ival);
 	std::thread* streamserverthread;
 	int isrunning;

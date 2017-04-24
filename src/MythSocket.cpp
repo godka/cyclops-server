@@ -156,9 +156,9 @@ int MythSocket::socket_ReceiveData(char* recvBuf, int recvLength, int timeout)
 {
 	if (!_isconnected)
 		return -1;
-	//if (wait_on_socket(_sockfd, 1, 1000L) < 0){
-	//	return -1;
-	//}
+	if (wait_on_socket(_sockfd, 1, 1000L) < 0){
+		return -1;
+	}
 	return recv(_sockfd, recvBuf, recvLength,0);
 }
 

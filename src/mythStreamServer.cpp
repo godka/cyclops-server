@@ -7,6 +7,12 @@ mythStreamServer* mythStreamServer::CreateNew(int cameraid,void* args){
 mythStreamServer* mythStreamServer::CreateNew(mythRequestParser* parser, int cameraid){
 	return new mythStreamServer(parser,cameraid);
 }
+
+mythStreamServer* mythStreamServer::CreateNew(cJSON* parser, int cameraid /*= -1*/)
+{
+	return new mythStreamServer(parser, cameraid);
+}
+
 mythStreamServer::mythStreamServer(int cameraid, void* args)
 {
 	streamserverthread = nullptr;
@@ -30,11 +36,54 @@ mythStreamServer::mythStreamServer(mythRequestParser* parser, int cameraid)
 	connectViaUrl(parser);
 }
 
+mythStreamServer::mythStreamServer(cJSON* parser, int cameraid /*= -1*/)
+{
+	m_cameraid = cameraid;
+	streamserverthread = nullptr;
+	decoder = nullptr;
+	_baselist = new mythBaseClient*[STREAMSERVERMAX];
+	SetStart(false);
+	memset(_baselist, 0, sizeof(mythBaseClient*) * STREAMSERVERMAX);
+	connectViaUrl(parser);
+}
+
 mythStreamServer::~mythStreamServer(void)
 {
 	delete [] _baselist;
 }
-
+void mythStreamServer::connectViaUrl(cJSON* parser)
+{
+	auto url = cJSON_GetObjectItem(parser, "url");
+	if (!url)
+		return;
+	std::string urlstr = url->valuestring;
+	auto urlheader = parseUrlHeader(urlstr.c_str());
+	if (strcmp(urlheader, "rtsp") == 0){
+		std::string rtsptransport = cJSON_GetObjectItem(parser, "transport")?cJSON_GetObjectItem(parser, "transport")->valuestring : "";
+		decoder = mythLive555Decoder::CreateNew((char*) urlstr.c_str(), rtsptransport == "tcp" ? true : false);
+	}
+	else if (strcmp(urlheader, "stream") == 0){
+		decoder = mythStreamDecoder::CreateNew((char*) urlstr.c_str());
+	}
+	else if (strcmp(urlheader, "file") == 0){
+#ifdef USEPIPELINE
+		decoder = mythFFmpegDecoder::CreateNew(urlstr.c_str());
+#else
+		decoder = mythH264Decoder::CreateNew(urlstr);
+#endif
+	}
+	else{
+#ifdef USEPIPELINE
+		std::string inputstr = "file://" + urlstr;
+		decoder = mythFFmpegDecoder::CreateNew(inputstr.c_str());
+#else
+		mythLog::GetInstance()->printf("Error in Create Decoder,Please use --enable-pipeline to support:%s\n", url.c_str());
+#endif
+	}
+	delete [] urlheader;
+	if (decoder)
+		decoder->start();
+}
 void mythStreamServer::connectViaUrl(mythRequestParser* parser)
 {
 	auto url = parser->Parse("url");
@@ -67,6 +116,7 @@ void mythStreamServer::connectViaUrl(mythRequestParser* parser)
 	if (decoder)
 		decoder->start();
 }
+
 char* mythStreamServer::parseUrlHeader(const char* url){
 	unsigned int i = 0;
 	for (i = 0; i < strlen(url); i++){

@@ -390,6 +390,7 @@
     <ClCompile Include="..\live555\UsageEnvironment\HashTable.cpp" />
     <ClCompile Include="..\live555\UsageEnvironment\strDup.cpp" />
     <ClCompile Include="..\live555\UsageEnvironment\UsageEnvironment.cpp" />
+    <ClCompile Include="cJSON.c" />
     <ClCompile Include="DummySink.cpp" />
     <ClCompile Include="H264or5VideoStreamSink.cpp" />
     <ClCompile Include="H264VideoStreamSink.cpp" />
@@ -438,6 +439,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\live555\liveMedia\rtcp_from_spec.h" />
+    <ClInclude Include="cJSON.h" />
     <ClInclude Include="DummySink.hh" />
     <ClInclude Include="H264or5VideoStreamSink.hh" />
     <ClInclude Include="H264VideoStreamSink.hh" />

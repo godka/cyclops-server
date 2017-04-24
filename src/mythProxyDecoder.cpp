@@ -10,12 +10,11 @@ int mythProxyDecoder::MainLoop()
 		if (msocket){
 			int rc = msocket->socket_ReceiveDataLn2(buf, BUFF_COUNT, "Content_Length: ");
 			if (rc > 0) {
-				//printf("%d\n", rc);
+				printf("count=%d\n", rc);
 				m_count += rc;
 				put((unsigned char*) buf, rc);
 			}
 			else{
-		//		msocket->socket_CloseSocket();
 				msocket = NULL;
 			}
 		}
@@ -33,6 +32,7 @@ int mythProxyDecoder::MainLoop()
 		msocket = NULL;
 	}
 	*/
+	delete [] buf;
 	return 0;
 }
 
