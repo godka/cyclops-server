@@ -25,7 +25,8 @@ int mythMediaPipeline::encodethread()
 		PacketQueue* pkt = yuvlist->get();
 		if (pkt){
 			count++;
-			if (count % 12 == 0){
+			//get motion per second
+			if (count % 25 == 0){
 				SingleStep(pkt);
 				count == 0;
 			}
