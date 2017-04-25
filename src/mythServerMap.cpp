@@ -31,7 +31,7 @@ void mythServerMap::AppendClient(cJSON* parser){
 			auto url = cjson_url->valuestring;
 			mythStreamServer* server = nullptr;
 			if (tempservermap[url] == NULL){
-				server = mythStreamServer::CreateNew(parser);
+				server = mythStreamServer::CreateNew(pItem);
 				auto cameraid = FreeCameraID(server);
 				if (cameraid > 0 && server){
 					server->SetID(cameraid);

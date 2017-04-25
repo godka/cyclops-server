@@ -57,6 +57,7 @@ void mythStreamServer::connectViaUrl(cJSON* parser)
 	if (!url)
 		return;
 	std::string urlstr = url->valuestring;
+	_parseUrl = urlstr;
 	auto urlheader = parseUrlHeader(urlstr.c_str());
 	if (strcmp(urlheader, "rtsp") == 0){
 		std::string rtsptransport = cJSON_GetObjectItem(parser, "transport")?cJSON_GetObjectItem(parser, "transport")->valuestring : "";
@@ -90,6 +91,7 @@ void mythStreamServer::connectViaUrl(mythRequestParser* parser)
 	if (url == "")
 		return;
 	auto urlheader = parseUrlHeader(url.c_str());
+	_parseUrl = url;
 	if (strcmp(urlheader, "rtsp") == 0){
 		auto rtsptransport = parser->Parse("transport");
 		decoder = mythLive555Decoder::CreateNew((char*) url.c_str(), rtsptransport == "tcp" ? true : false);
@@ -162,6 +164,7 @@ void mythStreamServer::connect()
 						case 88:
 							//ziyadecoder
 							this->decoder = mythStreamDecoder::CreateNew((char*) ip.c_str(), atoi(realcameraid.c_str()));
+							_parseUrl = "stream://" + ip + "/" + realcameraid;
 							break;
 						default:
 							std::string strRecordUrl = "rtsp://" + ip + ":" + httpport + FullSize;
@@ -169,6 +172,7 @@ void mythStreamServer::connect()
 							if (iFind >= 0)
 								strRecordUrl.replace(iFind, iFind + strlen("$camera"), realcameraid);
 							this->decoder = mythLive555Decoder::CreateNew((char*) strRecordUrl.c_str(), (char*) username.c_str(), (char*) password.c_str());
+							_parseUrl = strRecordUrl;
 							break;
 						}
 						if (decoder){

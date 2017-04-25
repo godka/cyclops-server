@@ -26,8 +26,12 @@ public:
 	mythVirtualDecoder* GetDecoder(){
 		return decoder;
 	}
+	std::string& ToString(){
+		return _parseUrl;
+	}
 	void SetID(int cameraid){
 		m_cameraid = cameraid;
+		mythLog::GetInstance()->printf("[SetID][%s]Setting CameraID:%d\n", ToString().c_str(), m_cameraid);
 	}
 	int GetID(){
 		return m_cameraid;
@@ -63,4 +67,5 @@ protected:
 	int isrunning;
 	void* additionalargs;
 	bool _hasstart;
+	std::string _parseUrl;
 };
