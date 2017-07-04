@@ -47,6 +47,7 @@ int mythNodeList::put(unsigned char* data, unsigned int length, unsigned int tim
 	tmp->PacketLength = length;
 	tmp->PacketCount++;
 	tmp->TimeStamp = timestamp;
+	mythVirtualList::before_put(tmp);
 	_mutex.lock();
 	list_add_tail(&tmp->list, &header);
 	_size++;

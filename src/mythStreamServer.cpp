@@ -70,7 +70,7 @@ void mythStreamServer::connectViaUrl(cJSON* parser)
 #ifdef USEPIPELINE
 		decoder = mythFFmpegDecoder::CreateNew(urlstr.c_str());
 #else
-		decoder = mythH264Decoder::CreateNew(urlstr);
+		decoder = mythH264Decoder::CreateNew(urlstr.c_str());
 #endif
 	}
 	else{
@@ -78,7 +78,7 @@ void mythStreamServer::connectViaUrl(cJSON* parser)
 		std::string inputstr = "file://" + urlstr;
 		decoder = mythFFmpegDecoder::CreateNew(inputstr.c_str());
 #else
-		mythLog::GetInstance()->printf("Error in Create Decoder,Please use --enable-pipeline to support:%s\n", url.c_str());
+		mythLog::GetInstance()->printf("Error in Create Decoder,Please use --enable-pipeline to support:%s\n", urlstr.c_str());
 #endif
 	}
 	delete [] urlheader;
@@ -259,6 +259,14 @@ int mythStreamServer::mainthread()
 					for (int i = 0; i < STREAMSERVERMAX; i++){
 						mythBaseClient* tmpclient = _baselist[i];
 						if (tmpclient){
+							if (tmpclient->isfirst){
+								auto Iframe_packet = decoder->getIframe();
+								if (Iframe_packet){
+									if (tmpclient->DataCallBack(tmp) < 0){
+										DropClient(tmpclient);
+									}
+								}
+							}
 							streamcount++;
 							if (tmpclient->DataCallBack(tmp) < 0){
 								DropClient(tmpclient);

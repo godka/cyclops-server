@@ -20,7 +20,7 @@ cJSON* loadConfigFile(char const* path) {
 	fclose(f);
 	return json;
 }
-
+#ifdef USELIBEVENT
 int initalsocket(int port)
 {
 	struct event_base *base;
@@ -153,3 +153,101 @@ int initalsocket(int port)
 #endif
 	return 0;
 }
+#else
+#ifdef WIN32
+int init_win_socket()
+{
+	WSADATA wsaData;
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+	{
+		return -1;
+	}
+	return 0;
+}
+#endif
+
+int initalsocket(int port)
+{
+#ifdef WIN32
+	init_win_socket();
+#endif
+	servermap = mythServerMap::CreateNew();
+	cJSON* in = loadConfigFile("camera.json");
+	if (in)
+		servermap->AppendClient(in);
+	struct sockaddr_in cliaddr;
+	int listenfd1 = socket(AF_INET, SOCK_STREAM, 0);
+	struct sockaddr_in servaddr;
+	memset(&servaddr, 0, sizeof(servaddr));
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	servaddr.sin_port = htons(port);
+	if (::bind(listenfd1, (const sockaddr *) &servaddr, sizeof(servaddr)) == SOCKET_ERROR){
+		printf("bind error\n");
+	}
+	if (listen(listenfd1, 5) == SOCKET_ERROR){
+		printf("listen error\n");
+	}
+	mythLog::GetInstance()->printf("Start server on %d,use simple select server\n",port); 
+	int maxfdp1 = listenfd1 + 1;
+	for (;;){
+		socklen_t cliaddrlen = sizeof(cliaddr);
+		int connfd = ::accept(listenfd1, (sockaddr *) &cliaddr, &cliaddrlen);
+		if (connfd == INVALID_SOCKET)
+			break;
+		int req = connfd;
+		char* buf = NULL;
+		char inputstr[4096] = { 0 };
+		int len = recv(connfd, (char *) inputstr, 4096, 0);
+		if (len > 0){
+			MythSocket* people = MythSocket::CreateNew(connfd);
+			mythRequestParser* header = mythRequestParser::CreateNew(inputstr);
+			if (header->Success){
+				std::string request_header = header->GetHeader();
+				if (request_header == "GET"){
+					//GET Method
+					auto cameraid = header->ParseInt("CameraID");
+					if (cameraid > 0){
+						auto cameratype = header->Parse("Type");
+						servermap->AppendClient(cameraid, people, cameratype.c_str());
+					}
+					else{
+						auto url = header->Parse("url");
+						if (url != ""){
+							servermap->AppendClient(header, people);
+						}
+						else{
+							people->socket_SendStr("404");
+							closesocket(connfd);
+						}
+					}
+				}
+				else if (request_header == "PUT"){
+					//Put Method
+					auto cameraid = header->ParseInt("CameraID");
+					if (cameraid > 0){
+						servermap->AppendClient(cameraid, people);
+					}
+					else{
+						people->socket_SendStr("404");
+						closesocket(connfd);
+					}
+				}
+				else{
+					people->socket_SendStr("404");
+					closesocket(connfd);
+				}
+			}
+			delete header;
+		}
+		else {
+			closesocket(connfd);
+		}
+	}
+	closesocket(listenfd1);
+#ifdef WIN32
+	WSACleanup();
+#endif
+	return 0;
+}
+#endif

@@ -2,8 +2,8 @@
 #ifdef USEPIPELINE
 #include "mythMediaPipeline.hh"
 
-mythMediaPipeline::mythMediaPipeline(void* ptr,int streamtype, int level)
-	:mythAvlist()
+mythMediaPipeline::mythMediaPipeline(void* ptr, int streamtype, int level, const char* recfilename)
+	:mythAvlist(), mythRec(recfilename)
 {
 	_ptr = ptr;
 	_streamtype = streamtype;
@@ -15,7 +15,7 @@ mythMediaPipeline::mythMediaPipeline(void* ptr,int streamtype, int level)
 	yuvlist = mythAvlist::CreateNew(50); 
 	isrunning = true;
 	_thread = new std::thread(&mythMediaPipeline::encodethread, this);
-	
+	_recfilename = recfilename;
 }
 
 int mythMediaPipeline::encodethread()

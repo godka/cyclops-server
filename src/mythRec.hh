@@ -1,10 +1,12 @@
 #pragma once
 #include "MythConfig.hh"
+#include <memory.h>
 #include <mutex>
+#include <string>
 class mythRec
 {
 public:
-	mythRec();
+	mythRec(const char* recfilename = NULL);
 	~mythRec();
 	void WriteFrame(char* data, int len);
 	void SingleStep(PacketQueue* pkt);
@@ -41,5 +43,6 @@ private:
 	bool isfirst;
 	bool _hassendIframe;
 	std::mutex _mutex;
+	std::string _recfilename;
 };
 

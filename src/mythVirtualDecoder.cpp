@@ -14,7 +14,7 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 	int pipeline = mythIniFile::GetInstance()->GetInt("config", "pipeline");
 #ifdef USEPIPELINE
 	if (pipeline)
-		m_pipeline = mythMediaPipeline::CreateNew(this, streamtype, level);//only for test
+		m_pipeline = mythMediaPipeline::CreateNew(this, streamtype, level,"test");//only for test
 	else
 		m_pipeline = NULL;
 #endif

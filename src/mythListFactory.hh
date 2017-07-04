@@ -7,6 +7,7 @@ class mythListFactory
 {
 public:
 	static mythListFactory* CreateNew(int BufferSize = 0);
+	PacketQueue * getIframe();
 	PacketQueue *get(int freePacket = 0);
 	int put(unsigned char* data, unsigned int length, unsigned int timestamp = ~0);
 	//int put(unsigned char** dataline,unsigned int *datasize,unsigned int width,unsigned int height);

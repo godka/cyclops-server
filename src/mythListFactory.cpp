@@ -27,7 +27,12 @@ mythListFactory* mythListFactory::CreateNew(int BufferSize /*= 0*/)
 {
 	return new mythListFactory();
 }
-
+PacketQueue * mythListFactory::getIframe(){
+	if (vlist)
+		return vlist->getIframe();
+	else
+		return NULL;
+}
 PacketQueue * mythListFactory::get(int freePacket /*= 0*/)
 {
 	if (vlist)

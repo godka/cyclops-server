@@ -7,13 +7,15 @@ typedef unsigned long DWORD;
 
 #define FLV_TAG_HEAD_LEN 11
 #define FLV_PRE_TAG_LEN 4
-mythRec::mythRec()
+mythRec::mythRec(const char* recfilename)
 {
 	record_last_pkt = NULL;
 	isRecording = false;
 	file = NULL;
 	isfirst = true;
 	RECORD_DELAY_TIME = mythIniFile::GetInstance()->GetInt("record", "delay_time", 30);
+	if (recfilename)
+		_recfilename = recfilename;
 }
 
 
@@ -183,8 +185,15 @@ void mythRec::StartRecord()
 	auto ms_part = duration_in_ms - std::chrono::duration_cast<std::chrono::seconds>(duration_in_ms);
 
 	static char timefilename [64] = { 0 };
-	sprintf(timefilename, "%04d-%02d-%02d-%02d-%02d-%02d-%03d.flv",
-		1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, ms_part.count());
+	if (_recfilename == ""){
+		sprintf(timefilename, "%04d-%02d-%02d-%02d-%02d-%02d-%03d.flv",
+			1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, ms_part.count());
+	}
+	else{
+		sprintf(timefilename, "%s_%04d-%02d-%02d-%02d-%02d-%02d-%03d.flv",_recfilename.c_str(),
+			1900 + timeinfo->tm_year, 1 + timeinfo->tm_mon, timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, ms_part.count());
+
+	}
 	mythLog::GetInstance()->printf("[mythrec]start record:%s\n", timefilename);
 
 	_mutex.lock();

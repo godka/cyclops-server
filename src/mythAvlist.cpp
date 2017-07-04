@@ -55,6 +55,7 @@ PacketQueue *mythAvlist::get(int freePacket){
 	}
 	else{
 		tmp = &this->ListPacket[this->listread];
+		//printf("Nalu:%d\n",tmp->Packet[3] & 0x1f);
 		if (tmp->Packet == NULL && tmp->yuvPacket[0] == NULL){
 			tmp = NULL;
 		}
@@ -71,6 +72,11 @@ PacketQueue *mythAvlist::get(int freePacket){
 		}
 	}
 	listread %= AVFRAMECOUNT;
+	if (tmp){
+		if (tmp->isIframe){
+			mythLog::GetInstance()->printf("I or P or B frame has found,length:%d\n", tmp->PacketLength);
+		}
+	}
 	return tmp;
 }
 unsigned char* mythAvlist::putcore(unsigned char* data,unsigned int datasize){
@@ -117,6 +123,7 @@ int mythAvlist::put(unsigned char* data, unsigned int length, unsigned int times
 	tmp->Packet = putcore(data, length);
 	tmp->isIframe = IsIframe(tmp);
 	tmp->TimeStamp = timestamp;
+	mythVirtualList::before_put(tmp);
 	listwrite++;
 	return 0;
 }
