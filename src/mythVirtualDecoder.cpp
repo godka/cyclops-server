@@ -16,7 +16,7 @@ mythVirtualDecoder::mythVirtualDecoder(void)
 	if (pipeline)
 		m_pipeline = mythMediaPipeline::CreateNew(this, streamtype, level,"test");//only for test
 	else
-		m_pipeline = NULL;
+		m_pipeline = nullptr;
 #endif
 }
 
@@ -55,7 +55,8 @@ int mythVirtualDecoder::put(unsigned char* data, unsigned int length,unsigned in
 {
 #ifdef USEPIPELINE
 	if (m_pipeline){
-		m_pipeline->PutMedia(data, length);
+		m_pipeline->PutMedia(data, length, timestamp);
+		mythListFactory::put(data, length, timestamp);
 		return 0;
 	}
 	else

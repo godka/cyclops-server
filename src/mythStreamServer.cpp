@@ -262,9 +262,20 @@ int mythStreamServer::mainthread()
 							if (tmpclient->isfirst){
 								auto Iframe_packet = decoder->getIframe();
 								if (Iframe_packet){
-									if (tmpclient->DataCallBack(tmp) < 0){
+									if (tmpclient->DataCallBack(Iframe_packet) < 0){
 										DropClient(tmpclient);
 									}
+									delete[] Iframe_packet->Packet;
+									delete Iframe_packet;
+								}
+								else{
+#ifdef WIN32
+									Sleep(1);
+#else
+									std::this_thread::sleep_for(std::chrono::milliseconds(1));
+#endif
+									//don't send;
+									continue;
 								}
 							}
 							streamcount++;

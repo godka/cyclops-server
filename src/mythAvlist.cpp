@@ -72,11 +72,11 @@ PacketQueue *mythAvlist::get(int freePacket){
 		}
 	}
 	listread %= AVFRAMECOUNT;
-	if (tmp){
-		if (tmp->isIframe){
-			mythLog::GetInstance()->printf("I or P or B frame has found,length:%d\n", tmp->PacketLength);
-		}
-	}
+	//if (tmp){
+	//	if (tmp->isIframe){
+	//		mythLog::GetInstance()->printf("I or P or B frame has found,length:%d\n", tmp->PacketLength);
+	//	}
+	//}
 	return tmp;
 }
 unsigned char* mythAvlist::putcore(unsigned char* data,unsigned int datasize){

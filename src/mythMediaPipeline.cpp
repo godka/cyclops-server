@@ -67,7 +67,7 @@ mythMediaPipeline::~mythMediaPipeline()
 	_thread = nullptr;
 }
 
-void mythMediaPipeline::PutMedia(void* data, int len)
+void mythMediaPipeline::PutMedia(void* data, int len, unsigned timestamp)
 {
 	if (m_decoder){
 		m_decoder->ProcessFrame((unsigned char*) data, len, [](void *ptr, char** pdata, int* plength, int width, int height,char* oridata,int orilen){
@@ -79,6 +79,6 @@ void mythMediaPipeline::PutMedia(void* data, int len)
 		//printf("in:%d\n", len);
 	}
 	WriteFrame((char*)data, len);
-	put((unsigned char*) data, len);
+	put((unsigned char*) data, len, timestamp);
 }
 #endif

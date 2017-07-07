@@ -21,7 +21,7 @@ public:
 	}
 	int encodethread();
 	~mythMediaPipeline();
-	void PutMedia(void* data, int len);
+	void PutMedia(void* data, int len,unsigned timestamp);
 protected:
 	mythMediaPipeline(void* ptr, int streamtype, int level, const char* recfilename = NULL);
 private:
