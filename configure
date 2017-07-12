@@ -1,40 +1,4 @@
 #!/bin/bash
 rm Makefile
-
-tar -zxvf libevent-2.0.22-stable.tar.gz
-cd libevent-2.0.22-stable
-./configure --prefix=/usr/local
-make -j && sudo make install
-cd ../
-
-cd live555
-chmod 755 genMakefiles
-./genMakefiles linux
-cd ../
-
-for arg in "$@"
-do
-	if [ "$arg" = "--enable-pipeline" ]; then
-		tar -jxvf last_x264.tar.bz2
-		cd x264-snapshot-20161110-2245
-		./configure --enable-shared --enable-static --disable-yasm
-		make && sudo make install
-		cd ../
-
-		tar -jxvf ffmpeg-3.2.tar.bz2
-		cd ffmpeg-3.2
-		./configure --enable-gpl --enable-libx264 --enable-shared --disable-yasm
-		make && sudo make install
-		cd ../
-		cat Makefile.pipeline > Makefile
-	elif [ "$arg" = "--enable-mingw" ]; then 
-		cd live555
-		./genMakefiles mingw
-		cd ../
-	fi
-done
-
-cd live555
-make -j && sudo make install
-cd ../
+cat Makefile.tail > Makefile
 

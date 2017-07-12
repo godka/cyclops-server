@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "mythIniFile.hh"
 #include "mythLog.hh"
-#define USEPIPELINE 1
+//#define USEPIPELINE 1
 //#define USEENCODER 1
 //#define USETHREAD 1
 #if (defined _WIN32) || (defined WIN32)

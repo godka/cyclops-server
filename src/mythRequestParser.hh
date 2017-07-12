@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <memory.h>
 typedef unsigned char BYTE;
 class mythRequestParser
 {

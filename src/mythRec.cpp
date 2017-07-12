@@ -1,6 +1,6 @@
 #include "mythRec.hh"
 #include <chrono>
-
+#include <math.h>
 typedef unsigned int UINT;
 typedef unsigned char BYTE;
 typedef unsigned long DWORD;

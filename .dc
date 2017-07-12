@@ -1,0 +1,2 @@
+cJSON.o: src/cJSON.c src/cJSON.h
+IniFile.o: src/IniFile.c src/IniFile.h
