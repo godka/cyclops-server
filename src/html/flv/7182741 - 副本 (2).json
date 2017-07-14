@@ -1,0 +1,7 @@
+{
+    "enableStashBuffer": "true",
+    "type": "flv",
+    "isLive": "true",
+    "url": "ws://192.168.31.181:8080/url=rtsp://admin:888888@192.168.31.128/udp/av0_0&Type=flv",
+    "hasAudio": "false"
+}

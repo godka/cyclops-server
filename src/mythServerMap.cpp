@@ -134,6 +134,20 @@ void mythServerMap::AppendClient(int cameraid)
 	}
 }
 
+void mythServerMap::DropClient(int sockfd)
+{
+	if (sockfd > 0){
+		mapmutex.lock();
+		for (auto &t : servermap){
+			t.second->DropClient(sockfd);
+		}
+		for (auto &t : tempservermap){
+			t.second->DropClient(sockfd);
+		}
+		mapmutex.unlock();
+	}
+}
+
 void mythServerMap::DropClient(MythSocket* people)
 {
 	if (people->addtionaldata){
@@ -148,6 +162,20 @@ void mythServerMap::DropClient(MythSocket* people)
 		server->DropClient(client);
 		delete client;
 		client = nullptr;
+		auto servernum = server->getClientNumber();
+		if (servernum == 0){
+			mythLog::GetInstance()->printf("Delete server Start,cameraid=%d,url=%s\n", server->GetID(), server->ToString().c_str());
+			server->stop();
+			if (cameraid < 20000 && cameraid > 0){
+				servermap[cameraid] = NULL;
+			}
+			else{
+				auto _url = server->ToString();
+				tempservermap[_url] = NULL;
+			}
+			delete server;
+			mythLog::GetInstance()->printf("Delete server Success,cameraid=%d,url=%s\n", server->GetID(), server->ToString().c_str());
+		}
 		mapmutex.unlock();
 	}
 	/*why not close socket*/

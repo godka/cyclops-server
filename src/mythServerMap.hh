@@ -19,6 +19,7 @@ public:
 	void AppendClient(mythRequestParser* parser, MythSocket* people);
 	void AppendClient(cJSON* parser);
 	void DropClient(MythSocket* socket);
+	void DropClient(int sockfd);
 	~mythServerMap();
 protected:
 	mythServerMap();

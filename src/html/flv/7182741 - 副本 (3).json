@@ -1,0 +1,5 @@
+{
+    "type": "flv",
+    "url": "http://192.168.31.181:5834/url=rtsp://admin:888888@192.168.31.128/udp/av0_0&Type=flv",
+    "hasAudio": false
+}

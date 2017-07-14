@@ -18,7 +18,8 @@ public:
 	int getClientNumber();
 	int AppendClient(mythBaseClient* client);
 	int DropClient(mythBaseClient* client);
-	static mythStreamServer* CreateNew(int cameraid,void* args = NULL);
+	int DropClient(int SockID);
+	static mythStreamServer* CreateNew(int cameraid, void* args = NULL);
 	static mythStreamServer* CreateNew(mythRequestParser* parser, int cameraid = -1);
 	static mythStreamServer* CreateNew(cJSON* parser, int cameraid = -1);
 	//mythStreamServer* CreateNew(int cameraid, void* args);

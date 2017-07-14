@@ -346,6 +346,20 @@ int mythStreamServer::getClientNumber()
 	return ret_size;
 }
 
+int mythStreamServer::DropClient(int SockID){
+	mythLog::GetInstance()->printf("Dropping Client,socketid = %d\n", SockID);
+	for (int i = 0; i < STREAMSERVERMAX; i++){
+		if (_baselist[i]){
+			if (_baselist[i]->GetSockID() == SockID){
+				_baselist[i] = NULL;
+				break;
+			}
+		}
+	}
+	return 0;
+
+}
+
 int mythStreamServer::DropClient(mythBaseClient* client)
 {
 	mythLog::GetInstance()->printf("Dropping Client,%u\n", client);

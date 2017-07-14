@@ -19,6 +19,7 @@ public:
 	virtual void CloseClient();
 	int SetProtocol(const char* protocol);
 	~mythBaseClient(void);
+	int GetSockID();
 private:
 	MythSocket* mpeople;
 	//void OnFlvFrame(unsigned char* data, int len);

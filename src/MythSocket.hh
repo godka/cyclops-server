@@ -33,6 +33,9 @@ public:
 		return new MythSocket(sockfd);
 	}
 	~MythSocket();
+	int GetSockID(){
+		return _sockfd;
+	}
 	int active;
 	int isPush;
 	void* addtionaldata;

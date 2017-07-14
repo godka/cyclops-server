@@ -40,7 +40,14 @@ void mythBaseClient::mainthread(){
 mythBaseClient::~mythBaseClient(void)
 {
 }
-
+int mythBaseClient::GetSockID(){
+	if (mpeople){
+		return mpeople->GetSockID();
+	}
+	else{
+		return -1;
+	}
+}
 int mythBaseClient::DataCallBack(PacketQueue* pkt)
 {
 	return 0;

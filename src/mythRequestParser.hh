@@ -14,6 +14,7 @@ public:
 	std::string& Parse(std::string key);
 	int ParseInt(std::string key);
 	std::string GetHeader();
+	std::string GetReq();
 	~mythRequestParser();
 protected:
 	mythRequestParser(const char* str);
@@ -22,7 +23,7 @@ private:
 	void parseCore(const char* str);
 	void split(const std::string& s, const std::string& c, std::vector<std::string>& v);
 	std::string _header;
-
+	std::string _req;
 	inline BYTE toHex(const BYTE &x)
 	{
 		return x > 9 ? x - 10 + 'A' : x + '0';

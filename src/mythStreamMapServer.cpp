@@ -1,5 +1,6 @@
 ﻿#include "mythStreamMapServer.hh"
 #include "mythRequestParser.hh"
+#include <fstream>
 mythServerMap* servermap = nullptr;
 
 cJSON* loadConfigFile(char const* path) {
@@ -84,20 +85,28 @@ int initalsocket(int port)
 					std::string request_header = header->GetHeader();
 					if (request_header == "GET"){
 						//GET Method
-						auto cameraid = header->ParseInt("CameraID");
-						if (cameraid > 0){
-							auto cameratype = header->Parse("Type");
-							servermap->AppendClient(cameraid, people, cameratype.c_str());
-						}
-						else{
-							auto url = header->Parse("url");
-							if (url != ""){
-								servermap->AppendClient(header, people);
+						auto req = header->GetReq();
+						if (req == ""){
+							auto cameraid = header->ParseInt("CameraID");
+							if (cameraid > 0){
+								auto cameratype = header->Parse("Type");
+								servermap->AppendClient(cameraid, people, cameratype.c_str());
 							}
 							else{
-								people->socket_SendStr("404");
-								bufferevent_free(bev);
+								auto url = header->Parse("url");
+								if (url != ""){
+									servermap->AppendClient(header, people);
+								}
+								else{
+									mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
+									SendStaticFile(people, req);
+									bufferevent_free(bev);
+								}
 							}
+						}else{
+							mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
+							SendStaticFile(people, req);
+							bufferevent_free(bev);
 						}
 					}
 					else if (request_header == "PUT"){
@@ -184,9 +193,11 @@ int initalsocket(int port)
 	servaddr.sin_port = htons(port);
 	if (::bind(listenfd1, (const sockaddr *) &servaddr, sizeof(servaddr)) == SOCKET_ERROR){
 		printf("bind error\n");
+		return 1;
 	}
 	if (listen(listenfd1, 5) == SOCKET_ERROR){
 		printf("listen error\n");
+		return 1;
 	}
 	mythLog::GetInstance()->printf("Start server on %d,use simple select server\n",port); 
 	int maxfdp1 = listenfd1 + 1;
@@ -201,25 +212,35 @@ int initalsocket(int port)
 		int len = recv(connfd, (char *) inputstr, 4096, 0);
 		if (len > 0){
 			MythSocket* people = MythSocket::CreateNew(connfd);
+			mythLog::GetInstance()->printf("socket:Incomming data,sockfd=%d\n", people->ip, connfd);
 			mythRequestParser* header = mythRequestParser::CreateNew(inputstr);
 			if (header->Success){
-				std::string request_header = header->GetHeader();
+				auto request_header = header->GetHeader();
 				if (request_header == "GET"){
 					//GET Method
-					auto cameraid = header->ParseInt("CameraID");
-					if (cameraid > 0){
-						auto cameratype = header->Parse("Type");
-						servermap->AppendClient(cameraid, people, cameratype.c_str());
-					}
-					else{
-						auto url = header->Parse("url");
-						if (url != ""){
-							servermap->AppendClient(header, people);
+					auto req = header->GetReq();
+					if (req == ""){
+						auto cameraid = header->ParseInt("CameraID");
+						if (cameraid > 0){
+							auto cameratype = header->Parse("Type");
+							servermap->AppendClient(cameraid, people, cameratype.c_str());
 						}
 						else{
-							people->socket_SendStr("404");
-							closesocket(connfd);
+							auto url = header->Parse("url");
+							if (url != ""){
+								servermap->AppendClient(header, people);
+							}
+							else{
+								mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
+								SendStaticFile(people, req);
+								people->socket_CloseSocket();
+							}
 						}
+					}
+					else{
+						mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
+						SendStaticFile(people, req);
+						people->socket_CloseSocket();
 					}
 				}
 				else if (request_header == "PUT"){
@@ -230,17 +251,18 @@ int initalsocket(int port)
 					}
 					else{
 						people->socket_SendStr("404");
-						closesocket(connfd);
+						people->socket_CloseSocket();
 					}
 				}
 				else{
 					people->socket_SendStr("404");
-					closesocket(connfd);
+					people->socket_CloseSocket();
 				}
 			}
 			delete header;
 		}
 		else {
+			servermap->DropClient(connfd);
 			closesocket(connfd);
 		}
 	}
@@ -251,3 +273,159 @@ int initalsocket(int port)
 	return 0;
 }
 #endif
+void SendStaticFile(MythSocket* _people, std::string _filename){
+	if (_filename == ""){
+		_filename = "index.html";
+	}
+	std::string _realfilename = "./html/" + _filename;
+	std::fstream _fstreamfile;
+	_fstreamfile.open(_realfilename.c_str(), std::ios::binary | std::ios::in);
+	if (!_fstreamfile){
+		//404
+		//_people->socket_SendStr("404");
+		std::string _bodystr = "<html><h1>Not Found</h1></html>";
+		char buff[256] = { 0 };
+		sprintf(buff, "HTTP/1.1 404 \r\nServer: mythmultikast API server\r\nContent-Type: text/html\r\nContent-Length: %d\r\n\r\n%s", _bodystr.length(), _bodystr.c_str());
+		_people->socket_SendStr(buff);
+	}
+	else{
+		_fstreamfile.seekg(0, std::ios::end);
+		int _filelen = _fstreamfile.tellg();
+		_fstreamfile.seekg(0, std::ios::beg);
+		char response_str[256] = { 0 };
+		char _filebuf[1024] = { 0 };
+		sprintf(response_str, 
+			"HTTP/1.1 200 OK\r\nServer: mythmultikast API server\r\nConnection: Close\r\nAccess-Control-Allow-Origin: *\r\nContent-Type: %s\r\nContent-Length: %d\r\n\r\n", 
+			get_mime_type(_filename.c_str()).c_str(), 
+			(int) _filelen);
+		_people->socket_SendStr(response_str);
+		for (;;){
+			_fstreamfile.read(_filebuf, 1024);
+			auto _len = _fstreamfile.gcount();
+			if (_len > 0)
+				_people->socket_SendStr(_filebuf, _fstreamfile.gcount());
+			else
+				break;
+		}
+		_fstreamfile.close();
+	}
+}
+std::string get_mime_type(const char *name)
+{
+	char *dot = (char*)strrchr(name, '.');
+
+	/* Text */
+	if (strcmp(dot, ".txt") == 0)
+	{
+		return "text/plain";
+	}
+	else if (strcmp(dot, ".css") == 0){
+		return "text/css";
+	}
+	else if (strcmp(dot, ".js") == 0)
+	{
+		return "text/javascript";
+	}
+	else if (strcmp(dot, ".xml") == 0 || strcmp(dot, ".xsl") == 0){
+		return "text/xml";
+	}
+	else if (strcmp(dot, ".xhtm") == 0 || strcmp(dot, ".xhtml") == 0 || strcmp(dot, ".xht") == 0){
+		return "application/xhtml+xml";
+	}
+	else if (strcmp(dot, ".html") == 0 || strcmp(dot, ".htm") == 0 || strcmp(dot, ".shtml") == 0 || strcmp(dot, ".hts") == 0){
+		return "text/html";
+	}
+	else if (strcmp(dot, ".gif") == 0){
+		return "image/gif";
+	}
+	else if (strcmp(dot, ".png") == 0){
+		return "image/png";
+	}
+	else if (strcmp(dot, ".bmp") == 0){
+		return "application/x-MS-bmp";
+	}
+	else if (strcmp(dot, ".jpg") == 0 || strcmp(dot, ".jpeg") == 0 || strcmp(dot, ".jpe") == 0 || strcmp(dot, ".jpz") == 0){
+		return "image/jpeg";
+	}
+	else if (strcmp(dot, ".wav") == 0){
+		return "audio/wav";
+	}
+	else if (strcmp(dot, ".wma") == 0){
+		return "audio/x-ms-wma";
+	}
+	else if (strcmp(dot, ".wmv") == 0){
+		return "audio/x-ms-wmv";
+	}
+	else if (strcmp(dot, ".au") == 0 || strcmp(dot, ".snd") == 0){
+		return "audio/basic";
+	}
+	else if (strcmp(dot, ".midi") == 0 || strcmp(dot, ".mid") == 0){
+		return "audio/midi";
+	}
+	else if (strcmp(dot, ".mp3") == 0 || strcmp(dot, ".mp2") == 0){
+		return "audio/x-mpeg";
+	}
+	else if (strcmp(dot, ".rm") == 0 || strcmp(dot, ".rmvb") == 0 || strcmp(dot, ".rmm") == 0){
+		return "audio/x-pn-realaudio";
+	}
+	else if (strcmp(dot, ".avi") == 0){
+		return "video/x-msvideo";
+	}
+	else if (strcmp(dot, ".3gp") == 0){
+		return "video/3gpp";
+	}
+	else if (strcmp(dot, ".mov") == 0){
+		return "video/quicktime";
+	}
+	else if (strcmp(dot, ".wmx") == 0){
+		return "video/x-ms-wmx";
+	}
+	else if (strcmp(dot, ".asf") == 0 || strcmp(dot, ".asx") == 0){
+		return "video/x-ms-asf";
+	}
+	else if (strcmp(dot, ".mp4") == 0 || strcmp(dot, ".mpg4") == 0){
+		return "video/mp4";
+	}
+	else if (strcmp(dot, ".mpe") == 0 || strcmp(dot, ".mpeg") == 0 || strcmp(dot, ".mpg") == 0 || strcmp(dot, ".mpga") == 0){
+		return "video/mpeg";
+	}
+	else if (strcmp(dot, ".pdf") == 0){
+		return "application/pdf";
+	}
+	else if (strcmp(dot, ".rtf") == 0){
+		return "application/rtf";
+	}
+	else if (strcmp(dot, ".doc") == 0 || strcmp(dot, ".dot") == 0){
+		return "application/msword";
+	}
+	else if (strcmp(dot, ".xls") == 0 || strcmp(dot, ".xla") == 0){
+		return "application/msexcel";
+	}
+	else if (strcmp(dot, ".hlp") == 0 || strcmp(dot, ".chm") == 0){
+		return "application/mshelp";
+	}
+	else if (strcmp(dot, ".swf") == 0 || strcmp(dot, ".swfl") == 0 || strcmp(dot, ".cab") == 0){
+		return "application/x-shockwave-flash";
+	}
+	else if (strcmp(dot, ".ppt") == 0 || strcmp(dot, ".ppz") == 0 || strcmp(dot, ".pps") == 0 || strcmp(dot, ".pot") == 0){
+		return "application/mspowerpoint";
+	}
+	else if (strcmp(dot, ".zip") == 0){
+		return "application/zip";
+	}
+	else if (strcmp(dot, ".rar") == 0){
+		return "application/x-rar-compressed";
+	}
+	else if (strcmp(dot, ".gz") == 0){
+		return "application/x-gzip";
+	}
+	else if (strcmp(dot, ".jar") == 0){
+		return "application/java-archive";
+	}
+	else if (strcmp(dot, ".tgz") == 0 || strcmp(dot, ".tar") == 0){
+		return "application/x-tar";
+	}
+	else {
+		return "application/octet-stream";
+	}
+}

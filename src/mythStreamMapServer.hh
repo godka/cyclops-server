@@ -36,5 +36,7 @@
 #define closesocket close
 #endif
 #endif
+#include <string>
 int initalsocket(int port);
-
+void SendStaticFile(MythSocket* _people, std::string _filename);
+std::string get_mime_type(const char *name);
