@@ -2,7 +2,7 @@ CXX=g++
 CC=gcc
 CPPINCLUDE += -I/usr/local/include -I./src -I/usr/local/include/groupsock -I/usr/local/include/UsageEnvironment -I/usr/local/include/BasicUsageEnvironment -I/usr/local/include/liveMedia
 CPPFLAGS += $(CPPINCLUDE) -fpermissive -Wdeprecated-declarations -w -O3 -std=c++11
-CPPLDFLAGS += -levent -lpthread -lliveMedia -lBasicUsageEnvironment -lgroupsock -lUsageEnvironment
+CPPLDFLAGS += -lpthread -lliveMedia -lBasicUsageEnvironment -lgroupsock -lUsageEnvironment
 CPPSOURCES=$(wildcard ./src/*.cpp)
 CPPOBJECTS=$(CPPSOURCES:.cpp=.o)
 CSOURCES=$(wildcard ./src/*.c)

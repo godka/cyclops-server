@@ -212,7 +212,7 @@ int initalsocket(int port)
 		int len = recv(connfd, (char *) inputstr, 4096, 0);
 		if (len > 0){
 			MythSocket* people = MythSocket::CreateNew(connfd);
-			mythLog::GetInstance()->printf("socket:Incomming data,sockfd=%d\n", people->ip, connfd);
+			mythLog::GetInstance()->printf("socket:Incomming data,sockfd=%d\n", connfd);
 			mythRequestParser* header = mythRequestParser::CreateNew(inputstr);
 			if (header->Success){
 				auto request_header = header->GetHeader();
