@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "mythIniFile.hh"
 #include "mythLog.hh"
-//#define USELIBEVENT 1
+#define USELIBEVENT 1
 //#define USEPIPELINE 1
 //#define USEENCODER 1
 //#define USETHREAD 1

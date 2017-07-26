@@ -1,5 +1,5 @@
 {
     "type": "flv",
-    "url": "http://192.168.31.181/url=rtsp://1029.mythkast.net/test.264",
+    "url": "http://192.168.31.181/url=stream://120.204.70.218/1049&Type=flv",
     "hasAudio": false
 }

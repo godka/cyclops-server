@@ -86,7 +86,9 @@ int initalsocket(int port)
 					if (request_header == "GET"){
 						//GET Method
 						auto req = header->GetReq();
-						if (req == ""){
+						mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
+						auto _issend = SendStaticFile(people, req);
+						if (!_issend){
 							auto cameraid = header->ParseInt("CameraID");
 							if (cameraid > 0){
 								auto cameratype = header->Parse("Type");
@@ -98,14 +100,13 @@ int initalsocket(int port)
 									servermap->AppendClient(header, people);
 								}
 								else{
-									mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
-									SendStaticFile(people, req);
+									Send404Request(people);
 									bufferevent_free(bev);
 								}
 							}
-						}else{
-							mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
-							SendStaticFile(people, req);
+
+						}
+						else{
 							bufferevent_free(bev);
 						}
 					}
