@@ -229,7 +229,7 @@ int MythSocket::socket_CloseSocket()
 	this->isPush = 0;
 #ifdef _WIN32
 	closesocket(_sockfd);
-	WSACleanup();
+//	WSACleanup();
 #else
 	close(_sockfd);
 #endif

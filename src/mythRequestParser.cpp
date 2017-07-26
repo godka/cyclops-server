@@ -30,11 +30,7 @@ void mythRequestParser::parseCore(const char* str)
 		}
 		else{
 			split(reqtmp, "?", findreq);
-			if (findreq.size() == 1){
-				_req = findreq[0];
-				Success = true;
-			}
-			else{
+			if (findreq.size() >= 1){
 				_req = findreq[0];
 				char key[4096] = { 0 };
 				int keyindex = 0;
@@ -139,6 +135,9 @@ void mythRequestParser::parseCore(const char* str)
 					}
 				}
 				Success = true;
+			}
+			else{
+				Success = false;
 			}
 		}
 	}

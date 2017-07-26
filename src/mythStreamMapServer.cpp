@@ -219,7 +219,9 @@ int initalsocket(int port)
 				if (request_header == "GET"){
 					//GET Method
 					auto req = header->GetReq();
-					if (req == ""){
+					mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
+					auto _issend = SendStaticFile(people, req);
+					if (!_issend){
 						auto cameraid = header->ParseInt("CameraID");
 						if (cameraid > 0){
 							auto cameratype = header->Parse("Type");
@@ -231,15 +233,13 @@ int initalsocket(int port)
 								servermap->AppendClient(header, people);
 							}
 							else{
-								mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
-								SendStaticFile(people, req);
+								Send404Request(people);
 								people->socket_CloseSocket();
 							}
 						}
+
 					}
 					else{
-						mythLog::GetInstance()->printf("New request,GET:%s\n", req.c_str());
-						SendStaticFile(people, req);
 						people->socket_CloseSocket();
 					}
 				}
@@ -273,7 +273,13 @@ int initalsocket(int port)
 	return 0;
 }
 #endif
-void SendStaticFile(MythSocket* _people, std::string _filename){
+void Send404Request(MythSocket* _people){
+	std::string _bodystr = "<html><h1>Not Found</h1></html>";
+	char buff[256] = { 0 };
+	sprintf(buff, "HTTP/1.1 404 \r\nServer: mythmultikast API server\r\nContent-Type: text/html\r\nContent-Length: %d\r\n\r\n%s", _bodystr.length(), _bodystr.c_str());
+	_people->socket_SendStr(buff);
+}
+bool SendStaticFile(MythSocket* _people, std::string _filename){
 	if (_filename == ""){
 		_filename = "index.html";
 	}
@@ -283,10 +289,7 @@ void SendStaticFile(MythSocket* _people, std::string _filename){
 	if (!_fstreamfile){
 		//404
 		//_people->socket_SendStr("404");
-		std::string _bodystr = "<html><h1>Not Found</h1></html>";
-		char buff[256] = { 0 };
-		sprintf(buff, "HTTP/1.1 404 \r\nServer: mythmultikast API server\r\nContent-Type: text/html\r\nContent-Length: %d\r\n\r\n%s", _bodystr.length(), _bodystr.c_str());
-		_people->socket_SendStr(buff);
+		return false;
 	}
 	else{
 		_fstreamfile.seekg(0, std::ios::end);
@@ -308,6 +311,7 @@ void SendStaticFile(MythSocket* _people, std::string _filename){
 				break;
 		}
 		_fstreamfile.close();
+		return true;
 	}
 }
 std::string get_mime_type(const char *name)
