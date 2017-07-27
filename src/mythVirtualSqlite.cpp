@@ -1,4 +1,4 @@
-﻿#include "mythVirtualSqlite.hh"
+#include "mythVirtualSqlite.hh"
 #include "tinyxml.h"
 #include "mythStreamSQLresult.hh"
 #include "MythSocket.hh"
@@ -27,14 +27,9 @@ mythVirtualSqlite* mythVirtualSqlite::CreateNew(char* filename){
 
 std::string mythVirtualSqlite::replace(std::string str, const char *string_to_replace, const char *new_string)
 {
-	//查找第一个匹配的字符串
 	int index = str.find(string_to_replace);
-	// 如果有匹配的字符串
-	while(index != std::string::npos)
-	{
-	// 替换
+	while(index != std::string::npos){
 		str.replace(index, strlen(string_to_replace), new_string);
-		// 查找下一个匹配的字符串
 		index = str.find(string_to_replace, index + strlen(new_string));
 	}
 	return str;

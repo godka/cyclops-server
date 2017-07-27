@@ -1,4 +1,4 @@
-﻿#include "MythConfig.hh"
+#include "MythConfig.hh"
 #include "MainInclude.hh"
 int main(int argc, char *argv []){
 	SingleMain(argc, argv);

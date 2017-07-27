@@ -1,4 +1,4 @@
-﻿#include "mythBaseClient.hh"
+#include "mythBaseClient.hh"
 #include <iostream>
 #include <chrono>
 mythBaseClient::mythBaseClient(MythSocket* people, char* protocol)
@@ -37,6 +37,39 @@ void mythBaseClient::mainthread(){
 	_avlist = nullptr;
 }
 #endif
+uint8_t * mythBaseClient::get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total)
+{
+	uint32_t info;
+	uint8_t *q;
+	uint8_t *p = *offset;
+	*len = 0;
+
+	while (1) {
+		info = find_start_code(p);
+		if (info > 0)
+			break;
+		p++;
+		if ((p - start) >= total)
+			return NULL;
+	}
+	q = p + info;
+	p = q;
+	while (1) {
+		info = find_start_code(p);
+		if (info > 0)
+			break;
+		p++;
+		if ((p - start) >= total){
+			//maybe cause error
+			break;
+		}
+	}
+
+	*len = (p - q);
+	*offset = p;
+	return q;
+}
+
 mythBaseClient::~mythBaseClient(void)
 {
 }

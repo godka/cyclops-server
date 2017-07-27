@@ -10,6 +10,9 @@
 #endif
 #define MYTHPROTOCOL_TCP 0
 #define MYTHPROTOCOL_HTTP 1
+typedef unsigned int UINT;
+typedef unsigned char BYTE;
+typedef unsigned long DWORD;
 class mythBaseClient
 {
 public:
@@ -34,5 +37,18 @@ protected:
 	std::thread* _thread;
 	bool _isrunning;
 #endif
+	inline uint32_t find_start_code(uint8_t *buf){
+		auto nal = *(unsigned int*) &buf[0];
+		if ((nal & 0x00ffffff) == 0x00010000){
+			return 3;
+		}
+		else if (nal == 0x01000000){
+			return 4;
+		}
+		else{
+			return 0;
+		}
+	}
+	uint8_t * get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total);
 };
 

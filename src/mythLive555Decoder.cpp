@@ -1,4 +1,4 @@
-﻿#include "mythLive555Decoder.hh"
+#include "mythLive555Decoder.hh"
 
 mythLive555Decoder::mythLive555Decoder(char* rtsplink, char* username, char* password, bool usetcp)
 	:mythVirtualDecoder()

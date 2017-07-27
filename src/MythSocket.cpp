@@ -1,4 +1,4 @@
-﻿#include "MythSocket.hh"
+#include "MythSocket.hh"
 #include <memory.h>
 #include <thread>
 MythSocket::MythSocket(int sockfd){
@@ -31,7 +31,7 @@ MythSocket::MythSocket(const char* ip, int port)
 	//}
 	unsigned long ul = 1;
 #ifdef WIN32
-	ioctlsocket(_sockfd, FIONBIO, (unsigned long *) &ul);//设置成非阻塞模式。
+	ioctlsocket(_sockfd, FIONBIO, (unsigned long *) &ul);
 #else
 	ioctl(_sockfd, FIONBIO, &ul);
 #endif

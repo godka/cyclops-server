@@ -1,4 +1,4 @@
-﻿#include "mythStreamMapServer.hh"
+#include "mythStreamMapServer.hh"
 #include "mythRequestParser.hh"
 #include <fstream>
 mythServerMap* servermap = nullptr;
@@ -193,11 +193,11 @@ int initalsocket(int port)
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servaddr.sin_port = htons(port);
 	if (::bind(listenfd1, (const sockaddr *) &servaddr, sizeof(servaddr)) == SOCKET_ERROR){
-		printf("bind error\n");
+		//printf("bind error\n");
 		return 1;
 	}
 	if (listen(listenfd1, 5) == SOCKET_ERROR){
-		printf("listen error\n");
+		//printf("listen error\n");
 		return 1;
 	}
 	mythLog::GetInstance()->printf("Start server on %d,use simple select server\n",port); 
@@ -294,7 +294,7 @@ bool SendStaticFile(MythSocket* _people, std::string _filename){
 	}
 	else{
 		_fstreamfile.seekg(0, std::ios::end);
-		int _filelen = _fstreamfile.tellg();
+		auto _filelen = _fstreamfile.tellg();
 		_fstreamfile.seekg(0, std::ios::beg);
 		char response_str[256] = { 0 };
 		char _filebuf[1024] = { 0 };
@@ -307,7 +307,7 @@ bool SendStaticFile(MythSocket* _people, std::string _filename){
 			_fstreamfile.read(_filebuf, 1024);
 			auto _len = _fstreamfile.gcount();
 			if (_len > 0)
-				_people->socket_SendStr(_filebuf, _fstreamfile.gcount());
+				_people->socket_SendStr(_filebuf, (int)_len);
 			else
 				break;
 		}

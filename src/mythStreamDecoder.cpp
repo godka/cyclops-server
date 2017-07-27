@@ -1,4 +1,4 @@
-﻿#include "mythStreamDecoder.hh"
+#include "mythStreamDecoder.hh"
 
  mythStreamDecoder::mythStreamDecoder(char* ip, int port, int CameraID)
  :mythVirtualDecoder(){

@@ -1,4 +1,4 @@
-﻿#include "mythStreamServer.hh"
+#include "mythStreamServer.hh"
 #include "mythVirtualSqlite.hh"
 
 mythStreamServer* mythStreamServer::CreateNew(int cameraid,void* args){

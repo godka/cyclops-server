@@ -1,4 +1,4 @@
-﻿#include "mythAvlist.hh"
+#include "mythAvlist.hh"
 #include <stdio.h>
 #include <memory.h>
 mythAvlist::mythAvlist(void)

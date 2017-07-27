@@ -1,4 +1,4 @@
-﻿#include "MythConfig.hh"
+#include "MythConfig.hh"
 #include "mythStreamMapServer.hh"
 #include "mythVirtualSqlite.hh"
 #include "mythGlobal.hh"
@@ -9,8 +9,10 @@ int SingleMain(int args, char** argv)
 	mythGlobal::GetInstance()->global_filename = argv[0];
 	int basicport[] = { 80, streamserverport, 0 };
 	for (int i = 0; i < sizeof(basicport) / sizeof(int); i++){
-		if (initalsocket(basicport[i]) > 0)
+		if (initalsocket(basicport[i]) > 0){
+			mythLog::GetInstance()->printf("Socket Server Bind Failed,socket port = %d\n", basicport[i]);
 			continue;
+		}
 	}
 	return 0;
 }

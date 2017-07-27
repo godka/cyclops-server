@@ -1,4 +1,4 @@
-﻿#include "mythVirtualDecoder.hh"
+#include "mythVirtualDecoder.hh"
 
 
 mythVirtualDecoder::mythVirtualDecoder(void)

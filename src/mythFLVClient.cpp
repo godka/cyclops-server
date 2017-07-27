@@ -93,39 +93,6 @@ mythFLVClient::mythFLVClient(MythSocket* people)
 	width = 0; height = 0; fps = 0;
 }
 
-uint8_t * mythFLVClient::get_nal(uint32_t *len, uint8_t **offset, uint8_t *start, uint32_t total)
-{
-	uint32_t info;
-	uint8_t *q;
-	uint8_t *p = *offset;
-	*len = 0;
-
-	while (1) {
-		info = find_start_code(p);
-		if (info > 0)
-			break;
-		p++;
-		if ((p - start) >= total)
-			return NULL;
-	}
-	q = p + info;
-	p = q;
-	while (1) {
-		info = find_start_code(p);
-		if (info > 0)
-			break;
-		p++;
-		if ((p - start) >= total){
-			//maybe cause error
-			break;
-		}
-	}
-
-	*len = (p - q);
-	*offset = p;
-	return q;
-}
-
 int mythFLVClient::writespspps(uint8_t * sps, uint32_t spslen, uint8_t * pps, uint32_t ppslen, uint32_t timestamp)
 {
 	uint32_t body_len = spslen + ppslen + 16;

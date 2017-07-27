@@ -1,4 +1,4 @@
-﻿#include "mythStreamSQLresult.hh"
+#include "mythStreamSQLresult.hh"
 
 
 mythStreamSQLresult::mythStreamSQLresult(const char* str)
